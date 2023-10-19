@@ -1,13 +1,15 @@
 package com.cinema.screening;
 
 import com.cinema.screening.dto.ScreeningRequestDto;
+import com.cinema.screening.dto.ScreeningResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,4 +22,12 @@ public class ScreeningController {
     public ResponseEntity<Screening> saveScreening(@RequestBody ScreeningRequestDto screeningDto) {
         return new ResponseEntity<>(service.saveScreening(screeningDto), HttpStatus.CREATED);
     }
+
+    @GetMapping("/screenings/{date}")
+    public List<Screening> getScreeningsByDateAfter(@PathVariable LocalDateTime date) {
+        ScreeningResponseDto screeningResponseDto = service.getScreeningsByDate(date);
+        return ResponseEntity.status(HttpStatus.OK).body(screeningResponseDto);
+    }
+
+
 }
