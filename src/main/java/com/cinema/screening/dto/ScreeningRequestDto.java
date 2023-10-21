@@ -1,6 +1,7 @@
 package com.cinema.screening.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
-public record ScreeningRequestDto(Long id , LocalDateTime date ) {
+
+public record ScreeningRequestDto(LocalDate date, String roomId ) {
 }
