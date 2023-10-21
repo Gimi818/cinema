@@ -2,11 +2,13 @@ package com.cinema.screening;
 
 import com.cinema.screening.dto.ScreeningRequestDto;
 import com.cinema.screening.dto.ScreeningResponseDto;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.*;
@@ -23,11 +25,17 @@ public class ScreeningController {
         return new ResponseEntity<>(service.saveScreening(screeningDto), HttpStatus.CREATED);
     }
 
-    @GetMapping("/screenings/{date}")
-    public List<Screening> getScreeningsByDateAfter(@PathVariable LocalDateTime date) {
-        ScreeningResponseDto screeningResponseDto = service.getScreeningsByDate(date);
-        return ResponseEntity.status(HttpStatus.OK).body(screeningResponseDto);
+    @GetMapping()
+    public ResponseEntity<List<ScreeningResponseDto>> getScreeningsByDate(
+            @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        List<ScreeningResponseDto> screenings = service.getScreeningsByDate(date);
+        return ResponseEntity.status(HttpStatus.OK).body(screenings);}
+
+    @GetMapping("/all")
+    public ResponseEntity<List<ScreeningResponseDto>> findAll() {
+        List<ScreeningResponseDto> allScrening = service.findAllScreening();
+        return ResponseEntity.status(HttpStatus.OK).body(allScrening);
     }
 
+    }
 
-}
