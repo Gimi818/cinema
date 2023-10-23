@@ -1,6 +1,7 @@
 package com.cinema.screening;
 
 
+import com.cinema.film.Film;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,8 +27,8 @@ public class Screening {
     private LocalDate date;
 
     private LocalTime time;
-//    @ManyToOne
-//    private Film film;
+    @ManyToOne
+    private Film film;
 
     private String roomId;
 //
