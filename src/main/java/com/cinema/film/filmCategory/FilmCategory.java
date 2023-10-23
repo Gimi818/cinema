@@ -1,4 +1,4 @@
-package com.cinema.film;
+package com.cinema.film.filmCategory;
 
 public enum FilmCategory {
     ACTION,
