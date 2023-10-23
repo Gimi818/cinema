@@ -1,6 +1,5 @@
 package com.cinema.film;
 
-import com.cinema.film.exception.FilmCategoryFormatException;
 import com.cinema.film.exception.FilmExistByTitleException;
 import com.cinema.film.dto.FilmRequestDto;
 import com.cinema.film.dto.FilmResponseDto;

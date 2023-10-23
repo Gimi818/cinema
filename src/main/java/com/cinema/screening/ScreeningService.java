@@ -1,8 +1,12 @@
 package com.cinema.screening;
 
+import com.cinema.film.Film;
+import com.cinema.film.FilmRepository;
+import com.cinema.film.exception.FilmNotFoundException;
 import com.cinema.screening.dto.ScreeningRequestDto;
 import com.cinema.screening.dto.ScreeningResponseDto;
 import com.cinema.screening.exception.ScreeningNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -19,13 +23,18 @@ public class ScreeningService {
 
     private final ScreeningRepository repository;
     private final ScreeningMapper mapper;
+    private final FilmRepository filmRepository;
 
-    public Screening saveScreening(ScreeningRequestDto screeningRequestDto) {
+    @Transactional
+    public Screening saveScreening(ScreeningRequestDto screeningRequestDto, Long filmId) {
         log.info("Saving Screening {}", screeningRequestDto);
+        Film film = filmRepository.findById(filmId).orElseThrow(() -> new FilmNotFoundException(filmId));
         Screening screening = repository.save(mapper.dtoToEntity(screeningRequestDto));
+        screening.setFilm(film);
         log.info("Saved Screening ");
         return screening;
     }
+
 
     public List<ScreeningResponseDto> findAllScreenings() {
         log.info("Returning all screenings");
@@ -34,7 +43,7 @@ public class ScreeningService {
                 .collect(Collectors.toList());
     }
 
-
+    @Transactional
     public List<ScreeningResponseDto> getScreeningsByDate(LocalDate date) {
         if (!repository.existsByDate(date)) {
             throw new ScreeningNotFoundException(date);

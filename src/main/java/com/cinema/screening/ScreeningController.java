@@ -19,9 +19,9 @@ public class ScreeningController {
 
     private final ScreeningService service;
 
-    @PostMapping("/add")
-    public ResponseEntity<Screening> saveScreening(@RequestBody ScreeningRequestDto screeningDto) {
-        return new ResponseEntity<>(service.saveScreening(screeningDto), HttpStatus.CREATED);
+    @PostMapping("/add/{filmId}")
+    public ResponseEntity<Screening> saveScreening(@RequestBody ScreeningRequestDto screeningDto ,@PathVariable Long filmId) {
+        return new ResponseEntity<>(service.saveScreening(screeningDto, filmId), HttpStatus.CREATED);
     }
 
     @GetMapping()
