@@ -2,7 +2,6 @@ package com.cinema.screening;
 
 import com.cinema.screening.dto.ScreeningRequestDto;
 import com.cinema.screening.dto.ScreeningResponseDto;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -33,7 +32,7 @@ public class ScreeningController {
 
     @GetMapping("/all")
     public ResponseEntity<List<ScreeningResponseDto>> findAll() {
-        List<ScreeningResponseDto> allScrening = service.findAllScreening();
+        List<ScreeningResponseDto> allScrening = service.findAllScreenings();
         return ResponseEntity.status(HttpStatus.OK).body(allScrening);
     }
 
