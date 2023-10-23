@@ -14,7 +14,10 @@ public interface ScreeningMapper {
     ScreeningMapper screeningMapper = Mappers.getMapper(ScreeningMapper.class);
 
     ScreeningResponseDto entityToDto(Screening screening);
-
+//    @ValueMappings({
+//            @ValueMapping(source = "time", target = "time"),
+//
+//    })
     Screening dtoToEntity(ScreeningRequestDto screeningRequestDto);
 
 }

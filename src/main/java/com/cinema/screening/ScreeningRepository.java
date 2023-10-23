@@ -12,4 +12,7 @@ public interface ScreeningRepository extends JpaRepository<Screening, Long> {
     @Query("SELECT s FROM Screening s WHERE s.date = :date")
     List<Screening> findScreeningsByDate(@Param("date") LocalDate date);
 
+
+    boolean existsByDate(LocalDate date);
+
 }
