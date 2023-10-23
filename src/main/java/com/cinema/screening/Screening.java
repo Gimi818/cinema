@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
+import java.time.LocalTime;
 import java.util.List;
 
 @Entity
@@ -24,6 +25,7 @@ public class Screening {
 
     private LocalDate date;
 
+    private LocalTime time;
 //    @ManyToOne
 //    private Film film;
 
