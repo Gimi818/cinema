@@ -1,12 +1,11 @@
 package com.cinema.ticket;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "ticket")
@@ -14,6 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,15 +23,14 @@ public class Ticket {
 
     private String filmTitle;
 
-    private LocalDateTime screeningDate;
-
-    private Long screeningId;
+    private LocalDate screeningDate;
+    private LocalTime screeningTime;
 
     private String cinemaRoomId;
 
-    private int rowNumber;
+  //  private int rowNumber;
 
-    private int seatNumber;
+   // private int seatNumber;
 
-    private Long userId;
+  //  private Long userId;
 }
