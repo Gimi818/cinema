@@ -1,6 +1,7 @@
 package com.cinema.screening;
 
 
+import com.cinema.cinemaRoom.seats.Seat;
 import com.cinema.film.Film;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -30,8 +31,7 @@ public class Screening {
     @ManyToOne
     private Film film;
 
-    private String roomId;
-//
+
 //    @OneToMany(cascade = CascadeType.ALL)
 //    @JoinColumn(name = "screening_id")
 //    private List<Seat> seats;
