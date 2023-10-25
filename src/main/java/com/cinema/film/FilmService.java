@@ -18,12 +18,10 @@ public class FilmService {
 
     private final FilmRepository repository;
     private final FilmMapper mapper;
-
+    private final FilmValidation validation;
 
     public Film saveFilm(FilmRequestDto filmRequestDto) {
-        if (repository.existsByTitle(filmRequestDto.title())) {
-            throw new FilmExistByTitleException(filmRequestDto.title());
-        }
+        validation.existByTitle(filmRequestDto);
         log.info("Saving film {}", filmRequestDto);
         Film film = repository.save(mapper.dtoToEntity(filmRequestDto));
         log.info("Saved film");
@@ -48,7 +46,7 @@ public class FilmService {
 
     public void deleteFilm(Long id) {
         Film film = repository.findById(id).orElseThrow();
-        log.info("Film with id {} deleted",id);
+        log.info("Film with id {} deleted", id);
         repository.delete(film);
     }
 
