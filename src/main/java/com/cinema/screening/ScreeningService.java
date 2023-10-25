@@ -31,6 +31,7 @@ public class ScreeningService {
         Film film = filmRepository.findById(filmId).orElseThrow(() -> new FilmNotFoundException(filmId));
         validate.dataValidation(screeningRequestDto);
         Screening screening = repository.save(mapper.dtoToEntity(screeningRequestDto));
+        screening.setFilm(film);
         log.info("Saved Screening ");
         return screening;
     }
