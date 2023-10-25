@@ -6,6 +6,7 @@ import com.cinema.film.dto.FilmResponseDto;
 
 import org.mapstruct.Mapper;
 
+
 import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +17,7 @@ public interface FilmMapper {
     FilmMapper filmMapper = Mappers.getMapper(FilmMapper.class);
 
     FilmResponseDto entityToDto(Film film);
+
 
     Film dtoToEntity(FilmRequestDto filmRequestDto);
 

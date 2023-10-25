@@ -23,6 +23,16 @@ public class ScreeningControllerErrorHandler {
         return new
                 ScreeningErrorResponse(message, HttpStatus.NOT_FOUND);
     }
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ExceptionHandler(ScreeningTooManyException.class)
+    @ResponseBody
+    public ScreeningErrorResponse ScreeningTooManyException(ScreeningTooManyException exception) {
+        final String message = exception.getMessage();
+        log.error(message);
+        return new
+                ScreeningErrorResponse(message, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ScreeningNotFoundException.class)
@@ -32,5 +42,17 @@ public class ScreeningControllerErrorHandler {
         log.error(message);
         return new
                 ScreeningErrorResponse(message, HttpStatus.NOT_FOUND);
+    }
+
+
+
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ExceptionHandler(ScreeningTimeDifferenceException.class)
+    @ResponseBody
+    public ScreeningErrorResponse ScreeningTimeDifferenceException(ScreeningTimeDifferenceException exception) {
+        final String message = exception.getMessage();
+        log.error(message);
+        return new
+                ScreeningErrorResponse(message, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 }
