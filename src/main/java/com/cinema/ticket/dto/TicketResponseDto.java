@@ -9,7 +9,5 @@ public record TicketResponseDto( TicketStatus status,
 
          String filmTitle,
          LocalDate screeningDate,
-         LocalTime screeningTime,
-
-         String cinemaRoomId) {
+         LocalTime screeningTime) {
 }
