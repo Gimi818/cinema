@@ -26,7 +26,8 @@ public class Ticket {
     private LocalDate screeningDate;
     private LocalTime screeningTime;
 
-    private String cinemaRoomId;
+    private int TicketPrice;
+
 
   //  private int rowNumber;
 

@@ -5,9 +5,11 @@ import com.cinema.ticket.TicketStatus;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public record TicketResponseDto( TicketStatus status,
+public record TicketResponseDto(TicketStatus status,
 
-         String filmTitle,
-         LocalDate screeningDate,
-         LocalTime screeningTime) {
+                                String filmTitle,
+                                LocalDate screeningDate,
+                                LocalTime screeningTime,
+                                int ticketPrice
+) {
 }
