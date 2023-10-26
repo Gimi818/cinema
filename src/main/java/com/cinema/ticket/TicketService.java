@@ -30,7 +30,7 @@ public class TicketService {
                 .screeningDate(screening.getDate())
                 .screeningTime(screening.getTime())
                 .status(TicketStatus.ACTIVE)
-                .TicketPrice(ticketDiscounts.fridayDiscount(screening))
+                .TicketPrice(ticketDiscounts.discount(screening))
                 .build();
         ticketRepository.save(newTicket);
         return newTicket;
