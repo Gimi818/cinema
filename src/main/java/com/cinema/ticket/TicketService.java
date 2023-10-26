@@ -18,7 +18,8 @@ public class TicketService {
 
     private final TicketRepository ticketRepository;
     private final ScreeningRepository screeningRepository;
-     private final CheckBookingTime checkBookingTime;
+    private final CheckBookingTime checkBookingTime;
+    private final TicketDiscounts ticketDiscounts;
 
     @Transactional
     public Ticket bookTicket(Long screeningId) {
@@ -29,13 +30,12 @@ public class TicketService {
                 .screeningDate(screening.getDate())
                 .screeningTime(screening.getTime())
                 .status(TicketStatus.ACTIVE)
+                .TicketPrice(ticketDiscounts.fridayDiscount(screening))
                 .build();
         ticketRepository.save(newTicket);
         return newTicket;
 
     }
-
-
 
 
     public void cancelTicket(Long ticketId) {
