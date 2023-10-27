@@ -20,7 +20,9 @@ public class Ticket {
     private Long id;
     @Enumerated(EnumType.STRING)
     private TicketStatus status;
-
+    @Enumerated(value = EnumType.STRING)
+    private TicketType ticketType;
+    String name;
     private String filmTitle;
 
     private LocalDate screeningDate;
