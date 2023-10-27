@@ -18,6 +18,11 @@ import org.springframework.web.bind.annotation.*;
 public class ScreeningController {
 
     private final ScreeningService service;
+    @GetMapping("/all")
+    public ResponseEntity<List<ScreeningResponseDto>> findAll() {
+        List<ScreeningResponseDto> allScrening = service.findAllScreenings();
+        return ResponseEntity.status(HttpStatus.OK).body(allScrening);
+    }
 
     @PostMapping("/add/{filmId}")
     public ResponseEntity<Screening> saveScreening(@RequestBody ScreeningRequestDto screeningDto ,@PathVariable Long filmId) {
@@ -30,11 +35,6 @@ public class ScreeningController {
         List<ScreeningResponseDto> screenings = service.getScreeningsByDate(date);
         return ResponseEntity.status(HttpStatus.OK).body(screenings);}
 
-    @GetMapping("/all")
-    public ResponseEntity<List<ScreeningResponseDto>> findAll() {
-        List<ScreeningResponseDto> allScrening = service.findAllScreenings();
-        return ResponseEntity.status(HttpStatus.OK).body(allScrening);
-    }
 
     }
 
