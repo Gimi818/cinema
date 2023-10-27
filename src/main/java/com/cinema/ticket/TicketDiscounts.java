@@ -1,6 +1,7 @@
 package com.cinema.ticket;
 
 import com.cinema.screening.Screening;
+import com.cinema.ticket.dto.TickedRequestDto;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -21,4 +22,10 @@ public class TicketDiscounts {
     }
 
 
+    public int discountForStudents(TickedRequestDto requestDto, Screening screening) {
+        if (requestDto.ticketType() == TicketType.REDUCE) {
+            return discount(screening) - 5;
+        } else
+            return discount(screening);
+    }
 }
