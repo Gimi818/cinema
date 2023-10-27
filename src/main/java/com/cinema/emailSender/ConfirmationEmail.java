@@ -18,7 +18,10 @@ public class ConfirmationEmail {
 
         helper.setTo(to);
         helper.setSubject("Potwierdzenie rejestracji");
-        String text = "Kliknij poniższy link, aby potwierdzić rejestrację:<br/><a href='" + confirmationLink + "'>" + confirmationLink + "</a>";
+        String text = "Dziękujemy za rejestrację na naszej stronie!<br/> " +
+                "Aby dokończyć rejstrację i mieć możliwość rezerwacji biletu: <br/>" +
+                " Kliknij poniższy link, aby potwierdzić swój e-mail:<br/><a href='" + confirmationLink + "'>" + confirmationLink + "</a>";
+
         helper.setText(text, true);
 
         javaMailSender.send(message);
