@@ -15,16 +15,20 @@ import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+
 @Service
 @AllArgsConstructor
 public class EmailWithPDF {
     private final JavaMailSender javaMailSender;
+
     public Element createQr(String email, Ticket ticket) throws BadElementException, IOException {
-        String qrCodeData = "Film: " + ticket.getFilmTitle() + "\n"
-                + "Data: " + ticket.getScreeningDate() + "\n"
-                + "Godzina: " + ticket.getScreeningTime() + "\n"
-                + "Cena biletu: " + ticket.getTicketPrice() + " zl" + "\n"
-                + "Kupujący : " + email;
+        String qrCodeData =
+                "Imie i Nazwisko: " + ticket.getName() + "\n" +
+                        "Film: " + ticket.getFilmTitle() + "\n"
+                        + "Data: " + ticket.getScreeningDate() + "\n"
+                        + "Godzina: " + ticket.getScreeningTime() + "\n"
+                        + "Cena biletu: " + ticket.getTicketPrice() + " zl" + "\n"
+                        + "Kupujący : " + email;
         ByteArrayOutputStream qrOutputStream = QRCode.from(qrCodeData)
                 .to(ImageType.PNG)
                 .stream();
@@ -56,17 +60,16 @@ public class EmailWithPDF {
             filmData.setAlignment(Element.ALIGN_LEFT);
 
             Paragraph filmTime = new Paragraph("Godzina: " + ticket.getScreeningTime(), dataFont);
-            filmTime.setAlignment(Element.ALIGN_RIGHT);
-
+            filmTime.setAlignment(Element.ALIGN_LEFT);
 
 
             document.add(filmTitle);
             document.add(filmData);
             document.add(filmTime);
-
-            document.add(new Paragraph("Rzad: 12" ));
-            document.add(new Paragraph("Miejsce : 15" ));
-            document.add(new Paragraph("Rodzaj biletu - ULGOWY"));
+            document.add(new Paragraph("Imie i Nazwisko: " + ticket.getName()));
+            document.add(new Paragraph("Rzad: 12"));
+            document.add(new Paragraph("Miejsce : 15"));
+            document.add(new Paragraph("Rodzaj biletu - "+ ticket.getTicketType()));
             document.add(new Paragraph("Cena biletu: " + ticket.getTicketPrice() + " zl"));
             document.add(new Paragraph("Kupujący : " + email));
 
@@ -82,7 +85,7 @@ public class EmailWithPDF {
 
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
-       String logoPath3 = "classpath:logo2.PNG";
+        String logoPath3 = "classpath:logo2.PNG";
         helper.setTo(email);
         helper.setSubject("Twój bilet");
 
