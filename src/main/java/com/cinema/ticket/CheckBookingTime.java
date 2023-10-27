@@ -13,7 +13,7 @@ import java.time.LocalTime;
 @AllArgsConstructor
 public class CheckBookingTime {
 
-    public void checkBookingTime(Screening screening) {
+        public void checkBookingTime(Screening screening) {
 
         if (screening.getDate().isAfter(LocalDate.now())) {
             return;
@@ -25,6 +25,5 @@ public class CheckBookingTime {
         }
     }
 
-
-    }
+}
 
