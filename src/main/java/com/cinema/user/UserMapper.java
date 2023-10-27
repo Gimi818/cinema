@@ -1,9 +1,5 @@
-package com.cinema.user.UserMapper;
+package com.cinema.user;
 
-import com.cinema.film.Film;
-import com.cinema.film.dto.FilmRequestDto;
-import com.cinema.film.dto.FilmResponseDto;
-import com.cinema.user.User;
 import com.cinema.user.dto.UserRequestDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;

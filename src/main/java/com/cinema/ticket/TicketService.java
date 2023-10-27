@@ -1,11 +1,15 @@
 package com.cinema.ticket;
 
+import com.cinema.emailSender.EmailWithPDF;
 import com.cinema.screening.Screening;
 import com.cinema.screening.ScreeningRepository;
 import com.cinema.screening.exception.ScreeningNotFoundByIdException;
 import com.cinema.ticket.exception.TicketNotFoundException;
 
 
+import com.cinema.user.User;
+import com.cinema.user.UserRepository;
+import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -20,10 +24,13 @@ public class TicketService {
     private final ScreeningRepository screeningRepository;
     private final CheckBookingTime checkBookingTime;
     private final TicketDiscounts ticketDiscounts;
+    private final UserRepository userRepository;
+    private final EmailWithPDF email;
 
     @Transactional
-    public Ticket bookTicket(Long screeningId) {
+    public Ticket bookTicket(Long screeningId, Long userId) throws MessagingException {
         Screening screening = screeningRepository.findById(screeningId).orElseThrow(() -> new ScreeningNotFoundByIdException(screeningId));
+        User user = userRepository.findById(userId).orElseThrow(() -> new ScreeningNotFoundByIdException(screeningId));
         checkBookingTime.checkBookingTime(screening);
         Ticket newTicket = Ticket.builder()
                 .filmTitle(screening.getFilm().getTitle())
@@ -33,6 +40,7 @@ public class TicketService {
                 .TicketPrice(ticketDiscounts.discount(screening))
                 .build();
         ticketRepository.save(newTicket);
+        email.sendEmailWithPDF(user.getEmail(), newTicket);
         return newTicket;
 
     }
