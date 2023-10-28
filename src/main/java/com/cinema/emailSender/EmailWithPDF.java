@@ -67,8 +67,8 @@ public class EmailWithPDF {
             document.add(filmData);
             document.add(filmTime);
             document.add(new Paragraph("Imie i Nazwisko: " + ticket.getName()));
-            document.add(new Paragraph("Rzad: 12"));
-            document.add(new Paragraph("Miejsce : 15"));
+            document.add(new Paragraph("Rzad: " + ticket.getRowsNumber()));
+            document.add(new Paragraph("Miejsce : "+ ticket.getSeatInRow()));
             document.add(new Paragraph("Rodzaj biletu - "+ ticket.getTicketType()));
             document.add(new Paragraph("Cena biletu: " + ticket.getTicketPrice() + " zl"));
             document.add(new Paragraph("Kupujący : " + email));
@@ -76,7 +76,7 @@ public class EmailWithPDF {
 
             Image qrCodeImage = (Image) createQr(email, ticket);
             qrCodeImage.setAlignment(Element.ALIGN_CENTER);
-            qrCodeImage.scaleToFit(300, 300);
+            qrCodeImage.scaleToFit(280, 280);
             document.add(qrCodeImage);
             document.close();
         } catch (Exception e) {
@@ -85,7 +85,7 @@ public class EmailWithPDF {
 
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
-        String logoPath3 = "classpath:logo2.PNG";
+
         helper.setTo(email);
         helper.setSubject("Twój bilet");
 

@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 public class SeatCheckAvailability {
     private final ScreeningRepository screeningRepository;
     private final SeatRepository seatRepository;
-  //  private final ScreeningRepository screeningRepository;
 
     public void checkSeat(Long screeningId, int rowsNumber, int seatInRow) {
         Screening screening = getScreeningById(screeningId);
