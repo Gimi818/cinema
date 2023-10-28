@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
@@ -28,7 +27,7 @@ public class Ticket {
     private LocalDate screeningDate;
     private LocalTime screeningTime;
 
-    private int TicketPrice;
+    private int ticketPrice;
 
 
   //  private int rowNumber;

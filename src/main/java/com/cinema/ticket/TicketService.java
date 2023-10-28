@@ -10,6 +10,7 @@ import com.cinema.ticket.exception.TicketNotFoundException;
 
 import com.cinema.user.User;
 import com.cinema.user.UserRepository;
+import com.cinema.user.exception.UserNotFoundByIdException;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -28,25 +29,45 @@ public class TicketService {
     private final UserRepository userRepository;
     private final EmailWithPDF email;
 
+
     @Transactional
     public Ticket bookTicket(Long screeningId, Long userId, TickedRequestDto requestDto) throws MessagingException {
-        Screening screening = screeningRepository.findById(screeningId).orElseThrow(() -> new ScreeningNotFoundByIdException(screeningId));
-        User user = userRepository.findById(userId).orElseThrow(() -> new ScreeningNotFoundByIdException(screeningId));
+        Screening screening = getScreeningById(screeningId);
+        User user = getUserById(userId);
 
         checkBookingTime.checkBookingTime(screening);
-        Ticket newTicket = Ticket.builder()
+        Ticket newTicket = createNewTicket(screening, user, requestDto);
+        ticketRepository.save(newTicket);
+        email.sendEmailWithPDF(user.getEmail(), newTicket);
+
+        return newTicket;
+    }
+
+    private Ticket createNewTicket(Screening screening, User user, TickedRequestDto requestDto) {
+
+        return Ticket.builder()
                 .filmTitle(screening.getFilm().getTitle())
                 .screeningDate(screening.getDate())
                 .screeningTime(screening.getTime())
-                .name(user.getFirstName() + " " + user.getLastName())
+                .name(concatenateUserName(user.getFirstName(), user.getLastName()))
                 .status(TicketStatus.ACTIVE)
                 .ticketType(requestDto.ticketType())
-                .TicketPrice(ticketDiscounts.discountForStudents(requestDto,screening))
+                .ticketPrice(ticketDiscounts.discountForStudents(requestDto, screening))
                 .build();
-        ticketRepository.save(newTicket);
-        email.sendEmailWithPDF(user.getEmail(), newTicket);
-        return newTicket;
+    }
 
+    private Screening getScreeningById(Long screeningId) {
+        return screeningRepository.findById(screeningId)
+                .orElseThrow(() -> new ScreeningNotFoundByIdException(screeningId));
+    }
+
+    private String concatenateUserName(String firstName, String lastName) {
+        return firstName + " " + lastName;
+    }
+
+    private User getUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundByIdException(userId));
     }
 
 
@@ -58,3 +79,24 @@ public class TicketService {
 
 
 }
+//    @Transactional
+//    public Ticket bookTicket(Long screeningId, Long userId, TickedRequestDto requestDto) throws MessagingException {
+//
+//        Screening screening = getScreeningById(screeningId);
+//        User user = getUserById(userId);
+//
+//        checkBookingTime.checkBookingTime(screening);
+//        Ticket newTicket = Ticket.builder()
+//                .filmTitle(screening.getFilm().getTitle())
+//                .screeningDate(screening.getDate())
+//                .screeningTime(screening.getTime())
+//                .name(user.getFirstName() + " " + user.getLastName())
+//                .status(TicketStatus.ACTIVE)
+//                .ticketType(requestDto.ticketType())
+//                .TicketPrice(ticketDiscounts.discountForStudents(requestDto, screening))
+//                .build();
+//        ticketRepository.save(newTicket);
+//        email.sendEmailWithPDF(user.getEmail(), newTicket);
+//        return newTicket;
+//
+//    }

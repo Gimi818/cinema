@@ -15,7 +15,7 @@ public class TicketDiscounts {
     public int discount(Screening screening) {
         DayOfWeek dayOfWeek = screening.getDate().getDayOfWeek();
 
-        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.WEDNESDAY) {
+        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.TUESDAY) {
             return 15;
         } else
             return 25;
