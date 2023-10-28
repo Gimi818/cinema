@@ -1,8 +1,6 @@
 package com.cinema.ticket;
 
-import com.cinema.screening.Screening;
-import com.cinema.screening.dto.ScreeningRequestDto;
-import com.cinema.ticket.dto.TickedRequestDto;
+import com.cinema.ticket.dto.TickedBookingDto;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,7 +18,7 @@ public class TicketController {
     @PostMapping("/{userId}/{screeningId}")
     public ResponseEntity<Ticket> saveScreening(@PathVariable Long userId,
                                                 @PathVariable Long screeningId,
-                                                @RequestBody TickedRequestDto tickedRequestDto) throws MessagingException {
+                                                @RequestBody TickedBookingDto tickedRequestDto) throws MessagingException {
         return new ResponseEntity<>(service.bookTicket(screeningId, userId, tickedRequestDto), HttpStatus.CREATED);
     }
 }

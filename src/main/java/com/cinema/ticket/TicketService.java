@@ -4,7 +4,7 @@ import com.cinema.emailSender.EmailWithPDF;
 import com.cinema.screening.Screening;
 import com.cinema.screening.ScreeningRepository;
 import com.cinema.screening.exception.ScreeningNotFoundByIdException;
-import com.cinema.ticket.dto.TickedRequestDto;
+import com.cinema.ticket.dto.TickedBookingDto;
 import com.cinema.ticket.exception.TicketNotFoundException;
 
 
@@ -31,19 +31,19 @@ public class TicketService {
 
 
     @Transactional
-    public Ticket bookTicket(Long screeningId, Long userId, TickedRequestDto requestDto) throws MessagingException {
+    public Ticket bookTicket(Long screeningId, Long userId, TickedBookingDto tickedDto) throws MessagingException {
         Screening screening = getScreeningById(screeningId);
         User user = getUserById(userId);
 
         checkBookingTime.checkBookingTime(screening);
-        Ticket newTicket = createNewTicket(screening, user, requestDto);
+        Ticket newTicket = createNewTicket(screening, user, tickedDto);
         ticketRepository.save(newTicket);
         email.sendEmailWithPDF(user.getEmail(), newTicket);
 
         return newTicket;
     }
 
-    private Ticket createNewTicket(Screening screening, User user, TickedRequestDto requestDto) {
+    private Ticket createNewTicket(Screening screening, User user, TickedBookingDto tickedDto) {
 
         return Ticket.builder()
                 .filmTitle(screening.getFilm().getTitle())
@@ -51,8 +51,8 @@ public class TicketService {
                 .screeningTime(screening.getTime())
                 .name(concatenateUserName(user.getFirstName(), user.getLastName()))
                 .status(TicketStatus.ACTIVE)
-                .ticketType(requestDto.ticketType())
-                .ticketPrice(ticketDiscounts.discountForStudents(requestDto, screening))
+                .ticketType(tickedDto.ticketType())
+                .ticketPrice(ticketDiscounts.discountForStudents(tickedDto, screening))
                 .build();
     }
 
