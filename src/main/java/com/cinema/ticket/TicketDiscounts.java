@@ -2,6 +2,7 @@ package com.cinema.ticket;
 
 import com.cinema.screening.Screening;
 import com.cinema.ticket.dto.TickedBookingDto;
+import com.cinema.ticket.ticketEnum.TicketType;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

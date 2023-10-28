@@ -1,13 +1,10 @@
 package com.cinema.screening;
 
 
-import com.cinema.cinemaRoom.seats.Seat;
+import com.cinema.seats.Seat;
 import com.cinema.film.Film;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -18,6 +15,7 @@ import java.util.List;
 @Table(name = "screening")
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Getter
 @Setter
 public class Screening {
@@ -32,7 +30,7 @@ public class Screening {
     private Film film;
 
 
-//    @OneToMany(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "screening_id")
-//    private List<Seat> seats;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "screening_id")
+    private List<Seat> seats;
 }

@@ -1,5 +1,6 @@
 package com.cinema.screening;
 
+import com.cinema.screening.dto.ScreeningAvailableSeats;
 import com.cinema.screening.dto.ScreeningRequestDto;
 import com.cinema.screening.dto.ScreeningResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -18,14 +19,15 @@ import org.springframework.web.bind.annotation.*;
 public class ScreeningController {
 
     private final ScreeningService service;
+
     @GetMapping("/all")
     public ResponseEntity<List<ScreeningResponseDto>> findAll() {
-        List<ScreeningResponseDto> allScrening = service.findAllScreenings();
-        return ResponseEntity.status(HttpStatus.OK).body(allScrening);
+        List<ScreeningResponseDto> allScreening = service.findAllScreenings();
+        return ResponseEntity.status(HttpStatus.OK).body(allScreening);
     }
 
     @PostMapping("/add/{filmId}")
-    public ResponseEntity<Screening> saveScreening(@RequestBody ScreeningRequestDto screeningDto ,@PathVariable Long filmId) {
+    public ResponseEntity<Screening> saveScreening(@RequestBody ScreeningRequestDto screeningDto, @PathVariable Long filmId) {
         return new ResponseEntity<>(service.saveScreening(screeningDto, filmId), HttpStatus.CREATED);
     }
 
@@ -33,8 +35,14 @@ public class ScreeningController {
     public ResponseEntity<List<ScreeningResponseDto>> getScreeningsByDate(
             @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         List<ScreeningResponseDto> screenings = service.getScreeningsByDate(date);
-        return ResponseEntity.status(HttpStatus.OK).body(screenings);}
-
-
+        return ResponseEntity.status(HttpStatus.OK).body(screenings);
     }
+
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ScreeningAvailableSeats> findAvailableSeats(@PathVariable Long id) {
+        ScreeningAvailableSeats screeningAvailableSeats = service.findAvailableSeats(id);
+        return ResponseEntity.status(HttpStatus.OK).body(screeningAvailableSeats);
+    }
+}
 
