@@ -1,6 +1,7 @@
 package com.cinema.screening;
 
 
+import com.cinema.screening.dto.ScreeningAvailableSeats;
 import com.cinema.screening.dto.ScreeningRequestDto;
 import com.cinema.screening.dto.ScreeningResponseDto;
 import org.mapstruct.Mapper;
@@ -14,10 +15,9 @@ public interface ScreeningMapper {
     ScreeningMapper screeningMapper = Mappers.getMapper(ScreeningMapper.class);
 
     ScreeningResponseDto entityToDto(Screening screening);
-//    @ValueMappings({
-//            @ValueMapping(source = "time", target = "time"),
-//
-//    })
+    ScreeningAvailableSeats entityToDto2(Screening screening);
+
     Screening dtoToEntity(ScreeningRequestDto screeningRequestDto);
+
 
 }
