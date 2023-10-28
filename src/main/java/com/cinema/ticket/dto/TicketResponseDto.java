@@ -1,7 +1,7 @@
 package com.cinema.ticket.dto;
 
-import com.cinema.ticket.TicketStatus;
-import com.cinema.ticket.TicketType;
+import com.cinema.ticket.ticketEnum.TicketStatus;
+import com.cinema.ticket.ticketEnum.TicketType;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

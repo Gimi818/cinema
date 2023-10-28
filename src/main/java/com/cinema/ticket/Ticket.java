@@ -1,5 +1,7 @@
 package com.cinema.ticket;
 
+import com.cinema.ticket.ticketEnum.TicketStatus;
+import com.cinema.ticket.ticketEnum.TicketType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,9 +32,9 @@ public class Ticket {
     private int ticketPrice;
 
 
-  //  private int rowNumber;
+    private int rowsNumber;
 
-   // private int seatNumber;
+    private int seatInRow;
 
-  //  private Long userId;
+    private Long userId;
 }

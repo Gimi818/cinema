@@ -4,10 +4,12 @@ import com.cinema.emailSender.EmailWithPDF;
 import com.cinema.screening.Screening;
 import com.cinema.screening.ScreeningRepository;
 import com.cinema.screening.exception.ScreeningNotFoundByIdException;
+import com.cinema.seats.SeatCheckAvailability;
 import com.cinema.ticket.dto.TickedBookingDto;
 import com.cinema.ticket.exception.TicketNotFoundException;
 
 
+import com.cinema.ticket.ticketEnum.TicketStatus;
 import com.cinema.user.User;
 import com.cinema.user.UserRepository;
 import com.cinema.user.exception.UserNotFoundByIdException;
@@ -28,6 +30,7 @@ public class TicketService {
     private final TicketDiscounts ticketDiscounts;
     private final UserRepository userRepository;
     private final EmailWithPDF email;
+    private final SeatCheckAvailability seatCheckAvailability;
 
 
     @Transactional
@@ -39,6 +42,7 @@ public class TicketService {
         Ticket newTicket = createNewTicket(screening, user, tickedDto);
         ticketRepository.save(newTicket);
         email.sendEmailWithPDF(user.getEmail(), newTicket);
+        seatCheckAvailability.checkSeat(screeningId, tickedDto.rowsNumber(), tickedDto.seatInRow());
 
         return newTicket;
     }
@@ -53,6 +57,9 @@ public class TicketService {
                 .status(TicketStatus.ACTIVE)
                 .ticketType(tickedDto.ticketType())
                 .ticketPrice(ticketDiscounts.discountForStudents(tickedDto, screening))
+                .rowsNumber(tickedDto.rowsNumber())
+                .seatInRow(tickedDto.seatInRow())
+                .userId(user.getId())
                 .build();
     }
 
@@ -79,24 +86,3 @@ public class TicketService {
 
 
 }
-//    @Transactional
-//    public Ticket bookTicket(Long screeningId, Long userId, TickedRequestDto requestDto) throws MessagingException {
-//
-//        Screening screening = getScreeningById(screeningId);
-//        User user = getUserById(userId);
-//
-//        checkBookingTime.checkBookingTime(screening);
-//        Ticket newTicket = Ticket.builder()
-//                .filmTitle(screening.getFilm().getTitle())
-//                .screeningDate(screening.getDate())
-//                .screeningTime(screening.getTime())
-//                .name(user.getFirstName() + " " + user.getLastName())
-//                .status(TicketStatus.ACTIVE)
-//                .ticketType(requestDto.ticketType())
-//                .TicketPrice(ticketDiscounts.discountForStudents(requestDto, screening))
-//                .build();
-//        ticketRepository.save(newTicket);
-//        email.sendEmailWithPDF(user.getEmail(), newTicket);
-//        return newTicket;
-//
-//    }
