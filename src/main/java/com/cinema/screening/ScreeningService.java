@@ -1,6 +1,7 @@
 package com.cinema.screening;
 
 import com.cinema.screening.dto.ScreeningAvailableSeats;
+import com.cinema.screening.exception.ScreeningNotFoundByIdException;
 import com.cinema.seats.Seat;
 import com.cinema.seats.SeatService;
 import com.cinema.seats.SeatStatus;
@@ -34,8 +35,10 @@ public class ScreeningService {
     @Transactional
     public Screening saveScreening(ScreeningRequestDto screeningRequestDto, Long filmId) {
         log.info("Saving Screening {}", screeningRequestDto);
+
         Film film = filmRepository.findById(filmId).orElseThrow(() -> new FilmNotFoundException(filmId));
-        validate.dataValidation(screeningRequestDto);
+
+        validate.dataValidation(screeningRequestDto,film);
 
         Screening screening = repository.save(mapper.dtoToEntity(screeningRequestDto));
         screening.setFilm(film);
@@ -46,11 +49,13 @@ public class ScreeningService {
 
 
     private List<Seat> createSeats() {
+        log.info("Created seats");
         return IntStream.rangeClosed(1, 10)
                 .boxed()
                 .flatMap(rowNumber -> IntStream.rangeClosed(1, 10)
                         .mapToObj(seatInRow -> seatService.createSeat(rowNumber, seatInRow, SeatStatus.AVAILABLE)))
                 .collect(Collectors.toList());
+
     }
 
     public List<ScreeningResponseDto> findAllScreenings() {
@@ -72,16 +77,13 @@ public class ScreeningService {
     }
 
     public ScreeningAvailableSeats findAvailableSeats(Long id) {
-        Screening screening = repository.findScreeningByIdWithSeats(id);
-
-        return mapper.entityToDto2(screening);
+        Screening screening = repository.findById(id).orElseThrow(() -> new ScreeningNotFoundByIdException(id));
+        log.info("Returning seats by screening id ->  {} id",id);
+        return mapper.screeningToSeatsDto(screening);
     }
 
-//    public ClientResponseDto findClientById(Long id) {
-//        log.info("Finding client with ID {}", id);
-//        Client client = clientRepository.findById(id).orElseThrow(() -> new ClientNotFoundException(id));
-//        log.info("Found client {}", client);
-//        return clientMapper.entityToDto(client);
-//    }
-
 }
+
+
+
+

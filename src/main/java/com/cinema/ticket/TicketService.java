@@ -4,7 +4,7 @@ import com.cinema.emailSender.EmailWithPDF;
 import com.cinema.screening.Screening;
 import com.cinema.screening.ScreeningRepository;
 import com.cinema.screening.exception.ScreeningNotFoundByIdException;
-import com.cinema.seats.SeatCheckAvailability;
+import com.cinema.seats.SeatService;
 import com.cinema.ticket.dto.TickedBookingDto;
 import com.cinema.ticket.exception.TicketNotFoundException;
 
@@ -30,7 +30,7 @@ public class TicketService {
     private final TicketDiscounts ticketDiscounts;
     private final UserRepository userRepository;
     private final EmailWithPDF email;
-    private final SeatCheckAvailability seatCheckAvailability;
+    private final SeatService seatService;
 
 
     @Transactional
@@ -39,11 +39,12 @@ public class TicketService {
         User user = getUserById(userId);
 
         checkBookingTime.checkBookingTime(screening);
+
         Ticket newTicket = createNewTicket(screening, user, tickedDto);
+        seatService.checkSeatsAvailability(screeningId, tickedDto.rowsNumber(), tickedDto.seatInRow());
         ticketRepository.save(newTicket);
         email.sendEmailWithPDF(user.getEmail(), newTicket);
-        seatCheckAvailability.checkSeat(screeningId, tickedDto.rowsNumber(), tickedDto.seatInRow());
-
+        log.info("Created new ticket");
         return newTicket;
     }
 
