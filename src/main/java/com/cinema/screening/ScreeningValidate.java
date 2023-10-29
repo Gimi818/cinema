@@ -1,9 +1,10 @@
 package com.cinema.screening;
 
+import com.cinema.film.Film;
 import com.cinema.screening.dto.ScreeningRequestDto;
 import com.cinema.screening.exception.ScreeningNotFoundException;
 import com.cinema.screening.exception.ScreeningTimeDifferenceException;
-import com.cinema.screening.exception.ScreeningTooManyException;
+import com.cinema.screening.exception.ScreeningTooManyInOneDayException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -23,20 +24,20 @@ public class ScreeningValidate {
         }
     }
 
-    public void dataValidation(ScreeningRequestDto screeningRequestDto) {
+    public void dataValidation(ScreeningRequestDto screeningRequestDto, Film film) {
         checkNumberOfScreeningsDuringDay(screeningRequestDto);
-        checkCorrectTime(screeningRequestDto);
+        checkCorrectTime(screeningRequestDto,film);
 
     }
 
 
-    public void checkCorrectTime(ScreeningRequestDto newScreening) {
+    public void checkCorrectTime(ScreeningRequestDto newScreening, Film film) {
 
         List<Screening> screeningsOnSameDay = repository.findScreeningsByDate(newScreening.date());
 
         for (Screening existingScreening : screeningsOnSameDay) {
-           var timeDifference =  Duration.between(existingScreening.getTime(), newScreening.time()).toHours();
-            if (Math.abs(timeDifference) < 4) {
+           var timeDifference =  Duration.between(existingScreening.getTime(), newScreening.time()).toMinutes();
+            if (Math.abs(timeDifference) < film.getDurationFilmInMinutes() + 20) {
                 throw new ScreeningTimeDifferenceException();
             }
         }
@@ -45,8 +46,8 @@ public class ScreeningValidate {
 
     public void checkNumberOfScreeningsDuringDay(ScreeningRequestDto newScreening) {
         List<Screening> screeningsOnSameDay = repository.findScreeningsByDate(newScreening.date());
-        if (screeningsOnSameDay.size() >= 3) {
-            throw new ScreeningTooManyException();
+        if (screeningsOnSameDay.size() >= 5) {
+            throw new ScreeningTooManyInOneDayException();
         }
 
     }
