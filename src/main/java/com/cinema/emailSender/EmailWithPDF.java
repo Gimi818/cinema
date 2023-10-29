@@ -2,6 +2,8 @@ package com.cinema.emailSender;
 
 import com.cinema.ticket.Ticket;
 import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfWriter;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -23,12 +25,12 @@ public class EmailWithPDF {
 
     public Element createQr(String email, Ticket ticket) throws BadElementException, IOException {
         String qrCodeData =
-                "Imie i Nazwisko: " + ticket.getName() + "\n" +
+                "Name: " + ticket.getName() + "\n" +
                         "Film: " + ticket.getFilmTitle() + "\n"
-                        + "Data: " + ticket.getScreeningDate() + "\n"
-                        + "Godzina: " + ticket.getScreeningTime() + "\n"
-                        + "Cena biletu: " + ticket.getTicketPrice() + " zl" + "\n"
-                        + "Kupujący : " + email;
+                        + "Date: " + ticket.getScreeningDate() + "\n"
+                        + "Time: " + ticket.getScreeningTime() + "\n"
+                        + "Ticket price: " + ticket.getTicketPrice() + " PLN" + "\n"
+                        + "Buyer : " + email;
         ByteArrayOutputStream qrOutputStream = QRCode.from(qrCodeData)
                 .to(ImageType.PNG)
                 .stream();
@@ -42,7 +44,18 @@ public class EmailWithPDF {
         String logoPath = "classpath:logo2.png";
         ByteArrayOutputStream pdfOutputStream = new ByteArrayOutputStream();
         try {
-            PdfWriter.getInstance(document, pdfOutputStream);
+            PdfWriter writer = PdfWriter.getInstance(document, pdfOutputStream);
+//            writer.setPageEvent(new PdfPageEventHelper() {
+//                public void onEndPage(PdfWriter writer, Document document) {
+//                    PdfContentByte canvas = writer.getDirectContentUnder();
+//                    Rectangle rect = document.getPageSize();
+//                    rect.setBackgroundColor(BaseColor.BLACK);
+//                    rect.setBorder(Rectangle.BOX);
+//                    rect.setBorderWidth(5);
+//                    rect.setBorderColor(BaseColor.BLACK);
+//                    canvas.rectangle(rect);
+//                }
+//            });
             document.open();
 
             Image logo = Image.getInstance(logoPath);
@@ -51,27 +64,27 @@ public class EmailWithPDF {
             logo.setAlignment(Element.ALIGN_CENTER);
 
             document.add(logo);
-            Font titleFont = new Font(Font.FontFamily.HELVETICA, 25, Font.NORMAL, BaseColor.BLACK);
+            Font titleFont = new Font(Font.FontFamily.HELVETICA, 25, Font.NORMAL, BaseColor.ORANGE);
             Paragraph filmTitle = new Paragraph(ticket.getFilmTitle(), titleFont);
             filmTitle.setAlignment(Element.ALIGN_CENTER);
 
-            Font dataFont = new Font(Font.FontFamily.HELVETICA, 20, Font.NORMAL, BaseColor.BLACK);
-            Paragraph filmData = new Paragraph("Data: " + ticket.getScreeningDate(), dataFont);
+            Font dataFont = new Font(Font.FontFamily.HELVETICA, 20, Font.NORMAL, BaseColor.ORANGE);
+            Paragraph filmData = new Paragraph("Date: " + ticket.getScreeningDate(), dataFont);
             filmData.setAlignment(Element.ALIGN_LEFT);
 
-            Paragraph filmTime = new Paragraph("Godzina: " + ticket.getScreeningTime(), dataFont);
+            Paragraph filmTime = new Paragraph("Time: " + ticket.getScreeningTime(), dataFont);
             filmTime.setAlignment(Element.ALIGN_LEFT);
 
 
             document.add(filmTitle);
             document.add(filmData);
             document.add(filmTime);
-            document.add(new Paragraph("Imie i Nazwisko: " + ticket.getName()));
-            document.add(new Paragraph("Rzad: " + ticket.getRowsNumber()));
-            document.add(new Paragraph("Miejsce : "+ ticket.getSeatInRow()));
-            document.add(new Paragraph("Rodzaj biletu - "+ ticket.getTicketType()));
-            document.add(new Paragraph("Cena biletu: " + ticket.getTicketPrice() + " zl"));
-            document.add(new Paragraph("Kupujący : " + email));
+            document.add(new Paragraph("Name: " + ticket.getName()));
+            document.add(new Paragraph("Row: " + ticket.getRowsNumber()));
+            document.add(new Paragraph("Seat : "+ ticket.getSeatInRow()));
+            document.add(new Paragraph("Ticket type - "+ ticket.getTicketType()));
+            document.add(new Paragraph("Ticket Price: " + ticket.getTicketPrice() + " PLN"));
+            document.add(new Paragraph("Buyer : " + email));
 
 
             Image qrCodeImage = (Image) createQr(email, ticket);
@@ -87,13 +100,13 @@ public class EmailWithPDF {
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
         helper.setTo(email);
-        helper.setSubject("Twój bilet");
+        helper.setSubject("Your ticket");
 
-        String text = "Dziękujemy za zakup biletu!";
+        String text = "Thank you for buying a ticket!";
         helper.setText(text, true);
 
         byte[] pdfBytes = pdfOutputStream.toByteArray();
-        helper.addAttachment("Bilet.pdf", new ByteArrayResource(pdfBytes));
+        helper.addAttachment("Ticket.pdf", new ByteArrayResource(pdfBytes));
 
         javaMailSender.send(message);
     }
