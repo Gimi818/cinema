@@ -1,9 +1,5 @@
 package com.cinema.screening.exception;
 
-import com.cinema.film.exception.FilmErrorResponse;
-
-import com.cinema.film.exception.FilmNotFoundException;
-import com.cinema.screening.Screening;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -23,14 +19,14 @@ public class ScreeningControllerErrorHandler {
         return new
                 ScreeningErrorResponse(message, HttpStatus.NOT_FOUND);
     }
-    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    @ExceptionHandler(ScreeningTooManyException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(ScreeningTooManyInOneDayException.class)
     @ResponseBody
-    public ScreeningErrorResponse ScreeningTooManyException(ScreeningTooManyException exception) {
+    public ScreeningErrorResponse ScreeningTooManyException(ScreeningTooManyInOneDayException exception) {
         final String message = exception.getMessage();
         log.error(message);
         return new
-                ScreeningErrorResponse(message, HttpStatus.UNPROCESSABLE_ENTITY);
+                ScreeningErrorResponse(message, HttpStatus.CONFLICT);
     }
 
 
@@ -46,13 +42,13 @@ public class ScreeningControllerErrorHandler {
 
 
 
-    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(ScreeningTimeDifferenceException.class)
     @ResponseBody
     public ScreeningErrorResponse ScreeningTimeDifferenceException(ScreeningTimeDifferenceException exception) {
         final String message = exception.getMessage();
         log.error(message);
         return new
-                ScreeningErrorResponse(message, HttpStatus.UNPROCESSABLE_ENTITY);
+                ScreeningErrorResponse(message, HttpStatus.CONFLICT);
     }
 }
