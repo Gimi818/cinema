@@ -17,10 +17,10 @@ public class ConfirmationEmail {
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
         helper.setTo(to);
-        helper.setSubject("Potwierdzenie rejestracji");
-        String text = "Dziękujemy za rejestrację na naszej stronie!<br/> " +
-                "Aby dokończyć rejstrację i mieć możliwość rezerwacji biletu: <br/>" +
-                " Kliknij poniższy link, aby potwierdzić swój e-mail:<br/><a href='" + confirmationLink + "'>" + confirmationLink + "</a>";
+        helper.setSubject("Registration confirmation");
+        String text = "Thank you for registering on our application!<br/> " +
+                " To complete your registration , click the link below to confirm your e-mail:<br/>" +
+                "<a href='" + confirmationLink + "'>" + confirmationLink + "</a>";
 
         helper.setText(text, true);
 
