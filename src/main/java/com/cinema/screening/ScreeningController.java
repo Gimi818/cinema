@@ -20,17 +20,6 @@ public class ScreeningController {
 
     private final ScreeningService service;
 
-    @GetMapping("/all")
-    public ResponseEntity<List<ScreeningResponseDto>> findAll() {
-        List<ScreeningResponseDto> allScreening = service.findAllScreenings();
-        return ResponseEntity.status(HttpStatus.OK).body(allScreening);
-    }
-
-    @PostMapping("/add/{filmId}")
-    public ResponseEntity<Screening> saveScreening(@RequestBody ScreeningRequestDto screeningDto, @PathVariable Long filmId) {
-        return new ResponseEntity<>(service.saveScreening(screeningDto, filmId), HttpStatus.CREATED);
-    }
-
     @GetMapping()
     public ResponseEntity<List<ScreeningResponseDto>> getScreeningsByDate(
             @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
@@ -38,11 +27,20 @@ public class ScreeningController {
         return ResponseEntity.status(HttpStatus.OK).body(screenings);
     }
 
+    @PostMapping("/add/{filmId}")
+    public ResponseEntity<Screening> saveScreening(@RequestBody ScreeningRequestDto screeningDto, @PathVariable Long filmId) {
+        return new ResponseEntity<>(service.saveScreening(screeningDto, filmId), HttpStatus.CREATED);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<ScreeningAvailableSeats> findAvailableSeats(@PathVariable Long id) {
         ScreeningAvailableSeats screeningAvailableSeats = service.findAvailableSeats(id);
         return ResponseEntity.status(HttpStatus.OK).body(screeningAvailableSeats);
+    }
+    @GetMapping("/all")
+    public ResponseEntity<List<ScreeningResponseDto>> findAll() {
+        List<ScreeningResponseDto> allScreening = service.findAllScreenings();
+        return ResponseEntity.status(HttpStatus.OK).body(allScreening);
     }
 }
 

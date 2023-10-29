@@ -19,22 +19,17 @@ public class Ticket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String name;
+    private String filmTitle;
+    private LocalDate screeningDate;
+    private LocalTime screeningTime;
+    private int ticketPrice;
+    private int rowsNumber;
+    private int seatInRow;
+    private Long userId;
     @Enumerated(EnumType.STRING)
     private TicketStatus status;
     @Enumerated(value = EnumType.STRING)
     private TicketType ticketType;
-    String name;
-    private String filmTitle;
 
-    private LocalDate screeningDate;
-    private LocalTime screeningTime;
-
-    private int ticketPrice;
-
-
-    private int rowsNumber;
-
-    private int seatInRow;
-
-    private Long userId;
 }

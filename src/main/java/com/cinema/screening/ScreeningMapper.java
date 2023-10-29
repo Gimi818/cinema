@@ -15,7 +15,7 @@ public interface ScreeningMapper {
     ScreeningMapper screeningMapper = Mappers.getMapper(ScreeningMapper.class);
 
     ScreeningResponseDto entityToDto(Screening screening);
-    ScreeningAvailableSeats entityToDto2(Screening screening);
+    ScreeningAvailableSeats screeningToSeatsDto(Screening screening);
 
     Screening dtoToEntity(ScreeningRequestDto screeningRequestDto);
 
