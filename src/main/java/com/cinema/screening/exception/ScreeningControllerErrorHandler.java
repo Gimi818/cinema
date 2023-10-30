@@ -41,7 +41,15 @@ public class ScreeningControllerErrorHandler {
     }
 
 
-
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(ScreeningTooLateToCreateNew.class)
+    @ResponseBody
+    public ScreeningErrorResponse ScreeningTooLateToCreateNew(ScreeningTooLateToCreateNew exception) {
+        final String message = exception.getMessage();
+        log.error(message);
+        return new
+                ScreeningErrorResponse(message, HttpStatus.CONFLICT);
+    }
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(ScreeningTimeDifferenceException.class)
     @ResponseBody
