@@ -4,11 +4,13 @@ import com.cinema.film.Film;
 import com.cinema.screening.dto.ScreeningRequestDto;
 import com.cinema.screening.exception.ScreeningNotFoundException;
 import com.cinema.screening.exception.ScreeningTimeDifferenceException;
+import com.cinema.screening.exception.ScreeningTooLateToCreateNew;
 import com.cinema.screening.exception.ScreeningTooManyInOneDayException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
+import java.time.LocalTime;
 import java.util.List;
 import java.time.LocalDate;
 
@@ -26,7 +28,7 @@ public class ScreeningValidate {
 
     public void dataValidation(ScreeningRequestDto screeningRequestDto, Film film) {
         checkNumberOfScreeningsDuringDay(screeningRequestDto);
-        checkCorrectTime(screeningRequestDto,film);
+        checkCorrectTime(screeningRequestDto, film);
 
     }
 
@@ -34,9 +36,11 @@ public class ScreeningValidate {
     public void checkCorrectTime(ScreeningRequestDto newScreening, Film film) {
 
         List<Screening> screeningsOnSameDay = repository.findScreeningsByDate(newScreening.date());
-
+        if (newScreening.time().isBefore(LocalTime.now().plusHours(1))) {
+            throw new ScreeningTooLateToCreateNew();
+        }
         for (Screening existingScreening : screeningsOnSameDay) {
-           var timeDifference =  Duration.between(existingScreening.getTime(), newScreening.time()).toMinutes();
+            var timeDifference = Duration.between(existingScreening.getTime(), newScreening.time()).toMinutes();
             if (Math.abs(timeDifference) < film.getDurationFilmInMinutes() + 20) {
                 throw new ScreeningTimeDifferenceException();
             }
