@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  mysqldb:
+    image: mysql
+    container_name: mysql-containercinema
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_ROOT_USER: user
+      MYSQL_DATABASE: cinema
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - 4440:3306
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:
