@@ -25,7 +25,7 @@ public class FilmController {
         return new ResponseEntity<>(service.saveFilm(filmRequestDto), HttpStatus.CREATED);
     }
 
-    @GetMapping("/all")
+    @GetMapping()
     public ResponseEntity<List<FilmResponseDto>> findAll() {
         List<FilmResponseDto> allFilms = service.findAllFilms();
         return ResponseEntity.status(HttpStatus.OK).body(allFilms);
