@@ -1,12 +1,19 @@
 # Cinema
 ## A cinema management application with a ticketing system
+
 The new user registers within the application and verifies their email by clicking the activation link received in their email.
-Then, the user selects a screening date and a film for that specific time, checking seat availability for the screening. In the next step, the user books a ticket, selects a seat, row and chooses the type of discount."
+Then, the user selects a screening date and a film for that specific time, checking seat availability for the screening. 
+
+In the next step, the user books a ticket, selects a seat, row and chooses the type of discount.
 After a successful booking, the application sends an email with the ticket in PDF format with all the details and a unique QR code to confirm the details and the purchase of the ticket.
+
 The cinema offers two types of discounts: 
-Events: Cheap Tuesday and Cheap Friday, during which ticket prices are discounted by 30%.
-Student discounts: with an additional 15% reduction in ticket prices.
-Administrators have the authority to add new films to the database and create new screenings, specifying the date, time, and film.
+
+- Events: Cheap Tuesday and Cheap Friday, during which ticket prices are discounted by 30%.
+
+- Student discounts: with an additional 15% reduction in ticket prices.
+
+Administrators have the authority to add new films to the database and create new screenings, specifying the date, time, and film. 
 
 I used a MySQL database to implement the relationships in the database.
 The application is deployed on Docker and has an implemented swagger.
