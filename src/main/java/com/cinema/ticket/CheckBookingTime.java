@@ -13,14 +13,12 @@ import java.time.LocalTime;
 @AllArgsConstructor
 public class CheckBookingTime {
 
-        public void checkBookingTime(Screening screening) {
+    public void checkBookingTime(Screening screening) {
 
-        if (screening.getDate().isAfter(LocalDate.now())) {
-            return;
-        } else if (screening.getDate().isBefore(LocalDate.now())) {
+        if (screening.getDate().isBefore(LocalDate.now())) {
             throw new TooLateToBookException();
 
-        } else if (Duration.between( LocalTime.now(), screening.getTime()).toMinutes() < 15 ) {
+        } else if (Duration.between(LocalTime.now(), screening.getTime()).toMinutes() < 15) {
             throw new TooLateToBookException();
         }
     }
