@@ -1,13 +1,16 @@
 package com.cinema.user;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "user")
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
+@Builder
+
 public class User {
 
     @Id
@@ -21,5 +24,9 @@ public class User {
 
     @Enumerated(value = EnumType.STRING)
     private UserRole role;
+    @Enumerated(value = EnumType.STRING)
+    private AccountType accountType;
+
+    private String confirmationToken;
 
 }
