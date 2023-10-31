@@ -16,9 +16,9 @@ public class TicketController {
     private final TicketService service;
 
     @PostMapping("/{userId}/{screeningId}")
-    public ResponseEntity<Ticket> saveScreening(@PathVariable Long userId,
-                                                @PathVariable Long screeningId,
-                                                @RequestBody TickedBookingDto tickedRequestDto) throws MessagingException {
+    public ResponseEntity<Ticket> booking(@PathVariable Long userId,
+                                          @PathVariable Long screeningId,
+                                          @RequestBody TickedBookingDto tickedRequestDto) throws MessagingException {
         return new ResponseEntity<>(service.bookTicket(screeningId, userId, tickedRequestDto), HttpStatus.CREATED);
     }
 }
