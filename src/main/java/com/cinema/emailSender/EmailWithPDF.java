@@ -22,21 +22,7 @@ import java.io.IOException;
 @AllArgsConstructor
 public class EmailWithPDF {
     private final JavaMailSender javaMailSender;
-
-    public Element createQr(String email, Ticket ticket) throws BadElementException, IOException {
-        String qrCodeData =
-                "Name: " + ticket.getName() + "\n" +
-                        "Film: " + ticket.getFilmTitle() + "\n"
-                        + "Date: " + ticket.getScreeningDate() + "\n"
-                        + "Time: " + ticket.getScreeningTime() + "\n"
-                        + "Ticket price: " + ticket.getTicketPrice() + " PLN" + "\n"
-                        + "Buyer : " + email;
-        ByteArrayOutputStream qrOutputStream = QRCode.from(qrCodeData)
-                .to(ImageType.PNG)
-                .stream();
-
-        return Image.getInstance(qrOutputStream.toByteArray());
-    }
+    private final GenerateQrCode generateQrCode;
 
 
     public void sendEmailWithPDF(String email, Ticket ticket) throws MessagingException {
@@ -72,13 +58,13 @@ public class EmailWithPDF {
             document.add(new Paragraph("Name: " + ticket.getName()));
             document.add(new Paragraph("Room number : " + ticket.getRowsNumber()));
             document.add(new Paragraph("Row: " + ticket.getRowsNumber()));
-            document.add(new Paragraph("Seat : "+ ticket.getSeatInRow()));
-            document.add(new Paragraph("Ticket type - "+ ticket.getTicketType()));
+            document.add(new Paragraph("Seat : " + ticket.getSeatInRow()));
+            document.add(new Paragraph("Ticket type - " + ticket.getTicketType()));
             document.add(new Paragraph("Ticket Price: " + ticket.getTicketPrice() + " PLN"));
-            document.add(new Paragraph("Buyer : " + email));
+            document.add(new Paragraph("Email : " + email));
 
 
-            Image qrCodeImage = (Image) createQr(email, ticket);
+            Image qrCodeImage = (Image) generateQrCode.createQr(email, ticket);
             qrCodeImage.setAlignment(Element.ALIGN_CENTER);
             qrCodeImage.scaleToFit(280, 280);
             document.add(qrCodeImage);
