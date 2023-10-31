@@ -36,9 +36,14 @@ public class ScreeningValidate {
     public void checkCorrectTime(ScreeningRequestDto newScreening, Film film) {
 
         List<Screening> screeningsOnSameDay = repository.findScreeningsByDate(newScreening.date());
-        if (newScreening.time().isBefore(LocalTime.now().plusHours(1))) {
+
+        if (newScreening.date().isBefore(LocalDate.now())) {
+            throw new ScreeningTooLateToCreateNew();
+        } else if (newScreening.time().isBefore(LocalTime.now())) {
             throw new ScreeningTooLateToCreateNew();
         }
+
+
         for (Screening existingScreening : screeningsOnSameDay) {
             var timeDifference = Duration.between(existingScreening.getTime(), newScreening.time()).toMinutes();
             if (Math.abs(timeDifference) < film.getDurationFilmInMinutes() + 20) {
