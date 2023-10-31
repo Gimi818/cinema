@@ -45,17 +45,7 @@ public class EmailWithPDF {
         ByteArrayOutputStream pdfOutputStream = new ByteArrayOutputStream();
         try {
             PdfWriter writer = PdfWriter.getInstance(document, pdfOutputStream);
-//            writer.setPageEvent(new PdfPageEventHelper() {
-//                public void onEndPage(PdfWriter writer, Document document) {
-//                    PdfContentByte canvas = writer.getDirectContentUnder();
-//                    Rectangle rect = document.getPageSize();
-//                    rect.setBackgroundColor(BaseColor.BLACK);
-//                    rect.setBorder(Rectangle.BOX);
-//                    rect.setBorderWidth(5);
-//                    rect.setBorderColor(BaseColor.BLACK);
-//                    canvas.rectangle(rect);
-//                }
-//            });
+
             document.open();
 
             Image logo = Image.getInstance(logoPath);
@@ -64,11 +54,11 @@ public class EmailWithPDF {
             logo.setAlignment(Element.ALIGN_CENTER);
 
             document.add(logo);
-            Font titleFont = new Font(Font.FontFamily.HELVETICA, 25, Font.NORMAL, BaseColor.ORANGE);
+            Font titleFont = new Font(Font.FontFamily.HELVETICA, 25, Font.NORMAL, BaseColor.BLACK);
             Paragraph filmTitle = new Paragraph(ticket.getFilmTitle(), titleFont);
             filmTitle.setAlignment(Element.ALIGN_CENTER);
 
-            Font dataFont = new Font(Font.FontFamily.HELVETICA, 20, Font.NORMAL, BaseColor.ORANGE);
+            Font dataFont = new Font(Font.FontFamily.HELVETICA, 20, Font.NORMAL, BaseColor.BLACK);
             Paragraph filmData = new Paragraph("Date: " + ticket.getScreeningDate(), dataFont);
             filmData.setAlignment(Element.ALIGN_LEFT);
 
@@ -80,6 +70,7 @@ public class EmailWithPDF {
             document.add(filmData);
             document.add(filmTime);
             document.add(new Paragraph("Name: " + ticket.getName()));
+            document.add(new Paragraph("Room number : " + ticket.getRowsNumber()));
             document.add(new Paragraph("Row: " + ticket.getRowsNumber()));
             document.add(new Paragraph("Seat : "+ ticket.getSeatInRow()));
             document.add(new Paragraph("Ticket type - "+ ticket.getTicketType()));

@@ -26,10 +26,9 @@ public class Screening {
     private LocalDate date;
 
     private LocalTime time;
+
     @ManyToOne
     private Film film;
-
-
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "screening_id")
     private List<Seat> seats;
