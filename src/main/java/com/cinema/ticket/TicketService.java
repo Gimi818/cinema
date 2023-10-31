@@ -4,12 +4,15 @@ import com.cinema.emailSender.EmailWithPDF;
 import com.cinema.screening.Screening;
 import com.cinema.screening.ScreeningRepository;
 import com.cinema.screening.exception.ScreeningNotFoundByIdException;
+import com.cinema.screening.exception.ScreeningNotFoundException;
 import com.cinema.seats.SeatService;
 import com.cinema.ticket.dto.TickedBookingDto;
 import com.cinema.ticket.exception.TicketNotFoundException;
 
 
+
 import com.cinema.ticket.ticketEnum.TicketStatus;
+
 import com.cinema.user.User;
 import com.cinema.user.UserRepository;
 import com.cinema.user.exception.UserNotFoundByIdException;
@@ -42,6 +45,7 @@ public class TicketService {
 
         Ticket newTicket = createNewTicket(screening, user, tickedDto);
         seatService.checkSeatsAvailability(screeningId, tickedDto.rowsNumber(), tickedDto.seatInRow());
+
         ticketRepository.save(newTicket);
         email.sendEmailWithPDF(user.getEmail(), newTicket);
         log.info("Created new ticket");
@@ -59,6 +63,7 @@ public class TicketService {
                 .ticketType(tickedDto.ticketType())
                 .ticketPrice(ticketDiscounts.discountForStudents(tickedDto, screening))
                 .rowsNumber(tickedDto.rowsNumber())
+                .roomNumber(1)
                 .seatInRow(tickedDto.seatInRow())
                 .userId(user.getId())
                 .build();

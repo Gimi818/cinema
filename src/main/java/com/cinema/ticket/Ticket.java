@@ -26,6 +26,7 @@ public class Ticket {
     private int ticketPrice;
     private int rowsNumber;
     private int seatInRow;
+    private int roomNumber;
     private Long userId;
     @Enumerated(EnumType.STRING)
     private TicketStatus status;
