@@ -8,18 +8,22 @@ import com.cinema.film.dto.FilmRequestDto;
 import com.cinema.film.dto.FilmResponseDto;
 import com.cinema.screening.dto.ScreeningRequestDto;
 import com.cinema.screening.dto.ScreeningResponseDto;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 
+import static com.cinema.film.filmCategory.FilmCategory.ACTION;
 import static com.cinema.film.filmCategory.FilmCategory.FANTASY;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -63,10 +67,31 @@ class ScreeningServiceTest {
 
     }
 
+
+    @Test
+    @DisplayName("Should find all Screening by date")
+    void should_find_all_Screening_By_date() {
+        screeningResponseDto = new ScreeningResponseDto(1L, LocalDate.of(2023,10,11),LocalTime.of(12,10), film);
+        secoundScreeningResponseDto = new ScreeningResponseDto(2L, LocalDate.of(2023,10,11),LocalTime.of(12,10), film);
+
+        List<Screening> screeningList = List.of(screening, secoundScreening);
+        List<ScreeningResponseDto> expectedScreeningDtoList = List.of(screeningResponseDto, secoundScreeningResponseDto);
+
+        given(screeningRepository.findScreeningsByDate(LocalDate.of(2023, 10, 11))).willReturn(screeningList);
+        given(screeningMapper.entityToDto(screening)).willReturn(screeningResponseDto);
+        given(screeningMapper.entityToDto(secoundScreening)).willReturn(secoundScreeningResponseDto);
+
+        List<ScreeningResponseDto> actualScreenigDtoList = service.findAllScreenings();
+
+        Assertions.assertThat(expectedScreeningDtoList).isEqualTo(actualScreenigDtoList);
+        Mockito.verify(screeningMapper, Mockito.times(1)).entityToDto(screening);
+        Mockito.verify(screeningMapper, Mockito.times(1)).entityToDto(secoundScreening);
+    }
+
     @Test
     @DisplayName("Should save screeing")
     void should_save_film() {
-        film.setId(1L);
+        film = new Film(1L, "Harry Potter", FANTASY, 130);
         given(screeningRepository.save(screeningMapper.dtoToEntity(screeningRequestDto)))
                 .willReturn(screening);
         assertThat(service.saveScreening(screeningRequestDto,film.getId()))
