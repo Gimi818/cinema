@@ -5,7 +5,6 @@ import com.cinema.ticket.exception.TooLateToBookException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -17,8 +16,7 @@ public class CheckBookingTime {
 
         if (screening.getDate().isBefore(LocalDate.now())) {
             throw new TooLateToBookException();
-
-        } else if (Duration.between(LocalTime.now(), screening.getTime()).toMinutes() < 15) {
+        } else if (screening.getDate().isEqual(LocalDate.now()) && screening.getTime().isBefore(LocalTime.now().plusMinutes(15))) {
             throw new TooLateToBookException();
         }
     }
