@@ -3,6 +3,7 @@ package com.cinema.film;
 import com.cinema.film.exception.FilmExistByTitleException;
 import com.cinema.film.dto.FilmRequestDto;
 import com.cinema.film.dto.FilmResponseDto;
+import com.cinema.film.exception.FilmNotFoundException;
 import com.cinema.film.filmCategory.FilmCategory;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -28,6 +29,13 @@ public class FilmService {
         return film;
     }
 
+    public FilmResponseDto findFilmById(Long id) {
+        log.info("Finding film with ID {}", id);
+        Film film = repository.findById(id).orElseThrow(() -> new FilmNotFoundException(id));
+        log.info("Found film {}", film);
+        return mapper.entityToDto(film);
+    }
+
     public List<FilmResponseDto> findAllFilms() {
         log.info("Returning all films");
         return repository.findAll().stream()
@@ -45,7 +53,7 @@ public class FilmService {
     }
 
     public void deleteFilm(Long id) {
-        Film film = repository.findById(id).orElseThrow();
+        Film film = repository.findById(id).orElseThrow(()-> new FilmNotFoundException(id));
         log.info("Film with id {} deleted", id);
         repository.delete(film);
     }
