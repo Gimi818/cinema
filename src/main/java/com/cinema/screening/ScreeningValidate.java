@@ -26,23 +26,17 @@ public class ScreeningValidate {
         }
     }
 
-    public void dataValidation(ScreeningRequestDto screeningRequestDto, Film film) {
-        checkNumberOfScreeningsDuringDay(screeningRequestDto);
-        checkCorrectTime(screeningRequestDto, film);
+    public void checkCorrectTime(ScreeningRequestDto newScreening) {
 
-    }
-
-
-    public void checkCorrectTime(ScreeningRequestDto newScreening, Film film) {
-
-        List<Screening> screeningsOnSameDay = repository.findScreeningsByDate(newScreening.date());
-
-        if (newScreening.date().isBefore(LocalDate.now())) {
-            throw new ScreeningTooLateToCreateNew();
-        } else if (newScreening.time().isBefore(LocalTime.now())) {
+        if (newScreening.date().isAfter(LocalDate.now())) {
+            return;
+        } else if (newScreening.date().isBefore(LocalDate.now()) || newScreening.time().isBefore(LocalTime.now())) {
             throw new ScreeningTooLateToCreateNew();
         }
+    }
 
+    public void minTime(ScreeningRequestDto newScreening, Film film) {
+        List<Screening> screeningsOnSameDay = repository.findScreeningsByDate(newScreening.date());
 
         for (Screening existingScreening : screeningsOnSameDay) {
             var timeDifference = Duration.between(existingScreening.getTime(), newScreening.time()).toMinutes();
@@ -52,12 +46,18 @@ public class ScreeningValidate {
         }
     }
 
-
     public void checkNumberOfScreeningsDuringDay(ScreeningRequestDto newScreening) {
         List<Screening> screeningsOnSameDay = repository.findScreeningsByDate(newScreening.date());
         if (screeningsOnSameDay.size() >= 5) {
             throw new ScreeningTooManyInOneDayException();
         }
+
+    }
+
+    public void dataValidation(ScreeningRequestDto screeningRequestDto, Film film) {
+        checkNumberOfScreeningsDuringDay(screeningRequestDto);
+        checkCorrectTime(screeningRequestDto);
+        minTime(screeningRequestDto, film);
 
     }
 
