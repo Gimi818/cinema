@@ -30,6 +30,11 @@ public class FilmController {
         List<FilmResponseDto> allFilms = service.findAllFilms();
         return ResponseEntity.status(HttpStatus.OK).body(allFilms);
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<FilmResponseDto> findFilmById(@PathVariable Long id ){
+        FilmResponseDto filmResponseDto = service.findFilmById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(filmResponseDto);
+    }
 
     @GetMapping("/category")
     public ResponseEntity<List<FilmResponseDto>> getFilmsByCategory(@RequestParam("category") FilmCategory filmCategory) {
@@ -37,7 +42,7 @@ public class FilmController {
         return ResponseEntity.status(HttpStatus.OK).body(films);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteFilm(@PathVariable Long id) {
         service.deleteFilm(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
