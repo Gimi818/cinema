@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -129,5 +130,14 @@ class FilmServiceTest {
                 .willReturn(filmResponseDto);
 
         assertThat(service.findFilmById(1L)).isEqualTo(filmResponseDto);
+    }
+
+    @Test
+    @DisplayName("Should delete film by id")
+    void should_delete_film() {
+        given(filmRepository.findById(1L)).willReturn(Optional.of(film));
+        filmRepository.deleteById(1L);
+        Mockito.verify(filmRepository, Mockito.times(1)).deleteById(1L);
+
     }
 }
