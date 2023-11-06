@@ -55,7 +55,7 @@ public class FilmService {
     public void deleteFilm(Long id) {
         Film film = repository.findById(id).orElseThrow(()-> new FilmNotFoundException(id));
         log.info("Film with id {} deleted", id);
-        repository.delete(film);
+        repository.deleteById(id);
     }
 
 

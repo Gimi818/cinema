@@ -136,7 +136,7 @@ class FilmServiceTest {
     @DisplayName("Should delete film by id")
     void should_delete_film() {
         given(filmRepository.findById(1L)).willReturn(Optional.of(film));
-        filmRepository.deleteById(1L);
+        service.deleteFilm(1L);
         Mockito.verify(filmRepository, Mockito.times(1)).deleteById(1L);
 
     }
