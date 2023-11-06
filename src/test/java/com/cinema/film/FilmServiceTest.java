@@ -4,15 +4,17 @@ import com.cinema.film.dto.FilmRequestDto;
 import com.cinema.film.dto.FilmResponseDto;
 import com.cinema.film.exception.FilmNotFoundException;
 import com.cinema.film.filmCategory.FilmCategory;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,14 +22,14 @@ import java.util.Optional;
 import static com.cinema.film.filmCategory.FilmCategory.ACTION;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+
 import static org.mockito.BDDMockito.given;
-import static org.assertj.core.api.Assertions.assertThat;
+
 import static com.cinema.film.filmCategory.FilmCategory.FANTASY;
-import static org.mockito.Mockito.mock;
+
 import static org.mockito.Mockito.when;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 class FilmServiceTest {
 
     @Mock
@@ -106,14 +108,26 @@ class FilmServiceTest {
         Mockito.verify(filmMapper, Mockito.times(1)).entityToDto(secoundFilm);
     }
 
+
     @Test
-    @DisplayName("Should throw CarNotFoundException when client is not found")
-    void should_throw_CarNotFoundException() {
+    @DisplayName("Should throw filmNotFoundException when film id doesn't exist ")
+    void should_throw_filmNotFoundException() {
         // Given
-        Long carId = 1L;
-        //when
-      //  when(filmRepository.findByCategory(ACTION)).thenReturn(Optional.empty());
-        //Then
-        assertThrows(FilmNotFoundException.class, () -> service.findFilmByCategory(ACTION));
+        Long nonExistingFilmId = 10L;
+
+        when(filmRepository.findById(nonExistingFilmId)).thenReturn(Optional.empty());
+
+        // Then
+        assertThrows(FilmNotFoundException.class, () -> service.findFilmById(nonExistingFilmId));
+    }
+
+    @Test
+    @DisplayName("Should find film by id")
+    void should_find_film_by_id() {
+        given(filmRepository.findById(1L)).willReturn(Optional.of(film));
+        given(filmMapper.entityToDto(film))
+                .willReturn(filmResponseDto);
+
+        assertThat(service.findFilmById(1L)).isEqualTo(filmResponseDto);
     }
 }
