@@ -1,5 +1,7 @@
 package com.cinema.api;
 
+import com.cinema.api.dto.ExchangeRateMapper;
+import com.cinema.api.dto.ExchangeRateResponseDto;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
@@ -9,12 +11,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 @Log4j2
 public class ExchangeRateService {
     private final ExchangeRateRepository repository;
+    private final ExchangeRateMapper mapper;
 
     public void requestToNBP() {
         RestTemplate restTemplate = new RestTemplate();
@@ -22,7 +26,7 @@ public class ExchangeRateService {
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
         String json = response.getBody();
 
-      saveCurrencyRatesFromJson(json);
+        saveCurrencyRatesFromJson(json);
     }
 
     public void saveCurrencyRatesFromJson(String jsonResponse) {
@@ -33,25 +37,46 @@ public class ExchangeRateService {
 
             for (CurrencyData currencyData : currencyDataList) {
                 for (Rate rate : currencyData.rates()) {
-                    Optional<ExchangeRate> existingExchangeRate = repository.findByCode(rate.code());
+                    Optional<ExchangeRate> existingExchangeRate = Optional.ofNullable(repository.findByCode(rate.code()));
 
                     if (existingExchangeRate.isPresent()) {
                         ExchangeRate existing = existingExchangeRate.get();
                         existing.setMid(rate.mid());
                         repository.save(existing);
-                        log.info("Update exchange rate {}", existing.getCode());
+                        log.info("Update {} rate ", existing.getCode());
                     } else {
                         ExchangeRate exchangeRate = ExchangeRate.builder()
                                 .code(rate.code())
                                 .mid(rate.mid())
                                 .build();
                         repository.save(exchangeRate);
-                        log.info("Created new rate {}", exchangeRate.getCode());
+                        log.info("Created new {} rate ", exchangeRate.getCode());
                     }
                 }
             }
+            addPLNRate();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    public List<ExchangeRateResponseDto> findAllCurrency() {
+        log.info("Returning all currency");
+        return repository.findAll().stream()
+                .map(mapper::entityToDto)
+                .collect(Collectors.toList());
+    }
+
+    public void addPLNRate() {
+        ExchangeRate plnExchangeRate = repository.findByCode("PLN");
+        if (plnExchangeRate == null) {
+            ExchangeRate newPlnExchangeRate = ExchangeRate.builder()
+                    .code("PLN")
+                    .mid(1.0)
+                    .build();
+            repository.save(newPlnExchangeRate);
+            log.info("Created new PLN rate   ");
+        }
+    }
+
 }
