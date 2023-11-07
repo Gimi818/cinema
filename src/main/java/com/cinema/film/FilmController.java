@@ -3,14 +3,11 @@ package com.cinema.film;
 import com.cinema.film.dto.FilmRequestDto;
 import com.cinema.film.dto.FilmResponseDto;
 import com.cinema.film.filmCategory.FilmCategory;
-import com.cinema.screening.dto.ScreeningResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -30,8 +27,9 @@ public class FilmController {
         List<FilmResponseDto> allFilms = service.findAllFilms();
         return ResponseEntity.status(HttpStatus.OK).body(allFilms);
     }
+
     @GetMapping("/{id}")
-    public ResponseEntity<FilmResponseDto> findFilmById(@PathVariable Long id ){
+    public ResponseEntity<FilmResponseDto> findFilmById(@PathVariable Long id) {
         FilmResponseDto filmResponseDto = service.findFilmById(id);
         return ResponseEntity.status(HttpStatus.OK).body(filmResponseDto);
     }

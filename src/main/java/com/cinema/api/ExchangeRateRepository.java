@@ -7,5 +7,5 @@ import java.util.Optional;
 
 @Repository
 public interface ExchangeRateRepository extends JpaRepository<ExchangeRate, Long> {
-    Optional<ExchangeRate> findByCode(String code);
+    ExchangeRate findByCode(String code);
 }

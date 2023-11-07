@@ -11,7 +11,6 @@ import java.time.LocalTime;
 @Component
 @AllArgsConstructor
 public class CheckBookingTime {
-
     public void checkBookingTime(Screening screening) {
 
         if (screening.getDate().isBefore(LocalDate.now())) {

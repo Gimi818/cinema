@@ -4,12 +4,9 @@ import com.cinema.emailSender.EmailWithPDF;
 import com.cinema.screening.Screening;
 import com.cinema.screening.ScreeningRepository;
 import com.cinema.screening.exception.ScreeningNotFoundByIdException;
-import com.cinema.screening.exception.ScreeningNotFoundException;
 import com.cinema.seats.SeatService;
-import com.cinema.ticket.dto.TickedBookingDto;
+import com.cinema.ticket.dto.TicketBookingDto;
 import com.cinema.ticket.exception.TicketNotFoundException;
-
-
 
 import com.cinema.ticket.ticketEnum.TicketStatus;
 
@@ -30,14 +27,14 @@ public class TicketService {
     private final TicketRepository ticketRepository;
     private final ScreeningRepository screeningRepository;
     private final CheckBookingTime checkBookingTime;
-    private final TicketDiscounts ticketDiscounts;
+    private final TicketPriceCalculator ticketPrice;
     private final UserRepository userRepository;
     private final EmailWithPDF email;
     private final SeatService seatService;
 
 
     @Transactional
-    public Ticket bookTicket(Long screeningId, Long userId, TickedBookingDto tickedDto) throws MessagingException {
+    public Ticket bookTicket(Long screeningId, Long userId, TicketBookingDto tickedDto) throws MessagingException {
         Screening screening = getScreeningById(screeningId);
         User user = getUserById(userId);
 
@@ -52,7 +49,8 @@ public class TicketService {
         return newTicket;
     }
 
-    private Ticket createNewTicket(Screening screening, User user, TickedBookingDto tickedDto) {
+
+    private Ticket createNewTicket(Screening screening, User user, TicketBookingDto tickedDto) {
 
         return Ticket.builder()
                 .filmTitle(screening.getFilm().getTitle())
@@ -61,9 +59,10 @@ public class TicketService {
                 .name(concatenateUserName(user.getFirstName(), user.getLastName()))
                 .status(TicketStatus.ACTIVE)
                 .ticketType(tickedDto.ticketType())
-                .ticketPrice(ticketDiscounts.discountForStudents(tickedDto, screening))
+                .ticketPrice(ticketPrice.finalPrice(tickedDto,screening))
                 .rowsNumber(tickedDto.rowsNumber())
                 .roomNumber(1)
+                .currency(tickedDto.currency())
                 .seatInRow(tickedDto.seatInRow())
                 .userId(user.getId())
                 .build();
@@ -82,7 +81,6 @@ public class TicketService {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundByIdException(userId));
     }
-
 
     public void cancelTicket(Long ticketId) {
         Ticket ticket = ticketRepository.findById(ticketId).orElseThrow(() -> new TicketNotFoundException(ticketId));

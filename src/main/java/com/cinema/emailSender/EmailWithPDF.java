@@ -56,11 +56,11 @@ public class EmailWithPDF {
             document.add(filmData);
             document.add(filmTime);
             document.add(new Paragraph("Name: " + ticket.getName()));
-            document.add(new Paragraph("Room number : " + ticket.getRowsNumber()));
+            document.add(new Paragraph("Room number : " + ticket.getRoomNumber()));
             document.add(new Paragraph("Row: " + ticket.getRowsNumber()));
             document.add(new Paragraph("Seat : " + ticket.getSeatInRow()));
             document.add(new Paragraph("Ticket type - " + ticket.getTicketType()));
-            document.add(new Paragraph("Ticket Price: " + ticket.getTicketPrice() + " PLN"));
+            document.add(new Paragraph("Ticket Price: " + ticket.getTicketPrice() + " " + ticket.getCurrency().toString()));
             document.add(new Paragraph("Email : " + email));
 
 
