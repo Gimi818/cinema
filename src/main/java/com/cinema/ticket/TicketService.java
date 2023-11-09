@@ -8,6 +8,7 @@ import com.cinema.seats.SeatService;
 import com.cinema.ticket.dto.TicketBookingDto;
 import com.cinema.ticket.exception.TicketNotFoundException;
 
+import com.cinema.ticket.ticketEnum.Currency;
 import com.cinema.ticket.ticketEnum.TicketStatus;
 
 import com.cinema.user.User;
@@ -37,7 +38,6 @@ public class TicketService {
     public Ticket bookTicket(Long screeningId, Long userId, TicketBookingDto tickedDto) throws MessagingException {
         Screening screening = getScreeningById(screeningId);
         User user = getUserById(userId);
-
         checkBookingTime.checkBookingTime(screening);
 
         Ticket newTicket = createNewTicket(screening, user, tickedDto);
@@ -50,7 +50,7 @@ public class TicketService {
     }
 
 
-    private Ticket createNewTicket(Screening screening, User user, TicketBookingDto tickedDto) {
+    public Ticket createNewTicket(Screening screening, User user, TicketBookingDto tickedDto) {
 
         return Ticket.builder()
                 .filmTitle(screening.getFilm().getTitle())
@@ -73,7 +73,7 @@ public class TicketService {
                 .orElseThrow(() -> new ScreeningNotFoundByIdException(screeningId));
     }
 
-    private String concatenateUserName(String firstName, String lastName) {
+    public  String concatenateUserName(String firstName, String lastName) {
         return firstName + " " + lastName;
     }
 

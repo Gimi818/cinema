@@ -20,8 +20,8 @@ import java.util.UUID;
 public class UserService {
 
     private final UserRepository repository;
-    private final ConfirmationEmail confirmationEmail;
     private final UserMapper userMapper;
+    private final ConfirmUser confirmUser;
 
     @Transactional
     public User registration(UserRequestDto requestDto) {
@@ -37,7 +37,7 @@ public class UserService {
 
         log.info("Saved user");
 
-        sendConfirmationEmail(user);
+        confirmUser.sendConfirmationEmail(user);
         log.info("Sent confirmation email");
 
         return user;
@@ -50,13 +50,7 @@ public class UserService {
         return userMapper.entityToDto(user);
     }
 
-    public void sendConfirmationEmail(User user) {
-        try {
-            confirmationEmail.sendConfirmationEmail(user.getEmail(), generateConfirmationLink(user));
-        } catch (MessagingException e) {
-            log.error("Error sending the confirmation email.", e);
-        }
-    }
+
 
     public void passwordValidation(UserRequestDto requestDto) {
         if (!requestDto.password().equals(requestDto.repeatedPassword())) {
@@ -70,9 +64,7 @@ public class UserService {
         }
     }
 
-    private String generateConfirmationToken() {
-        return UUID.randomUUID().toString();
-    }
+
 
     private User createUser(UserRequestDto requestDto) {
         return User.builder()
@@ -80,28 +72,10 @@ public class UserService {
                 .firstName(requestDto.firstName())
                 .password(requestDto.password())
                 .accountType(AccountType.UNCONFIRMED)
-                .confirmationToken(generateConfirmationToken())
+                .confirmationToken(confirmUser.generateConfirmationToken())
                 .email(requestDto.email())
                 .role(requestDto.role())
                 .build();
-    }
-
-    private String generateConfirmationLink(User user) {
-
-        return "http://localhost:8080/users/confirm?token=" + user.getConfirmationToken();
-    }
-
-    public void confirmUserAccount(String token) {
-
-        User user = repository.findByConfirmationToken(token);
-
-        if (user != null) {
-            user.setAccountType(AccountType.ACTIVE);
-            user.setConfirmationToken(null);
-
-            repository.save(user);
-            log.info("Email confirmed");
-        }
     }
 
     public boolean authenticate(String email, String password) {

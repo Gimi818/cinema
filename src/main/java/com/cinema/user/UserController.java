@@ -13,10 +13,11 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService service;
+    private final ConfirmUser confirmUser;
 
     @GetMapping("/confirm")
     public ResponseEntity<String> confirmUserAccount(@RequestParam("token") String token) {
-        service.confirmUserAccount(token);
+        confirmUser.confirmUserAccount(token);
         return ResponseEntity.status(HttpStatus.OK).body("Your account has been confirmed.");
     }
 

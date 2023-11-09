@@ -27,3 +27,4 @@ public class ConfirmationEmail {
         javaMailSender.send(message);
     }
 }
+

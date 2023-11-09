@@ -17,6 +17,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 @Service
 @AllArgsConstructor
@@ -53,15 +56,16 @@ public class EmailWithPDF {
 
 
             document.add(filmTitle);
-            document.add(filmData);
+            document.add(filmData );
             document.add(filmTime);
-            document.add(new Paragraph("Name: " + ticket.getName()));
+            document.add(new Paragraph("Name : " + ticket.getName()));
             document.add(new Paragraph("Room number : " + ticket.getRoomNumber()));
-            document.add(new Paragraph("Row: " + ticket.getRowsNumber()));
+            document.add(new Paragraph("Row : " + ticket.getRowsNumber()));
             document.add(new Paragraph("Seat : " + ticket.getSeatInRow()));
             document.add(new Paragraph("Ticket type - " + ticket.getTicketType()));
-            document.add(new Paragraph("Ticket Price: " + ticket.getTicketPrice() + " " + ticket.getCurrency().toString()));
+            document.add(new Paragraph("Ticket Price : " + ticket.getTicketPrice() + " " + ticket.getCurrency().toString()));
             document.add(new Paragraph("Email : " + email));
+            document.add(new Paragraph("Purchase date : " + LocalDate.now()));
 
 
             Image qrCodeImage = (Image) generateQrCode.createQr(email, ticket);
