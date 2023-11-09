@@ -3,6 +3,7 @@ package com.cinema.film;
 import com.cinema.film.dto.FilmRequestDto;
 import com.cinema.film.exception.FilmExistByTitleException;
 import com.cinema.film.filmCategory.FilmCategory;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -19,7 +20,8 @@ class FilmValidationTest {
     private FilmValidation filmValidation;
 
     @Test
-    void existByTitle_FilmExists_ThrowsFilmExistByTitleException() {
+    @DisplayName("Should throw exception when film exist by title ")
+    void should_throw_exception() {
         // Given
         FilmRequestDto requestDto = new FilmRequestDto("TOP GUN", FilmCategory.HORROR,122);
 
@@ -32,7 +34,8 @@ class FilmValidationTest {
     }
 
     @Test
-    void existByTitle_FilmDoesNotExist_NoExceptionsThrown() {
+    @DisplayName("shouldn't throw  exception when film doesn't exist  by title")
+    void should_not_throw_exception() {
         // Given
         String nonExistingTitle = "AABBCC";
         FilmRequestDto requestDto = new FilmRequestDto(nonExistingTitle,FilmCategory.HORROR,110);
