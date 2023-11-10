@@ -2,8 +2,11 @@ package com.cinema.user;
 
 import com.cinema.user.dto.UserRequestDto;
 import com.cinema.user.dto.UserResponseDto;
+import com.cinema.user.encoder.PasswordEncoderService;
 import com.cinema.user.exception.EmailAlreadyExistsException;
 import com.cinema.user.exception.NotSamePasswordException;
+import com.cinema.user.userEnum.AccountType;
+import com.cinema.user.userEnum.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,6 +37,8 @@ class UserServiceTest {
     private UserResponseDto userResponseDto;
     @Mock
     private ConfirmUser confirmUser;
+    @Mock
+    private PasswordEncoderService passwordEncoderService;
 
     @Mock
     private User user;
@@ -42,8 +47,8 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp() {
-        userRequestDto = new UserRequestDto("Adam","Buu","ab@o.com","qwerty","qwerty",UserRole.ADMIN);
-        user = new User(1L,"Adam","Buu","ab@o.com","qwerty",UserRole.ADMIN,AccountType.UNCONFIRMED,"janskdjnjnj");
+        userRequestDto = new UserRequestDto("Adam","Buu","ab@o.com","qwerty","qwerty", UserRole.ADMIN);
+        user = new User(1L,"Adam","Buu","ab@o.com","qwerty",UserRole.ADMIN, AccountType.UNCONFIRMED,"janskdjnjnj");
         userResponseDto = new UserResponseDto(1L,"A","B","ab@o.com",UserRole.ADMIN,AccountType.UNCONFIRMED);
     }
 
