@@ -8,7 +8,6 @@ import com.cinema.seats.SeatService;
 import com.cinema.ticket.dto.TicketBookingDto;
 import com.cinema.ticket.exception.TicketNotFoundException;
 
-import com.cinema.ticket.ticketEnum.Currency;
 import com.cinema.ticket.ticketEnum.TicketStatus;
 
 import com.cinema.user.User;

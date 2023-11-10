@@ -1,7 +1,7 @@
 package com.cinema.user.dto;
 
 ;
-import com.cinema.user.UserRole;
+import com.cinema.user.userEnum.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

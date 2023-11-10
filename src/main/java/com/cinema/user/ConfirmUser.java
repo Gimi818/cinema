@@ -1,6 +1,7 @@
 package com.cinema.user;
 
 import com.cinema.emailSender.ConfirmationEmail;
+import com.cinema.user.userEnum.AccountType;
 import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;

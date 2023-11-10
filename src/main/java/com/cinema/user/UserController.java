@@ -26,15 +26,7 @@ public class UserController {
         return new ResponseEntity<>(service.registration(userRequestDto), HttpStatus.CREATED);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody UserRequestDto userLoginDto) {
 
-        if (service.authenticate(userLoginDto.email(), userLoginDto.password())) {
-            return ResponseEntity.ok("Login successful");
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed");
-        }
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDto> findUserById(@PathVariable Long id) {

@@ -1,18 +1,16 @@
 package com.cinema.user;
 
-import com.cinema.emailSender.ConfirmationEmail;
 import com.cinema.user.dto.UserRequestDto;
 import com.cinema.user.dto.UserResponseDto;
+import com.cinema.user.encoder.PasswordEncoderService;
 import com.cinema.user.exception.EmailAlreadyExistsException;
 import com.cinema.user.exception.NotSamePasswordException;
 import com.cinema.user.exception.UserNotFoundByIdException;
-import jakarta.mail.MessagingException;
+import com.cinema.user.userEnum.AccountType;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -22,6 +20,8 @@ public class UserService {
     private final UserRepository repository;
     private final UserMapper userMapper;
     private final ConfirmUser confirmUser;
+    private final PasswordEncoderService passwordEncoderService;
+
 
     @Transactional
     public User registration(UserRequestDto requestDto) {
@@ -41,6 +41,17 @@ public class UserService {
         log.info("Sent confirmation email");
 
         return user;
+    }
+    private User createUser(UserRequestDto requestDto) {
+        return User.builder()
+                .lastName(requestDto.lastName())
+                .firstName(requestDto.firstName())
+                .password(passwordEncoderService.encodePassword(requestDto.password()))
+                .accountType(AccountType.UNCONFIRMED)
+                .confirmationToken(confirmUser.generateConfirmationToken())
+                .email(requestDto.email())
+                .role(requestDto.role())
+                .build();
     }
 
     public UserResponseDto findById(Long userId) {
@@ -64,26 +75,6 @@ public class UserService {
         }
     }
 
-
-
-    private User createUser(UserRequestDto requestDto) {
-        return User.builder()
-                .lastName(requestDto.lastName())
-                .firstName(requestDto.firstName())
-                .password(requestDto.password())
-                .accountType(AccountType.UNCONFIRMED)
-                .confirmationToken(confirmUser.generateConfirmationToken())
-                .email(requestDto.email())
-                .role(requestDto.role())
-                .build();
-    }
-
-    public boolean authenticate(String email, String password) {
-
-        User user = repository.findByEmail(email).orElseThrow();
-
-        return user != null && user.getPassword().equals(password);
-    }
 
 }
 

@@ -1,5 +1,7 @@
 package com.cinema.user;
 
+import com.cinema.user.userEnum.AccountType;
+import com.cinema.user.userEnum.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
 
