@@ -13,6 +13,10 @@ The cinema offers two types of discounts:
 
 - Student discounts: with an additional 15% reduction in ticket prices.
 
+The application is connected to the API Nardowy Bank Polski and saves data to a database with the current values of 34 currencies.
+The customer can choose from 34 currencies for the ticket price.
+A request is sent to the API NBP every 24 hours to have the latest currency values in the database using Scheduler.
+
 Administrators have the authority to add new films to the database and create new screenings, specifying the date, time, and film. 
 
 I used a MySQL database to implement the relationships in the database.
