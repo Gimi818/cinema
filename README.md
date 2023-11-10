@@ -44,3 +44,90 @@ The application is deployed on Docker and has an implemented swagger.
 - Try the applications in Postaman, the steps on how to do it are below.
  
  ## How to use application in Postman:
+ 
+    Step 1 :
+    POST localhost:8080/users/registration
+    Enter your data.
+    JSON:
+    {
+     "firstName":"Wojciech",
+     "lastName":"Gmiterek",
+     "email":"cinemaemailtest@gmail.com",
+     "password":"password",
+    "repeatedPassword" :"password",
+    "role":"USER"
+    }
+  
+  <img src="https://github.com/Gimi818/cinema/blob/master/steps/1.0_registration.PNG" width="500" heigt="700"/>
+
+    Step 2 :
+    Click on the account activation link.
+
+  <img src="https://github.com/Gimi818/cinema/blob/master/steps/1.1_email.PNG" width="500" heigt="700"/>
+  
+    Step 3 :
+    GET localhost:8080/screenings?date=2023-11-25
+    Choose the date you want to go to the cinema type it into the URL and find a film you like.
+    
+   <img src="https://github.com/Gimi818/cinema/blob/master/steps/2.0_Screenings.png" width="500" heigt="700"/>
+
+    Step 4 :
+    GET localhost:8080/screenings/1
+    Enter the film id in the URL and check available seats for the screening.
+    
+   <img src="https://github.com/Gimi818/cinema/blob/master/steps/3.0_seats.PNG" width="500" heigt="700"/>
+
+    Step 5 :
+    POST localhost:8080/book/1/1
+    Enter the user id and then the film id.
+    Choose the ticket type NORMAL or REDUCE if you are a student, you are qualified for a discount.
+    Select the currency in which you would like to receive the ticket price, you can choose from 34 currencies. 
+    Send request localhost:8080/codes and check available currencies.
+    Enter the row number or seat number. 
+    JSON:
+    {
+     "ticketType":"REDUCE",
+     "currency":"PLN",
+     "rowsNumber":9,
+     "seatInRow": 4
+    }
+  
+  <img src="https://github.com/Gimi818/cinema/blob/master/steps/4.0_bookingTicket.PNG" width="500" heigt="700"/>
+
+    Step 6 :
+    You have received an email with a PDF ticket containing the details along with a QR code confirming your purchase.
+    Scan the QR code and check purchase details
+    
+   <img src="https://github.com/Gimi818/cinema/blob/master/steps/5.0_ticket.PNG" width="500" heigt="700"/>
+
+
+    Add the film to the database:
+    POST localhost:8080/films/add
+    Enter the film data.
+    JSON:
+    {
+     "title": "JOHN WICK 4",
+     "category": "ACTION",
+     "durationFilmInMinutes": 143
+    }
+  
+  <img src="https://github.com/Gimi818/cinema/blob/master/steps/7.0_addFilm.PNG" width="500" heigt="700"/>
+  
+    Create a screening:
+    POST localhost:8080/screenings/add/1
+    Enter the id in URL of the film for which you want to create.
+    Enter date and time of screening.
+    JSON:
+    {
+     "date": "2023-11-12",
+     "time": "22:45"
+     }
+  
+  <img src="https://github.com/Gimi818/cinema/blob/master/steps/8.0_Create_Screening.PNG" width="500" heigt="700"/>
+
+    Endpoints available in the application :
+  
+   <img src="https://github.com/Gimi818/cinema/blob/master/steps/6.0_swagger.PNG" width="500" heigt="500"/>
+
+   
+  
