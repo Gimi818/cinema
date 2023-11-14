@@ -68,7 +68,7 @@ The application is deployed on Docker and has an implemented swagger.
     Step 3 :
     GET localhost:8080/screenings?date=2023-11-25
     Choose the date you want to go to the cinema type it into the URL and find a film you like.
-    (screenings with films are available from 2023-11-20 to 2023-12-05)
+    (screenings are available from 2023-11-20 to 2023-12-05)
     
    <img src="https://github.com/Gimi818/cinema/blob/master/steps/2.0_Screenings.png" width="500" heigt="700"/>
 
