@@ -73,7 +73,7 @@ class ScreeningControllerTest {
     void should_save_screening() throws Exception {
         given(screeningService.saveScreening(screeningRequestDto,1L)).willReturn(screening);
 
-        mockMvc.perform(post("/screenings/add/1")
+        mockMvc.perform(post("/screenings/1")
                         .content(screeningRequestDtoJson)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());

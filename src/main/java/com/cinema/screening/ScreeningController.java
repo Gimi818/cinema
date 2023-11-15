@@ -27,7 +27,7 @@ public class ScreeningController {
         return ResponseEntity.status(HttpStatus.OK).body(screenings);
     }
 
-    @PostMapping("/add/{filmId}")
+    @PostMapping("/{filmId}")
     public ResponseEntity<Screening> saveScreening(@RequestBody ScreeningRequestDto screeningDto, @PathVariable Long filmId) {
         return new ResponseEntity<>(service.saveScreening(screeningDto, filmId), HttpStatus.CREATED);
     }

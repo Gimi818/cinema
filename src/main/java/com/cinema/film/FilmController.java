@@ -17,7 +17,7 @@ public class FilmController {
 
     private final FilmService service;
 
-    @PostMapping("/add")
+    @PostMapping("")
     public ResponseEntity<Film> saveFilm(@RequestBody FilmRequestDto filmRequestDto) {
         return new ResponseEntity<>(service.saveFilm(filmRequestDto), HttpStatus.CREATED);
     }

@@ -76,7 +76,7 @@ class FilmControllerTest {
     void save_film() throws Exception {
         given(filmService.saveFilm(filmRequestDto)).willReturn(film);
 
-        mockMvc.perform(post("/films/add")
+        mockMvc.perform(post("/films")
                         .content(filmRequestDtoJson)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
