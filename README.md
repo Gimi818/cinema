@@ -1,26 +1,26 @@
 # Cinema
 ## A cinema management application with a ticketing system
 
-The new user registers within the application and verifies their email by clicking the activation link received in their email.
-Then, the user selects a screening date and a film for that specific time, checking seat availability for the screening. 
+The new user registers within the application and completes the email verification process by clicking the activation link received in their email.
+Once verified, the user proceeds to select a screening date and choose a film for that specific time, while also checking the seat availability for the chosen screening.
 
-In the next step, the user books a ticket, selects a seat, row and chooses the type of discount.
-After a successful booking, the application sends an email with the ticket in PDF format with all the details and a unique QR code to confirm the details and the purchase of the ticket.
+Moving on to the next step, the user initiates the ticket booking process. They select a seat, specify the row, and choose a discount type. 
 
-The cinema offers two types of discounts: 
+The application provides two discount options : 
 
-- Events: Cheap Tuesday and Cheap Friday, during which ticket prices are discounted by 20%.
+- Events: Cheap Tuesday and Cheap Friday, offering a 20% reduction in ticket prices.
 
-- Student discounts: with an additional 10% reduction in ticket prices.
+- Student discounts: An additional 10% off on ticket prices.
 
-The application is connected to the API National Bank of Poland and saves data to a database with the current values of 34 currencies.
-The customer can choose from 34 currencies for the ticket price.
-A request is sent to the API NBP every 24 hours to have the latest currency values in the database using Scheduler.
+After a successful booking, the application sends an email containing the ticket in PDF format, 
+which includes all the details along with a unique QR code for confirming the purchase and details of the ticket
 
-Administrators have the authority to add new films to the database and create new screenings, specifying the date, time, and film. 
+The application is integrated with the National Bank of Poland's API, allowing customers to choose from 34 currencies for the ticket price. The application sends a periodic request to the API NBP every 24 hours, ensuring the database is updated with the latest currency values.
 
-I used a MySQL database to implement the relationships in the database.
-The application is deployed on Docker and has an implemented swagger.
+User have the authority to add new films to the database and create new screenings, specifying the date, time, and film. 
+
+I utilized a MySQL database to establish relationships within the data.
+The application is deployed on Docker and incorporates Swagger for documentation.
 
 
  ## Application is developed using following technologies:
