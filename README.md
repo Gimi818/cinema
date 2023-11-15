@@ -13,7 +13,7 @@ The cinema offers two types of discounts:
 
 - Student discounts: with an additional 15% reduction in ticket prices.
 
-The application is connected to the API Nardowy Bank Polski and saves data to a database with the current values of 34 currencies.
+The application is connected to the API National Bank of Poland and saves data to a database with the current values of 34 currencies.
 The customer can choose from 34 currencies for the ticket price.
 A request is sent to the API NBP every 24 hours to have the latest currency values in the database using Scheduler.
 
@@ -68,6 +68,7 @@ The application is deployed on Docker and has an implemented swagger.
     Step 3 :
     GET localhost:8080/screenings?date=2023-11-25
     Choose the date you want to go to the cinema type it into the URL and find a film you like.
+    (screenings are available from 2023-11-20 to 2023-12-05)
     
    <img src="https://github.com/Gimi818/cinema/blob/master/steps/2.0_Screenings.png" width="500" heigt="700"/>
 
