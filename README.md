@@ -9,9 +9,9 @@ After a successful booking, the application sends an email with the ticket in PD
 
 The cinema offers two types of discounts: 
 
-- Events: Cheap Tuesday and Cheap Friday, during which ticket prices are discounted by 30%.
+- Events: Cheap Tuesday and Cheap Friday, during which ticket prices are discounted by 20%.
 
-- Student discounts: with an additional 15% reduction in ticket prices.
+- Student discounts: with an additional 10% reduction in ticket prices.
 
 The application is connected to the API National Bank of Poland and saves data to a database with the current values of 34 currencies.
 The customer can choose from 34 currencies for the ticket price.
@@ -112,7 +112,7 @@ The application is deployed on Docker and has an implemented swagger.
      "durationFilmInMinutes": 143
     }
   
-  <img src="https://github.com/Gimi818/cinema/blob/master/steps/7.0_addFilm.PNG" width="500" heigt="700"/>
+  <img src="https://github.com/Gimi818/cinema/blob/master/steps/7.0addfilm.PNG" width="500" heigt="700"/>
   
     Create a screening:
     POST localhost:8080/screenings/1
@@ -124,11 +124,11 @@ The application is deployed on Docker and has an implemented swagger.
      "time": "22:45"
      }
   
-  <img src="https://github.com/Gimi818/cinema/blob/master/steps/8.0_Create_Screening.PNG" width="500" heigt="700"/>
+  <img src="https://github.com/Gimi818/cinema/blob/master/steps/8.0addScreenings.PNG" width="500" heigt="700"/>
 
     Endpoints available in the application :
   
-   <img src="https://github.com/Gimi818/cinema/blob/master/steps/6.0_swagger.PNG" width="500" heigt="500"/>
+   <img src="https://github.com/Gimi818/cinema/blob/master/steps/ep.PNG" width="500" heigt="500"/>
 
    
   
