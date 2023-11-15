@@ -67,14 +67,14 @@ The application is deployed on Docker and incorporates Swagger for documentation
   
     Step 3 :
     GET localhost:8080/screenings?date=2023-11-25
-    Choose the date you want to go to the cinema type it into the URL and find a film you like.
+    Select the desired cinema date, input it into the URL, and discover a film you'd like to watch.
     (screenings are available from 2023-11-20 to 2023-12-05)
     
    <img src="https://github.com/Gimi818/cinema/blob/master/steps/2.0_Screenings.png" width="500" heigt="700"/>
 
     Step 4 :
     GET localhost:8080/screenings/1
-    Enter the film id in the URL and check available seats for the screening.
+    Enter the film Id into the URL to check the available seats for the screening.
     
    <img src="https://github.com/Gimi818/cinema/blob/master/steps/3.0_seats.PNG" width="500" heigt="700"/>
 
@@ -107,9 +107,9 @@ The application is deployed on Docker and incorporates Swagger for documentation
     Enter the film data.
     JSON:
     {
-     "title": "JOHN WICK 4",
+     "title": "Fast And Furious 10",
      "category": "ACTION",
-     "durationFilmInMinutes": 143
+     "durationFilmInMinutes": 130
     }
   
   <img src="https://github.com/Gimi818/cinema/blob/master/steps/7.0addfilm.PNG" width="500" heigt="700"/>
