@@ -103,7 +103,7 @@ The application is deployed on Docker and has an implemented swagger.
 
 
     Add the film to the database:
-    POST localhost:8080/films/add
+    POST localhost:8080/films
     Enter the film data.
     JSON:
     {
@@ -115,7 +115,7 @@ The application is deployed on Docker and has an implemented swagger.
   <img src="https://github.com/Gimi818/cinema/blob/master/steps/7.0_addFilm.PNG" width="500" heigt="700"/>
   
     Create a screening:
-    POST localhost:8080/screenings/add/1
+    POST localhost:8080/screenings/1
     Enter the id in URL of the film for which you want to create.
     Enter date and time of screening.
     JSON:
