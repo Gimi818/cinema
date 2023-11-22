@@ -1,5 +1,6 @@
 package com.cinema.screening;
 
+import com.cinema.screening.dto.CreatedScreeningDto;
 import com.cinema.screening.dto.ScreeningAvailableSeats;
 import com.cinema.screening.dto.ScreeningRequestDto;
 import com.cinema.screening.dto.ScreeningResponseDto;
@@ -28,7 +29,7 @@ public class ScreeningController {
     }
 
     @PostMapping("/{filmId}")
-    public ResponseEntity<Screening> saveScreening(@RequestBody ScreeningRequestDto screeningDto, @PathVariable Long filmId) {
+    public ResponseEntity<CreatedScreeningDto> saveScreening(@RequestBody ScreeningRequestDto screeningDto, @PathVariable Long filmId) {
         return new ResponseEntity<>(service.saveScreening(screeningDto, filmId), HttpStatus.CREATED);
     }
 

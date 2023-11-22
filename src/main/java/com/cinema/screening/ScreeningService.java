@@ -1,5 +1,6 @@
 package com.cinema.screening;
 
+import com.cinema.screening.dto.CreatedScreeningDto;
 import com.cinema.screening.dto.ScreeningAvailableSeats;
 import com.cinema.screening.exception.ScreeningNotFoundByIdException;
 import com.cinema.seats.Seat;
@@ -33,21 +34,21 @@ public class ScreeningService {
     private final SeatService seatService;
 
     @Transactional
-    public Screening saveScreening(ScreeningRequestDto screeningRequestDto, Long filmId) {
+    public CreatedScreeningDto saveScreening(ScreeningRequestDto screeningRequestDto, Long filmId) {
         log.info("Saving Screening {}", screeningRequestDto);
 
         Film film = filmRepository.findById(filmId).orElseThrow(() -> new FilmNotFoundException(filmId));
 
-        validate.dataValidation(screeningRequestDto,film);
+        validate.dataValidation(screeningRequestDto, film);
 
         Screening screening = repository.save(mapper.dtoToEntity(screeningRequestDto));
         screening.setFilm(film);
         screening.setSeats(createSeats());
         log.info("Saved Screening ");
-        return screening;
+        return mapper.createdEntityToDto(screening);
     }
 
-
+    @Transactional
     private List<Seat> createSeats() {
         log.info("Created seats");
         return IntStream.rangeClosed(1, 10)
@@ -78,11 +79,12 @@ public class ScreeningService {
 
     public ScreeningAvailableSeats findAvailableSeats(Long id) {
         Screening screening = repository.findById(id).orElseThrow(() -> new ScreeningNotFoundByIdException(id));
-        log.info("Returning seats by screening id ->  {} id",id);
+        log.info("Returning seats by screening id ->  {} id", id);
         return mapper.screeningToSeatsDto(screening);
     }
 
 }
+
 
 
 
