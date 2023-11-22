@@ -4,6 +4,7 @@ import com.cinema.film.Film;
 import com.cinema.film.dto.FilmRequestDto;
 import com.cinema.film.dto.FilmResponseDto;
 import com.cinema.film.filmCategory.FilmCategory;
+import com.cinema.screening.dto.CreatedScreeningDto;
 import com.cinema.screening.dto.ScreeningRequestDto;
 import com.cinema.screening.dto.ScreeningResponseDto;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,6 +50,7 @@ class ScreeningControllerTest {
     private static Screening screening;
     private static ScreeningResponseDto screeningResponseDto;
     private static ScreeningResponseDto secondScreeningResponseDto;
+    private static CreatedScreeningDto createdScreeningDto;
     @Mock
     LocalDate localDate;
     @Mock
@@ -59,7 +61,7 @@ class ScreeningControllerTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-        Film newFilm = new Film(1L,"AS",FilmCategory.ACTION,120);
+        Film newFilm = new Film("AS",FilmCategory.ACTION,120);
         screeningRequestDto = new ScreeningRequestDto(localDate, localTime);
         screeningRequestDtoJson = objectMapper.writeValueAsString(screeningRequestDto);
         LocalDate data = LocalDate.of(2023,10,10);
@@ -71,7 +73,7 @@ class ScreeningControllerTest {
     @Test
     @DisplayName("Should save screening")
     void should_save_screening() throws Exception {
-        given(screeningService.saveScreening(screeningRequestDto,1L)).willReturn(screening);
+        given(screeningService.saveScreening(screeningRequestDto,1L)).willReturn(createdScreeningDto);
 
         mockMvc.perform(post("/screenings/1")
                         .content(screeningRequestDtoJson)

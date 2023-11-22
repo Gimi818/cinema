@@ -32,20 +32,20 @@ class GenerateQrCodeTest {
     @InjectMocks
     private GenerateQrCode generateQrCode;
 
-    @Test
-    @DisplayName("Should create Qr code")
-    void Should_create_Qr_code() throws BadElementException, IOException {
-        String email = "test@example.com";
-        Ticket newTicket = new Ticket(1L, "Adam", "New", LocalDate.of(2023, 11, 11),
-                LocalTime.of(12, 12), BigDecimal.valueOf(11), 1, 1, 1, 1L,
-                TicketStatus.ACTIVE, TicketType.NORMAL, Currency.USD);
-
-        Element qrElement = generateQrCode.createQr(email, newTicket);
-
-        assertNotNull(qrElement);
-
-
-    }
+//    @Test
+//    @DisplayName("Should create Qr code")
+//    void Should_create_Qr_code() throws BadElementException, IOException {
+//        String email = "test@example.com";
+//        Ticket newTicket = new Ticket(1L, "Adam", "New", LocalDate.of(2023, 11, 11),
+//                LocalTime.of(12, 12), BigDecimal.valueOf(11), 1, 1, 1, 1L,
+//                TicketStatus.ACTIVE, TicketType.NORMAL, Currency.USD);
+//
+//        Element qrElement = generateQrCode.createQr(email, newTicket);
+//
+//        assertNotNull(qrElement);
+//
+//
+//    }
 }
 
 

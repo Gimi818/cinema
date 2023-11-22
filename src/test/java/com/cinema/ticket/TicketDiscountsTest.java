@@ -3,6 +3,7 @@ package com.cinema.ticket;
 import com.cinema.api.ExchangeRateRepository;
 import com.cinema.screening.Screening;
 import com.cinema.ticket.dto.TicketBookingDto;
+import com.cinema.ticket.priceCalculator.TicketPriceCalculator;
 import com.cinema.ticket.ticketEnum.Currency;
 import com.cinema.ticket.ticketEnum.TicketType;
 import org.junit.jupiter.api.DisplayName;
@@ -24,7 +25,7 @@ class TicketDiscountsTest {
     void should_return_price_with_discount() {
         // Given
         TicketPriceCalculator ticketDiscounts = new TicketPriceCalculator(repository);
-        Screening screening = new Screening(1L, LocalDate.of(2023, 11, 3), LocalTime.of(12, 11), null, null);
+        Screening screening = new Screening( LocalDate.of(2023, 11, 3), LocalTime.of(12, 11), null, null);
 
         // When
         int result = ticketDiscounts.eventDiscount(screening);
@@ -38,7 +39,7 @@ class TicketDiscountsTest {
     void should_return_basic_price() {
         // Given
         TicketPriceCalculator ticketDiscounts = new TicketPriceCalculator(repository);
-        Screening screening = new Screening(1L, LocalDate.of(2023, 11, 5), LocalTime.of(12, 11), null, null);
+        Screening screening = new Screening( LocalDate.of(2023, 11, 5), LocalTime.of(12, 11), null, null);
 
         // When
         int result = ticketDiscounts.eventDiscount(screening);
@@ -53,7 +54,7 @@ class TicketDiscountsTest {
         // Given
         TicketPriceCalculator ticketDiscounts = new TicketPriceCalculator(repository);
         TicketBookingDto ticketBookingDto = new TicketBookingDto(TicketType.REDUCE,Currency.PLN,1,2);
-        Screening screening = new Screening(1L, LocalDate.of(2023, 11, 3), LocalTime.of(12, 11), null, null);
+        Screening screening = new Screening( LocalDate.of(2023, 11, 3), LocalTime.of(12, 11), null, null);
 
         // When
         int result = ticketDiscounts.discountForStudents(ticketBookingDto, screening);

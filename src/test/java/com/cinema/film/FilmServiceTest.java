@@ -1,8 +1,11 @@
 package com.cinema.film;
 
+import com.cinema.common.exception.exceptions.AlreadyExistException;
+import com.cinema.common.exception.exceptions.NotFoundException;
+import com.cinema.film.dto.CreatedFilmDto;
 import com.cinema.film.dto.FilmRequestDto;
 import com.cinema.film.dto.FilmResponseDto;
-import com.cinema.film.exception.FilmNotFoundException;
+
 import com.cinema.film.filmCategory.FilmCategory;
 
 import org.assertj.core.api.Assertions;
@@ -23,7 +26,8 @@ import java.util.Optional;
 import static com.cinema.film.filmCategory.FilmCategory.ACTION;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
-
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.BDDMockito.given;
 
 import static com.cinema.film.filmCategory.FilmCategory.FANTASY;
@@ -46,11 +50,12 @@ class FilmServiceTest {
     @Mock
     private FilmResponseDto secoundFilmResponseDto;
     @Mock
+    private CreatedFilmDto createdFilmDto;
+    @Mock
     private Film film;
     @Mock
     private Film secoundFilm;
-    @Mock
-    private FilmValidation filmValidation;
+
     @Mock
     private FilmCategory filmCategory;
 
@@ -58,8 +63,9 @@ class FilmServiceTest {
     @BeforeEach
     void setUp() {
         filmRequestDto = new FilmRequestDto("Harry Potter", FANTASY, 130);
-        film = new Film(1L, "Harry Potter", FANTASY, 130);
-        secoundFilm = new Film(2L, "John Wick", ACTION, 110);
+        film = new Film("Harry Potter", FANTASY, 130);
+        createdFilmDto = new CreatedFilmDto(1L, "Harry Potter");
+        secoundFilm = new Film("John Wick", ACTION, 110);
     }
 
     @Test
@@ -68,7 +74,7 @@ class FilmServiceTest {
         given(filmRepository.save(filmMapper.dtoToEntity(filmRequestDto)))
                 .willReturn(film);
         assertThat(service.saveFilm(filmRequestDto))
-                .isEqualTo(film);
+                .isEqualTo(filmMapper.createdEntityToDto(film));
     }
 
 
@@ -119,7 +125,7 @@ class FilmServiceTest {
         when(filmRepository.findById(nonExistingFilmId)).thenReturn(Optional.empty());
 
         // Then
-        assertThrows(FilmNotFoundException.class, () -> service.findFilmById(nonExistingFilmId));
+        assertThrows(NotFoundException.class, () -> service.findFilmById(nonExistingFilmId));
     }
 
     @Test
@@ -139,5 +145,35 @@ class FilmServiceTest {
         service.deleteFilm(1L);
         Mockito.verify(filmRepository, Mockito.times(1)).deleteById(1L);
 
+    }
+
+
+    @Test
+    @DisplayName("Should throw exception when film exist by title ")
+    void should_throw_exception() {
+        // Given
+        FilmRequestDto requestDto = new FilmRequestDto("TOP GUN", FilmCategory.HORROR, 122);
+
+        when(filmRepository.existsByTitle("TOP GUN")).thenReturn(true);
+
+        // Then
+        assertThrows(AlreadyExistException.class, () ->
+                service.existByTitle(requestDto)
+        );
+    }
+
+    @Test
+    @DisplayName("shouldn't throw  exception when film doesn't exist  by title")
+    void should_not_throw_exception() {
+        // Given
+        String nonExistingTitle = "AABBCC";
+        FilmRequestDto requestDto = new FilmRequestDto(nonExistingTitle, FilmCategory.HORROR, 110);
+
+        when(filmRepository.existsByTitle(nonExistingTitle)).thenReturn(false);
+
+        // Then
+        assertDoesNotThrow(() ->
+                service.existByTitle(requestDto)
+        );
     }
 }

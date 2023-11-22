@@ -1,10 +1,10 @@
 package com.cinema.screening;
 
 
+import com.cinema.common.exception.exceptions.NotFoundException;
+import com.cinema.common.exception.exceptions.TooManyException;
 import com.cinema.screening.dto.ScreeningRequestDto;
-import com.cinema.screening.exception.ScreeningNotFoundException;
 
-import com.cinema.screening.exception.ScreeningTooManyInOneDayException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -55,7 +55,7 @@ class ScreeningValidateTest {
         when(repository.existsByDate(nonExistingDate)).thenReturn(false);
 
         // Then
-        assertThrows(ScreeningNotFoundException.class, () ->
+        assertThrows(NotFoundException.class, () ->
                 screeningValidate.checkCorrectData(nonExistingDate)
         );
     }
@@ -65,7 +65,7 @@ class ScreeningValidateTest {
     void should_not_throw_ScreeningTooManyInOneDayException() {
         // Given
         LocalDate date = LocalDate.of(2025,10,10);
-        Screening screening = new Screening(1L,date,LocalTime.of(10,10),null,null);
+        Screening screening = new Screening(date,LocalTime.of(10,10),null,null);
         List<Screening> screenings = new ArrayList<>();
 
         screenings.add(screening);
@@ -84,12 +84,12 @@ class ScreeningValidateTest {
     void Should_throw_ScreeningTooManyInOneDayException() {
         // Given
         LocalDate date = LocalDate.of(2025,10,10);
-        Screening screening = new Screening(1L,date,null,null,null);
-        Screening screening2 = new Screening(2L,date,null,null,null);
-        Screening screening3 = new Screening(3L,date,null,null,null);
-        Screening screening4 = new Screening(4L,date,null,null,null);
-        Screening screening5 = new Screening(5L,date,null,null,null);
-        Screening screening6 = new Screening(6L,date,null,null,null);
+        Screening screening = new Screening(date,null,null,null);
+        Screening screening2 = new Screening(date,null,null,null);
+        Screening screening3 = new Screening(date,null,null,null);
+        Screening screening4 = new Screening(date,null,null,null);
+        Screening screening5 = new Screening(date,null,null,null);
+        Screening screening6 = new Screening(date,null,null,null);
         List<Screening> screenings = new ArrayList<>();
         screenings.add(screening);
         screenings.add(screening2);
@@ -101,7 +101,7 @@ class ScreeningValidateTest {
         when(repository.findScreeningsByDate(date)).thenReturn(screenings);
 
         // Then
-        assertThrows(ScreeningTooManyInOneDayException.class, () ->
+        assertThrows(TooManyException.class, () ->
                 screeningValidate.checkNumberOfScreeningsDuringDay(new ScreeningRequestDto(date, null))
         );
     }

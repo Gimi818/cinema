@@ -1,5 +1,6 @@
 package com.cinema.user;
 
+import com.cinema.user.dto.CreatedUserDto;
 import com.cinema.user.dto.UserRequestDto;
 import com.cinema.user.dto.UserResponseDto;
 import com.cinema.user.userEnum.AccountType;
@@ -33,6 +34,7 @@ class UserControllerTest {
     private MockMvc mockMvc;
     private static UserRequestDto userRequestDto;
     private static String useRequestDtoJson;
+    private static CreatedUserDto createdUserDto;
     private static User user;
     private static UserResponseDto userResponseDto;
     private static UserResponseDto secondUserResponseDto;
@@ -43,7 +45,7 @@ class UserControllerTest {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
         userRequestDto = new UserRequestDto("A", "B", "ab@gmail.cpm", "password", "password", UserRole.ADMIN);
-        userResponseDto = new UserResponseDto(1L,"A", "B", "ab@gmail.cpm", UserRole.ADMIN, AccountType.ACTIVE);
+        userResponseDto = new UserResponseDto("A", "B", "ab@gmail.cpm", UserRole.ADMIN);
 
         useRequestDtoJson = objectMapper.writeValueAsString(userRequestDto);
 
@@ -53,7 +55,7 @@ class UserControllerTest {
     @Test
     @DisplayName("Should save user account")
     void should_save_user() throws Exception {
-        given(service.registration(userRequestDto)).willReturn(user);
+        given(service.registration(userRequestDto)).willReturn(createdUserDto);
 
         mockMvc.perform(post("/users/registration")
                         .content(useRequestDtoJson)
@@ -64,12 +66,11 @@ class UserControllerTest {
     @Test
     @DisplayName("Should find user by id")
     void should_find_user_by_id() throws Exception {
-        given(service.findById(1L)).willReturn(userResponseDto);
+        given(service.findUserById(1L)).willReturn(userResponseDto);
 
         mockMvc.perform(get("/users/1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.firstName").value("A"))
                 .andExpect(jsonPath("$.lastName").value("B"))
                 .andExpect(jsonPath("$.email").value("ab@gmail.cpm"));

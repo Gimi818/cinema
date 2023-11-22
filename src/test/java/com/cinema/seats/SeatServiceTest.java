@@ -1,10 +1,11 @@
 package com.cinema.seats;
 
 
+import com.cinema.common.exception.exceptions.AlreadyTakenException;
+import com.cinema.common.exception.exceptions.NotFoundException;
 import com.cinema.screening.Screening;
 import com.cinema.screening.ScreeningRepository;
-import com.cinema.seats.exception.SeatAlreadyTakenException;
-import com.cinema.seats.exception.SeatNotFoundException;
+
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -65,7 +66,7 @@ public class SeatServiceTest {
         when(seatRepository.findByScreeningAndRowsNumberAndSeatInRow(screening, rowsNumber, seatInRow)).thenReturn(seat);
 
         // Then
-        assertThrows(SeatAlreadyTakenException.class, () ->
+        assertThrows(AlreadyTakenException.class, () ->
                 seatService.checkSeatsAvailability(screeningId, rowsNumber, seatInRow));
     }
 
@@ -82,7 +83,7 @@ public class SeatServiceTest {
         when(seatRepository.findByScreeningAndRowsNumberAndSeatInRow(screening, rowsNumber, seatInRow)).thenReturn(null);
 
         // Then
-        assertThrows(SeatNotFoundException.class, () ->
+        assertThrows(NotFoundException.class, () ->
                 seatService.checkSeatsAvailability(screeningId, rowsNumber, seatInRow));
     }
 

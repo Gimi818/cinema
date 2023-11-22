@@ -66,13 +66,13 @@ class ScreeningServiceTest {
 
     @BeforeEach
     void setUp() {
-        Film film = new Film(1L, "Harry Potter", FANTASY, 130);
+        Film film = new Film( "Harry Potter", FANTASY, 130);
         MockitoAnnotations.initMocks(this);
         LocalDate date = LocalDate.of(2023, 12, 31);
         LocalTime time = LocalTime.of(12, 10);
         screeningRequestDto = new ScreeningRequestDto(date, time);
-        screening = new Screening(1L, date, time, film, new ArrayList<>());
-        secoundScreening = new Screening(2L, date, time, film, new ArrayList<>());
+        screening = new Screening( date, time, film, new ArrayList<>());
+        secoundScreening = new Screening( date, time, film, new ArrayList<>());
 
     }
 //    @Test
