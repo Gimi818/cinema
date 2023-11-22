@@ -3,6 +3,8 @@ package com.cinema.screening;
 
 import com.cinema.seats.Seat;
 import com.cinema.film.Film;
+import com.cinema.uuidEntity.AbstractEntity;
+import com.cinema.uuidEntity.AbstractUUIDEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,10 +20,7 @@ import java.util.List;
 @Builder
 @Getter
 @Setter
-public class Screening {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Screening  extends AbstractEntity {
 
     private LocalDate date;
 
