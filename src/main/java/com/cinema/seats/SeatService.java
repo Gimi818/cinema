@@ -1,13 +1,16 @@
 package com.cinema.seats;
 
+import com.cinema.common.exception.exceptions.AlreadyTakenException;
+import com.cinema.common.exception.exceptions.NotFoundException;
 import com.cinema.screening.Screening;
 import com.cinema.screening.ScreeningRepository;
-import com.cinema.screening.exception.ScreeningNotFoundByIdException;
-import com.cinema.seats.exception.SeatAlreadyTakenException;
-import com.cinema.seats.exception.SeatNotFoundException;
+
+
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+
+import static com.cinema.seats.SeatService.ErrorMessages.*;
 
 @Service
 @AllArgsConstructor
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Service;
 public class SeatService {
     private final ScreeningRepository screeningRepository;
     private final SeatRepository seatRepository;
+
 
     public void checkSeatsAvailability(Long screeningId, int rowsNumber, int seatInRow) {
         Screening screening = getScreeningById(screeningId);
@@ -26,28 +30,35 @@ public class SeatService {
             if (seat.getStatus() == SeatStatus.AVAILABLE) {
                 seat.setStatus(SeatStatus.TAKEN);
                 seatRepository.save(seat);
-                log.info("Seat has been reserved");
 
             } else if (seat.getStatus() == SeatStatus.TAKEN) {
-                throw new SeatAlreadyTakenException();
+                throw new AlreadyTakenException(SEAT_ALREADY_TAKEN);
             }
         } else {
-            throw new SeatNotFoundException(rowsNumber, seatInRow);
+            throw new NotFoundException(NOT_FOUND_SEAT, rowsNumber, seatInRow);
         }
-
 
     }
 
     private Screening getScreeningById(Long screeningId) {
         return screeningRepository.findById(screeningId)
-                .orElseThrow(() -> new ScreeningNotFoundByIdException(screeningId));
+                .orElseThrow(() -> new NotFoundException(NOT_FOUND_BY_ID, screeningId));
     }
-    public  Seat createSeat(int rowNumber, int seatInRow, SeatStatus status) {
+
+    public Seat createSeat(int rowNumber, int seatInRow, SeatStatus status) {
         Seat seat = new Seat();
         seat.setRowsNumber(rowNumber);
         seat.setSeatInRow(seatInRow);
         seat.setStatus(status);
         return seat;
+    }
+
+    static final class ErrorMessages {
+        static final String NOT_FOUND_SEAT = "Seat not found for provided row %d and seat number %d.";
+        static final String NOT_FOUND_BY_ID = "Screening with id %d not found";
+        static final String SEAT_ALREADY_TAKEN = "This seat is already taken.";
+
+
     }
 
 
