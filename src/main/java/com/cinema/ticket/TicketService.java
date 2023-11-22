@@ -5,6 +5,7 @@ import com.cinema.screening.Screening;
 import com.cinema.screening.ScreeningRepository;
 import com.cinema.screening.exception.ScreeningNotFoundByIdException;
 import com.cinema.seats.SeatService;
+import com.cinema.ticket.dto.TicketBookedDto;
 import com.cinema.ticket.dto.TicketBookingDto;
 import com.cinema.ticket.exception.TicketNotFoundException;
 
@@ -31,10 +32,11 @@ public class TicketService {
     private final UserRepository userRepository;
     private final EmailWithPDF email;
     private final SeatService seatService;
+    private final TicketMapper mapper;
 
 
     @Transactional
-    public Ticket bookTicket(Long screeningId, Long userId, TicketBookingDto tickedDto) throws MessagingException {
+    public TicketBookedDto bookTicket(Long screeningId, Long userId, TicketBookingDto tickedDto) throws MessagingException {
         Screening screening = getScreeningById(screeningId);
         User user = getUserById(userId);
         checkBookingTime.checkBookingTime(screening);
@@ -45,7 +47,7 @@ public class TicketService {
         ticketRepository.save(newTicket);
         email.sendEmailWithPDF(user.getEmail(), newTicket);
         log.info("Created new ticket");
-        return newTicket;
+        return mapper.bookedTicketToDto(newTicket);
     }
 
 
@@ -58,7 +60,7 @@ public class TicketService {
                 .name(concatenateUserName(user.getFirstName(), user.getLastName()))
                 .status(TicketStatus.ACTIVE)
                 .ticketType(tickedDto.ticketType())
-                .ticketPrice(ticketPrice.finalPrice(tickedDto,screening))
+                .ticketPrice(ticketPrice.finalPrice(tickedDto, screening))
                 .rowsNumber(tickedDto.rowsNumber())
                 .roomNumber(1)
                 .currency(tickedDto.currency())
@@ -72,7 +74,7 @@ public class TicketService {
                 .orElseThrow(() -> new ScreeningNotFoundByIdException(screeningId));
     }
 
-    public  String concatenateUserName(String firstName, String lastName) {
+    public String concatenateUserName(String firstName, String lastName) {
         return firstName + " " + lastName;
     }
 
