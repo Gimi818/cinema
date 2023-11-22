@@ -2,8 +2,7 @@ package com.cinema.film;
 
 import com.cinema.film.filmCategory.FilmCategory;
 
-import com.cinema.uuidEntity.AbstractEntity;
-import com.cinema.uuidEntity.AbstractUUIDEntity;
+import com.cinema.common.entity.AbstractEntity;
 import jakarta.persistence.*;
 import lombok.*;
 

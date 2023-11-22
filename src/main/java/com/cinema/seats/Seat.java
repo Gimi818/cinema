@@ -1,7 +1,7 @@
 package com.cinema.seats;
 
 import com.cinema.screening.Screening;
-import com.cinema.uuidEntity.AbstractEntity;
+import com.cinema.common.entity.AbstractEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,10 +13,6 @@ import lombok.*;
 @Setter
 @Getter
 public class Seat  extends  AbstractEntity{
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     private int rowsNumber;
 

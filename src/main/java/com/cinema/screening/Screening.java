@@ -3,8 +3,7 @@ package com.cinema.screening;
 
 import com.cinema.seats.Seat;
 import com.cinema.film.Film;
-import com.cinema.uuidEntity.AbstractEntity;
-import com.cinema.uuidEntity.AbstractUUIDEntity;
+import com.cinema.common.entity.AbstractEntity;
 import jakarta.persistence.*;
 import lombok.*;
 

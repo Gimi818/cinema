@@ -28,7 +28,7 @@ public class UserController {
 
     @GetMapping(Routes.FIND_USER_BY_ID)
     public ResponseEntity<UserResponseDto> findUserById(@PathVariable Long id) {
-        UserResponseDto userResponseDto = service.findById(id);
+        UserResponseDto userResponseDto = service.findUserById(id);
         return ResponseEntity.status(HttpStatus.OK).body(userResponseDto);
     }
 

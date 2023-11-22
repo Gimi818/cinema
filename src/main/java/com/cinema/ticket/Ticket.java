@@ -3,7 +3,7 @@ package com.cinema.ticket;
 import com.cinema.ticket.ticketEnum.Currency;
 import com.cinema.ticket.ticketEnum.TicketStatus;
 import com.cinema.ticket.ticketEnum.TicketType;
-import com.cinema.uuidEntity.AbstractUUIDEntity;
+import com.cinema.common.entity.AbstractUUIDEntity;
 import jakarta.persistence.*;
 import lombok.*;
 

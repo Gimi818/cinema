@@ -2,7 +2,7 @@ package com.cinema.user;
 
 import com.cinema.user.userEnum.AccountType;
 import com.cinema.user.userEnum.UserRole;
-import com.cinema.uuidEntity.AbstractUUIDEntity;
+import com.cinema.common.entity.AbstractUUIDEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
