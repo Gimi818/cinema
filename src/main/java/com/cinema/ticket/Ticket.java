@@ -3,6 +3,7 @@ package com.cinema.ticket;
 import com.cinema.ticket.ticketEnum.Currency;
 import com.cinema.ticket.ticketEnum.TicketStatus;
 import com.cinema.ticket.ticketEnum.TicketType;
+import com.cinema.uuidEntity.AbstractUUIDEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,13 +15,12 @@ import java.time.LocalTime;
 @Table(name = "ticket")
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @Getter
 @Setter
 @Builder
-public class Ticket {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Ticket extends AbstractUUIDEntity {
+
     private String name;
     private String filmTitle;
     private LocalDate screeningDate;

@@ -2,6 +2,7 @@ package com.cinema.user;
 
 import com.cinema.user.userEnum.AccountType;
 import com.cinema.user.userEnum.UserRole;
+import com.cinema.uuidEntity.AbstractUUIDEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,17 +11,12 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
 @Setter
 @Builder
-@EqualsAndHashCode
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class User extends AbstractUUIDEntity {
     private String firstName;
     private String lastName;
-
     private String email;
     private String password;
 
