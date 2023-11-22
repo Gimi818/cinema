@@ -1,5 +1,6 @@
 package com.cinema.user;
 
+import com.cinema.user.dto.CreatedUserDto;
 import com.cinema.user.dto.UserRequestDto;
 import com.cinema.user.dto.UserResponseDto;
 import com.cinema.user.encoder.PasswordEncoderService;
@@ -24,7 +25,7 @@ public class UserService {
 
 
     @Transactional
-    public User registration(UserRequestDto requestDto) {
+    public CreatedUserDto registration(UserRequestDto requestDto) {
         existByMail(requestDto);
 
         passwordValidation(requestDto);
@@ -40,7 +41,8 @@ public class UserService {
         confirmUser.sendConfirmationEmail(user);
         log.info("Sent confirmation email");
 
-        return user;
+        return userMapper.createdEntityToDto(user);
+
     }
     private User createUser(UserRequestDto requestDto) {
         return User.builder()

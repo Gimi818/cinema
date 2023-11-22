@@ -1,5 +1,6 @@
 package com.cinema.user;
 
+import com.cinema.user.dto.CreatedUserDto;
 import com.cinema.user.dto.UserRequestDto;
 import com.cinema.user.dto.UserResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -15,19 +16,19 @@ public class UserController {
     private final UserService service;
     private final ConfirmUser confirmUser;
 
+
+
+    @PostMapping("/registration")
+    public ResponseEntity<CreatedUserDto> registration(@RequestBody UserRequestDto userRequestDto) {
+        return new ResponseEntity<>(service.registration(userRequestDto), HttpStatus.CREATED);
+    }
+
+
     @GetMapping("/confirm")
     public ResponseEntity<String> confirmUserAccount(@RequestParam("token") String token) {
         confirmUser.confirmUserAccount(token);
         return ResponseEntity.status(HttpStatus.OK).body("Your account has been confirmed.");
     }
-
-    @PostMapping("/registration")
-    public ResponseEntity<User> registration(@RequestBody UserRequestDto userRequestDto) {
-        return new ResponseEntity<>(service.registration(userRequestDto), HttpStatus.CREATED);
-    }
-
-
-
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDto> findUserById(@PathVariable Long id) {
         UserResponseDto userResponseDto = service.findById(id);
