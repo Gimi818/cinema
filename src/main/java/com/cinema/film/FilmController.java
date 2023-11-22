@@ -1,5 +1,6 @@
 package com.cinema.film;
 
+import com.cinema.film.dto.CreatedFilmDto;
 import com.cinema.film.dto.FilmRequestDto;
 import com.cinema.film.dto.FilmResponseDto;
 import com.cinema.film.filmCategory.FilmCategory;
@@ -17,8 +18,8 @@ public class FilmController {
 
     private final FilmService service;
 
-    @PostMapping("")
-    public ResponseEntity<Film> saveFilm(@RequestBody FilmRequestDto filmRequestDto) {
+    @PostMapping()
+    public ResponseEntity<CreatedFilmDto> saveFilm(@RequestBody FilmRequestDto filmRequestDto) {
         return new ResponseEntity<>(service.saveFilm(filmRequestDto), HttpStatus.CREATED);
     }
 
