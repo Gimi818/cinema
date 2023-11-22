@@ -1,5 +1,6 @@
 package com.cinema.film;
 
+import com.cinema.film.dto.CreatedFilmDto;
 import com.cinema.film.dto.FilmRequestDto;
 import com.cinema.film.dto.FilmResponseDto;
 
@@ -16,6 +17,7 @@ public interface FilmMapper {
 
     FilmResponseDto entityToDto(Film film);
 
+    CreatedFilmDto createdEntityToDto(Film film);
     Film dtoToEntity(FilmRequestDto filmRequestDto);
 
 
