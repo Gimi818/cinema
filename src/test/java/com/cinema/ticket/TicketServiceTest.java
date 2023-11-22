@@ -1,5 +1,6 @@
 package com.cinema.ticket;
 
+import com.cinema.common.exception.exceptions.NotFoundException;
 import com.cinema.emailSender.EmailWithPDF;
 import com.cinema.film.Film;
 import com.cinema.film.filmCategory.FilmCategory;
@@ -8,7 +9,7 @@ import com.cinema.screening.ScreeningRepository;
 import com.cinema.screening.ScreeningService;
 import com.cinema.seats.SeatService;
 import com.cinema.ticket.dto.TicketBookingDto;
-import com.cinema.ticket.exception.TicketNotFoundException;
+import com.cinema.ticket.priceCalculator.TicketPriceCalculator;
 import com.cinema.ticket.ticketEnum.Currency;
 import com.cinema.ticket.ticketEnum.TicketStatus;
 import com.cinema.ticket.ticketEnum.TicketType;
@@ -36,8 +37,7 @@ class TicketServiceTest {
     private TicketRepository ticketRepository;
     @Mock
     private ScreeningRepository screeningRepository;
-    @Mock
-    private CheckBookingTime checkBookingTime;
+
     @Mock
     private Film film;
     @Mock
@@ -68,11 +68,11 @@ class TicketServiceTest {
         LocalDate date = LocalDate.of(2034, 10, 10);
         LocalTime time = LocalTime.of(10, 10);
 
-        Film film1 = new Film(1L, "TOP GUN", FilmCategory.ACTION, 120);
-        Screening screening1 = new Screening(1L, date, time, film1, null);
+        Film film1 = new Film( "TOP GUN", FilmCategory.ACTION, 120);
+        Screening screening1 = new Screening( date, time, film1, null);
         screeningRepository.save(screening1);
 
-        User user = new User(1L, "Adam", "New", "aa@.cc", "asdawa", UserRole.ADMIN, AccountType.UNCONFIRMED, "token");
+        User user = new User( "Adam", "New", "aa@.cc", "asdawa", UserRole.ADMIN, AccountType.UNCONFIRMED, "token");
         TicketBookingDto ticketBookingDto1 = new TicketBookingDto(TicketType.NORMAL, Currency.USD, 1, 1);
 
         when(ticketPriceCalculator.finalPrice(ticketBookingDto1, screening1)).thenReturn(BigDecimal.valueOf(10));
@@ -89,7 +89,6 @@ class TicketServiceTest {
         assertEquals(1, ticket.getRoomNumber());
         assertEquals(Currency.USD, ticket.getCurrency());
         assertEquals(1, ticket.getSeatInRow());
-        assertEquals(Long.valueOf(1), ticket.getUserId());
     }
 
 //    @Test
@@ -136,7 +135,7 @@ class TicketServiceTest {
         when(ticketRepository.findById(nonExistingTicketId)).thenReturn(java.util.Optional.empty());
 
         // Then
-        assertThrows(TicketNotFoundException.class, () ->
+        assertThrows(NotFoundException.class, () ->
                 ticketService.cancelTicket(nonExistingTicketId)
         );
     }

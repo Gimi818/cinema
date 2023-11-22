@@ -1,7 +1,8 @@
 package com.cinema.api;
 
-import com.cinema.api.dto.ExchangeRateMapper;
+import com.cinema.api.dto.CurrencyData;
 import com.cinema.api.dto.ExchangeRateResponseDto;
+import com.cinema.api.dto.Rate;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;

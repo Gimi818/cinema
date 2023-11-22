@@ -1,5 +1,6 @@
 package com.cinema.ticket;
 
+import com.cinema.ticket.dto.TicketBookedDto;
 import com.cinema.ticket.dto.TicketBookingDto;
 
 import com.cinema.ticket.ticketEnum.Currency;
@@ -30,6 +31,7 @@ class TicketControllerTest {
     @Autowired
     private WebApplicationContext context;
     private MockMvc mockMvc;
+    private static TicketBookedDto ticketBookedDto;
 
     private static Ticket ticket;
     private static TicketBookingDto ticketBookingDto;
@@ -48,7 +50,7 @@ class TicketControllerTest {
     @Test
     @DisplayName("Should book a ticket")
     void should_book_ticket() throws Exception {
-        given(service.bookTicket(1L, 1L, ticketBookingDto)).willReturn(ticket);
+        given(service.bookTicket(1L, 1L, ticketBookingDto)).willReturn(ticketBookedDto);
 
         mockMvc.perform(post("/book/1/1")
                         .content(ticketRequestDtoJson)

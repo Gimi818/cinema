@@ -1,5 +1,6 @@
 package com.cinema.user;
 
+import com.cinema.user.dto.CreatedUserDto;
 import com.cinema.user.dto.UserRequestDto;
 import com.cinema.user.dto.UserResponseDto;
 import org.mapstruct.Mapper;
@@ -17,5 +18,7 @@ public interface UserMapper {
     User dtoToEntity(UserRequestDto requestDto);
 
     UserResponseDto entityToDto(User user);
+
+    CreatedUserDto createdEntityToDto(User user);
 
 }

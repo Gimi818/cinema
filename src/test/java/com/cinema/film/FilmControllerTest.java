@@ -1,5 +1,6 @@
 package com.cinema.film;
 
+import com.cinema.film.dto.CreatedFilmDto;
 import com.cinema.film.dto.FilmRequestDto;
 import com.cinema.film.dto.FilmResponseDto;
 import com.cinema.film.filmCategory.FilmCategory;
@@ -40,6 +41,7 @@ class FilmControllerTest {
     private static FilmRequestDto filmRequestDto;
     private static String filmRequestDtoJson;
     private static Film film;
+    private static CreatedFilmDto createdFilmDto;
     private static FilmResponseDto filmResponseDto;
     private static FilmResponseDto secondFilmResponseDto;
 
@@ -74,7 +76,7 @@ class FilmControllerTest {
     @Test
     @DisplayName("Should save film")
     void save_film() throws Exception {
-        given(filmService.saveFilm(filmRequestDto)).willReturn(film);
+        given(filmService.saveFilm(filmRequestDto)).willReturn(createdFilmDto);
 
         mockMvc.perform(post("/films")
                         .content(filmRequestDtoJson)

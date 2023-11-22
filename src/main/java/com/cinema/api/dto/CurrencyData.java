@@ -1,4 +1,4 @@
-package com.cinema.api;
+package com.cinema.api.dto;
 
 import java.util.List;
 

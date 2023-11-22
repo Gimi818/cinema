@@ -1,10 +1,10 @@
 package com.cinema.user;
 
+import com.cinema.common.exception.exceptions.AlreadyExistException;
+import com.cinema.common.exception.exceptions.PasswordConflictException;
 import com.cinema.user.dto.UserRequestDto;
 import com.cinema.user.dto.UserResponseDto;
 import com.cinema.user.encoder.PasswordEncoderService;
-import com.cinema.user.exception.EmailAlreadyExistsException;
-import com.cinema.user.exception.NotSamePasswordException;
 import com.cinema.user.userEnum.AccountType;
 import com.cinema.user.userEnum.UserRole;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,12 +12,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
+import static org.assertj.core.api.Assertions.assertThat;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 
@@ -48,22 +47,19 @@ class UserServiceTest {
     @BeforeEach
     void setUp() {
         userRequestDto = new UserRequestDto("Adam","Buu","ab@o.com","qwerty","qwerty", UserRole.ADMIN);
-        user = new User(1L,"Adam","Buu","ab@o.com","qwerty",UserRole.ADMIN, AccountType.UNCONFIRMED,"janskdjnjnj");
-        userResponseDto = new UserResponseDto(1L,"A","B","ab@o.com",UserRole.ADMIN,AccountType.UNCONFIRMED);
+        user = new User("Adam","Buu","ab@o.com","qwerty",UserRole.ADMIN, AccountType.UNCONFIRMED,"janskdjnjnj");
+        userResponseDto = new UserResponseDto("A","B","ab@o.com",UserRole.ADMIN);
     }
 
     @Test
     @DisplayName("Should save user")
     void should_save_user() {
 
-        given(userRepository.save(userMapper.dtoToEntity(userRequestDto))).willReturn(user);
+        given(userRepository.save(userMapper.dtoToEntity(userRequestDto)))
+                .willReturn(user);
 
-        User savedUser = userService.registration(userRequestDto);
-
-        assertEquals("Adam",savedUser.getFirstName());
-        assertEquals("Buu",savedUser.getLastName());
-        assertEquals("ab@o.com",savedUser.getEmail());
-        assertEquals(UserRole.ADMIN,savedUser.getRole());
+        assertThat(userService.registration(userRequestDto))
+                .isEqualTo(userMapper.createdEntityToDto(user));
     }
     @Test
     @DisplayName("Should find user by id")
@@ -72,7 +68,7 @@ class UserServiceTest {
         given(userMapper.entityToDto(user))
                 .willReturn(userResponseDto);
 
-            assertThat(userService.findById(1L)).isEqualTo(userResponseDto);
+            assertThat(userService.findUserById(1L)).isEqualTo(userResponseDto);
     }
 
     @Test
@@ -82,7 +78,7 @@ class UserServiceTest {
         UserRequestDto requestDto = new UserRequestDto("Max", "Ferdo", "john@example.com", "password1", "password2", UserRole.USER);
 
         // When & Then
-        assertThrows(NotSamePasswordException.class, () -> userService.passwordValidation(requestDto));
+        assertThrows(PasswordConflictException.class, () -> userService.passwordValidation(requestDto));
     }
 
 
@@ -94,7 +90,7 @@ class UserServiceTest {
         when(userRepository.existsByEmail(requestDto.email())).thenReturn(true);
 
         // When & Then
-        assertThrows(EmailAlreadyExistsException.class, () -> userService.existByMail(requestDto));
+        assertThrows(AlreadyExistException.class, () -> userService.existByMail(requestDto));
     }
 
 

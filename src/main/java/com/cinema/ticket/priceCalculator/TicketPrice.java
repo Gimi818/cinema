@@ -1,4 +1,4 @@
-package com.cinema.ticket;
+package com.cinema.ticket.priceCalculator;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

@@ -1,19 +1,23 @@
 package com.cinema.screening;
 
+import com.cinema.common.exception.exceptions.NotFoundException;
+import com.cinema.film.FilmService;
+import com.cinema.screening.dto.CreatedScreeningDto;
 import com.cinema.screening.dto.ScreeningAvailableSeats;
-import com.cinema.screening.exception.ScreeningNotFoundByIdException;
 import com.cinema.seats.Seat;
 import com.cinema.seats.SeatService;
 import com.cinema.seats.SeatStatus;
 import com.cinema.film.Film;
-import com.cinema.film.FilmRepository;
-import com.cinema.film.exception.FilmNotFoundException;
+
 import com.cinema.screening.dto.ScreeningRequestDto;
 import com.cinema.screening.dto.ScreeningResponseDto;
+
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+
+import static com.cinema.screening.ScreeningService.ErrorMessages.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -28,28 +32,25 @@ public class ScreeningService {
 
     private final ScreeningRepository repository;
     private final ScreeningMapper mapper;
-    private final FilmRepository filmRepository;
     private final ScreeningValidate validate;
     private final SeatService seatService;
+    private final FilmService filmService;
 
     @Transactional
-    public Screening saveScreening(ScreeningRequestDto screeningRequestDto, Long filmId) {
-        log.info("Saving Screening {}", screeningRequestDto);
-
-        Film film = filmRepository.findById(filmId).orElseThrow(() -> new FilmNotFoundException(filmId));
-
-        validate.dataValidation(screeningRequestDto,film);
+    public CreatedScreeningDto saveScreening(ScreeningRequestDto screeningRequestDto, Long filmId) {
+        Film film = filmService.findById(filmId);
+        validate.dataValidation(screeningRequestDto, film);
 
         Screening screening = repository.save(mapper.dtoToEntity(screeningRequestDto));
+
         screening.setFilm(film);
         screening.setSeats(createSeats());
-        log.info("Saved Screening ");
-        return screening;
+        log.info("Saved Screening {}", screeningRequestDto);
+        return mapper.createdEntityToDto(screening);
     }
 
-
+    @Transactional
     private List<Seat> createSeats() {
-        log.info("Created seats");
         return IntStream.rangeClosed(1, 10)
                 .boxed()
                 .flatMap(rowNumber -> IntStream.rangeClosed(1, 10)
@@ -69,20 +70,30 @@ public class ScreeningService {
     public List<ScreeningResponseDto> getScreeningsByDate(LocalDate date) {
         validate.checkCorrectData(date);
         List<Screening> screenings = repository.findScreeningsByDate(date);
-        log.info("Found {} screenings.", screenings.size());
         log.info("Returning all screenings by date {}", date);
         return screenings.stream()
                 .map(mapper::entityToDto)
                 .collect(Collectors.toList());
     }
 
-    public ScreeningAvailableSeats findAvailableSeats(Long id) {
-        Screening screening = repository.findById(id).orElseThrow(() -> new ScreeningNotFoundByIdException(id));
-        log.info("Returning seats by screening id ->  {} id",id);
+    public Screening findById(Long screeningId) {
+        Screening screening = repository.findById(screeningId).orElseThrow(() -> new NotFoundException(SCREENING_NOT_FOUND, screeningId));
+        log.info("Found screening with id {}", screeningId);
+        return screening;
+    }
+
+    public ScreeningAvailableSeats findAvailableSeats(Long screeningId) {
+        Screening screening = repository.findById(screeningId).orElseThrow(() -> new NotFoundException(SCREENING_NOT_FOUND, screeningId));
+        log.info("Found screening with id {}", screeningId);
         return mapper.screeningToSeatsDto(screening);
     }
 
+    static final class ErrorMessages {
+        static final String SCREENING_NOT_FOUND = "The screening with id %s not found";
+
+    }
 }
+
 
 
 

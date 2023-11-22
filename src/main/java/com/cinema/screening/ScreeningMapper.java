@@ -1,6 +1,7 @@
 package com.cinema.screening;
 
 
+import com.cinema.screening.dto.CreatedScreeningDto;
 import com.cinema.screening.dto.ScreeningAvailableSeats;
 import com.cinema.screening.dto.ScreeningRequestDto;
 import com.cinema.screening.dto.ScreeningResponseDto;
@@ -15,9 +16,12 @@ public interface ScreeningMapper {
     ScreeningMapper screeningMapper = Mappers.getMapper(ScreeningMapper.class);
 
     ScreeningResponseDto entityToDto(Screening screening);
+
     ScreeningAvailableSeats screeningToSeatsDto(Screening screening);
 
     Screening dtoToEntity(ScreeningRequestDto screeningRequestDto);
+
+    CreatedScreeningDto createdEntityToDto(Screening screening);
 
 
 }
