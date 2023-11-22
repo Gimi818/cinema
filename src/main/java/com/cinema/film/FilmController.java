@@ -13,37 +13,46 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/films")
 public class FilmController {
 
     private final FilmService service;
 
-    @PostMapping()
+    @PostMapping(Routes.SAVE)
     public ResponseEntity<CreatedFilmDto> saveFilm(@RequestBody FilmRequestDto filmRequestDto) {
         return new ResponseEntity<>(service.saveFilm(filmRequestDto), HttpStatus.CREATED);
     }
 
-    @GetMapping()
+    @GetMapping(Routes.ROOT)
     public ResponseEntity<List<FilmResponseDto>> findAll() {
         List<FilmResponseDto> allFilms = service.findAllFilms();
         return ResponseEntity.status(HttpStatus.OK).body(allFilms);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(Routes.FIND_BY_ID)
     public ResponseEntity<FilmResponseDto> findFilmById(@PathVariable Long id) {
         FilmResponseDto filmResponseDto = service.findFilmById(id);
         return ResponseEntity.status(HttpStatus.OK).body(filmResponseDto);
     }
 
-    @GetMapping("/category")
+    @GetMapping(Routes.FIND_BY_CATEGORY)
     public ResponseEntity<List<FilmResponseDto>> getFilmsByCategory(@RequestParam("category") FilmCategory filmCategory) {
         List<FilmResponseDto> films = service.findFilmByCategory(filmCategory);
         return ResponseEntity.status(HttpStatus.OK).body(films);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(Routes.DELETE_BY_ID)
     public ResponseEntity<Void> deleteFilm(@PathVariable Long id) {
         service.deleteFilm(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
+    static final class Routes {
+        static final String ROOT = "/films";
+        static final String SAVE = "/films";
+        static final String DELETE_BY_ID = ROOT + "/{id}";
+        static final String FIND_BY_ID = ROOT + "/{id}";
+        static final String FIND_BY_CATEGORY = ROOT + "/category";
+
+    }
+
 }

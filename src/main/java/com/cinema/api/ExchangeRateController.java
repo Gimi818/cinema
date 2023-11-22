@@ -13,13 +13,19 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/codes")
+
 public class ExchangeRateController {
     private final ExchangeRateService service;
 
-    @GetMapping()
+    @GetMapping(Routes.ROOT)
     public ResponseEntity<List<ExchangeRateResponseDto>> findAllCurrencies() {
         List<ExchangeRateResponseDto> allCurrencies = service.findAllCurrency();
         return ResponseEntity.status(HttpStatus.OK).body(allCurrencies);
+    }
+
+    static final class Routes {
+        static final String ROOT = "/codes";
+
+
     }
 }
