@@ -1,4 +1,4 @@
-package com.cinema.ticket;
+package com.cinema.ticket.priceCalculator;
 
 import com.cinema.api.ExchangeRate;
 import com.cinema.api.ExchangeRateRepository;
@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.DayOfWeek;
 
-import static com.cinema.ticket.TicketPrice.*;
+import static com.cinema.ticket.priceCalculator.TicketPrice.*;
 
 @Component
 @AllArgsConstructor

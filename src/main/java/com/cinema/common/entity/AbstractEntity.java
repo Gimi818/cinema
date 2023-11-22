@@ -1,4 +1,4 @@
-package com.cinema.uuidEntity;
+package com.cinema.common.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

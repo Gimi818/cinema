@@ -1,6 +1,7 @@
-package com.cinema.api.dto;
+package com.cinema.api;
 
 import com.cinema.api.ExchangeRate;
+import com.cinema.api.dto.ExchangeRateResponseDto;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 
