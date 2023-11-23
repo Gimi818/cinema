@@ -10,6 +10,8 @@ import org.mockito.Mock;
 
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import static org.mockito.Mockito.*;
@@ -60,7 +62,7 @@ class ConfirmUserTest {
         User user = new User();
         user.setConfirmationToken("test_token");
 
-        when(userRepository.findByConfirmationToken("test_token")).thenReturn(user);
+        when(userRepository.findByConfirmationToken("test_token")).thenReturn(Optional.of(user));
 
         confirmUser.confirmUserAccount("test_token");
 
