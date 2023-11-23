@@ -5,7 +5,8 @@ import com.cinema.api.dto.ExchangeRateResponseDto;
 import com.cinema.api.dto.Rate;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,18 +16,20 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Log4j2
 public class ExchangeRateService {
+
     private final ExchangeRateRepository repository;
     private final ExchangeRateMapper mapper;
 
+    @Value("${nbp.api.url}")
+    private String url;
+
     public void requestToNBP() {
         RestTemplate restTemplate = new RestTemplate();
-        String url = "http://api.nbp.pl/api/exchangerates/tables/a?format=json";
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
         String json = response.getBody();
-
         saveCurrencyRatesFromJson(json);
     }
 
