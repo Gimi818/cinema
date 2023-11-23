@@ -16,10 +16,9 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 @Service
 @AllArgsConstructor
@@ -29,12 +28,12 @@ public class EmailWithPDF {
 
 
     public void sendEmailWithPDF(String email, Ticket ticket) throws MessagingException {
+        ResourceBundle bundle = ResourceBundle.getBundle("messages", Locale.getDefault());
         Document document = new Document();
         String logoPath = "classpath:logo2.png";
         ByteArrayOutputStream pdfOutputStream = new ByteArrayOutputStream();
         try {
             PdfWriter writer = PdfWriter.getInstance(document, pdfOutputStream);
-
             document.open();
 
             Image logo = Image.getInstance(logoPath);
@@ -48,24 +47,24 @@ public class EmailWithPDF {
             filmTitle.setAlignment(Element.ALIGN_CENTER);
 
             Font dataFont = new Font(Font.FontFamily.HELVETICA, 20, Font.NORMAL, BaseColor.BLACK);
-            Paragraph filmData = new Paragraph("Date: " + ticket.getScreeningDate(), dataFont);
+            Paragraph filmData = new Paragraph(bundle.getString("ticket.date") + ticket.getScreeningDate(), dataFont);
             filmData.setAlignment(Element.ALIGN_LEFT);
 
-            Paragraph filmTime = new Paragraph("Time: " + ticket.getScreeningTime(), dataFont);
+            Paragraph filmTime = new Paragraph(bundle.getString("ticket.time") + ticket.getScreeningTime(), dataFont);
             filmTime.setAlignment(Element.ALIGN_LEFT);
 
 
             document.add(filmTitle);
-            document.add(filmData );
+            document.add(filmData);
             document.add(filmTime);
-            document.add(new Paragraph("Name : " + ticket.getName()));
-            document.add(new Paragraph("Room number : " + ticket.getRoomNumber()));
-            document.add(new Paragraph("Row : " + ticket.getRowsNumber()));
-            document.add(new Paragraph("Seat : " + ticket.getSeatInRow()));
-            document.add(new Paragraph("Ticket type - " + ticket.getTicketType()));
-            document.add(new Paragraph("Ticket Price : " + ticket.getTicketPrice() + " " + ticket.getCurrency().toString()));
-            document.add(new Paragraph("Email : " + email));
-            document.add(new Paragraph("Purchase date : " + LocalDate.now()));
+            document.add(new Paragraph(bundle.getString("ticket.name") + ticket.getName()));
+            document.add(new Paragraph(bundle.getString("ticket.roomNumber") + ticket.getRoomNumber()));
+            document.add(new Paragraph(bundle.getString("ticket.row") + ticket.getRowsNumber()));
+            document.add(new Paragraph(bundle.getString("ticket.seat") + ticket.getSeatInRow()));
+            document.add(new Paragraph(bundle.getString("ticket.ticketType") + ticket.getTicketType()));
+            document.add(new Paragraph(bundle.getString("ticket.ticketPrice") + ticket.getTicketPrice() + " " + ticket.getCurrency().toString()));
+            document.add(new Paragraph(bundle.getString("ticket.email") + email));
+            document.add(new Paragraph(bundle.getString("ticket.purchaseDate") + LocalDate.now()));
 
 
             Image qrCodeImage = (Image) generateQrCode.createQr(email, ticket);
@@ -81,9 +80,9 @@ public class EmailWithPDF {
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
         helper.setTo(email);
-        helper.setSubject("Your ticket");
+        helper.setSubject(bundle.getString("email.subject"));
 
-        String text = "Thank you for buying a ticket!";
+        String text = bundle.getString("email.thankYouMessage");
         helper.setText(text, true);
 
         byte[] pdfBytes = pdfOutputStream.toByteArray();

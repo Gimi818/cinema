@@ -7,19 +7,22 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 @Service
 @AllArgsConstructor
 public class ConfirmationEmail {
     private final JavaMailSender javaMailSender;
 
     public void sendConfirmationEmail(String to, String confirmationLink) throws MessagingException {
+        ResourceBundle bundle = ResourceBundle.getBundle("messages", Locale.getDefault());
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
         helper.setTo(to);
-        helper.setSubject("Registration confirmation");
-        String text = "Thank you for registering on our application!<br/> " +
-                " To complete your registration , click the link below to confirm your e-mail:<br/>" +
+        helper.setSubject(bundle.getString("registration.subject"));
+        String text = bundle.getString("registration.message") +
                 "<a href='" + confirmationLink + "'>" + confirmationLink + "</a>";
 
         helper.setText(text, true);

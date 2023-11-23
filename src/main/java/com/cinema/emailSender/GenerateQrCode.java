@@ -11,23 +11,26 @@ import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 @Component
 @AllArgsConstructor
 public class GenerateQrCode {
 
     public Element createQr(String email, Ticket ticket) throws BadElementException, IOException {
+        ResourceBundle bundle = ResourceBundle.getBundle("messages", Locale.getDefault());
         String qrCodeData =
-                "Name: " + ticket.getName() + "\n"
-                        + "Film: " + ticket.getFilmTitle() + "\n"
-                        + "Date: " + ticket.getScreeningDate() + "\n"
-                        + "Time: " + ticket.getScreeningTime() + "\n"
-                        + "Room number : " + ticket.getRoomNumber() + "\n"
-                        + "Row: " + ticket.getRowsNumber() + "\n"
-                        + "Seats: " + ticket.getSeatInRow() + "\n"
-                        + "Ticket Type : " + ticket.getTicketType() + "\n"
-                        + "Ticket price: " + ticket.getTicketPrice() + " " + ticket.getCurrency().toString() + "\n"
-                        + "Email : " + email;
+                bundle.getString("ticket.name") + ticket.getName() + "\n"
+                        + bundle.getString("ticket.film") + ticket.getFilmTitle() + "\n"
+                        + bundle.getString("ticket.date") + ticket.getScreeningDate() + "\n"
+                        + bundle.getString("ticket.time") + ticket.getScreeningTime() + "\n"
+                        + bundle.getString("ticket.roomNumber") + ticket.getRoomNumber() + "\n"
+                        + bundle.getString("ticket.row") + ticket.getRowsNumber() + "\n"
+                        + bundle.getString("ticket.seat") + ticket.getSeatInRow() + "\n"
+                        + bundle.getString("ticket.ticketType") + ticket.getTicketType() + "\n"
+                        + bundle.getString("ticket.ticketPrice") + ticket.getTicketPrice() + " " + ticket.getCurrency().toString() + "\n"
+                        + bundle.getString("ticket.email") + email;
         ByteArrayOutputStream qrOutputStream = QRCode.from(qrCodeData)
                 .to(ImageType.PNG)
                 .stream();
