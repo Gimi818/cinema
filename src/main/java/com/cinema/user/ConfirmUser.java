@@ -1,6 +1,6 @@
 package com.cinema.user;
 
-import com.cinema.emailSender.ConfirmationEmail;
+import com.cinema.emailSender.ConfirmationEmailFacade;
 import com.cinema.user.userEnum.AccountType;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -12,9 +12,9 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 @Log4j2
-public class ConfirmUser {
+class ConfirmUser {
     private final UserRepository repository;
-    private final ConfirmationEmail confirmationEmail;
+    private final ConfirmationEmailFacade confirmationEmail;
     @Value("${confirmation.link}")
     private String confirmationLink;
 

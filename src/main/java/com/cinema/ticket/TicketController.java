@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-public class TicketController {
+class TicketController {
 
     private final TicketService service;
 

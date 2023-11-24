@@ -16,31 +16,31 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-public class ScreeningController {
+class ScreeningController {
 
-    private final ScreeningService service;
+    private final ScreeningFacade screeningFacade;
 
     @GetMapping(Routes.ROOT)
     public ResponseEntity<List<ScreeningResponseDto>> getScreeningsByDate(
             @RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        List<ScreeningResponseDto> screenings = service.getScreeningsByDate(date);
+        List<ScreeningResponseDto> screenings = screeningFacade.getScreeningsByDate(date);
         return ResponseEntity.status(HttpStatus.OK).body(screenings);
     }
 
     @PostMapping(Routes.SAVE)
     public ResponseEntity<CreatedScreeningDto> saveScreening(@RequestBody ScreeningRequestDto screeningDto, @PathVariable Long filmId) {
-        return new ResponseEntity<>(service.saveScreening(screeningDto, filmId), HttpStatus.CREATED);
+        return new ResponseEntity<>(screeningFacade.saveScreening(screeningDto, filmId), HttpStatus.CREATED);
     }
 
     @GetMapping(Routes.FIND_AVAILABLE_SEATS)
     public ResponseEntity<ScreeningAvailableSeats> findAvailableSeats(@PathVariable Long id) {
-        ScreeningAvailableSeats screeningAvailableSeats = service.findAvailableSeats(id);
+        ScreeningAvailableSeats screeningAvailableSeats = screeningFacade.findAvailableSeats(id);
         return ResponseEntity.status(HttpStatus.OK).body(screeningAvailableSeats);
     }
 
     @GetMapping(Routes.FIND_ALL)
     public ResponseEntity<List<ScreeningResponseDto>> findAll() {
-        List<ScreeningResponseDto> allScreening = service.findAllScreenings();
+        List<ScreeningResponseDto> allScreening = screeningFacade.findAllScreenings();
         return ResponseEntity.status(HttpStatus.OK).body(allScreening);
     }
 

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 @Repository
-public interface FilmRepository extends JpaRepository<Film,Long> {
+ interface FilmRepository extends JpaRepository<Film,Long> {
 
 
     @Query("SELECT f FROM Film f WHERE f.category = :category")

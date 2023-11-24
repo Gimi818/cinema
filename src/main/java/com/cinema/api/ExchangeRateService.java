@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Log4j2
-public class ExchangeRateService {
+class ExchangeRateService {
 
     private final ExchangeRateRepository repository;
     private final ExchangeRateMapper mapper;

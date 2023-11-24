@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-public class UserController {
-    private final UserService service;
-    private final ConfirmUser confirmUser;
+class UserController {
 
+    private final UserFacade userFacade;
+    private final ConfirmUser confirmUser;
 
     @PostMapping(Routes.REGISTRATION)
     public ResponseEntity<CreatedUserDto> registration(@RequestBody UserRequestDto userRequestDto) {
-        return new ResponseEntity<>(service.registration(userRequestDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(userFacade.registration(userRequestDto), HttpStatus.CREATED);
     }
 
     @GetMapping(Routes.CONFIRM)
@@ -28,7 +28,7 @@ public class UserController {
 
     @GetMapping(Routes.FIND_USER_BY_ID)
     public ResponseEntity<UserResponseDto> findUserById(@PathVariable Long id) {
-        UserResponseDto userResponseDto = service.findUserById(id);
+        UserResponseDto userResponseDto = userFacade.findUserById(id);
         return ResponseEntity.status(HttpStatus.OK).body(userResponseDto);
     }
 
