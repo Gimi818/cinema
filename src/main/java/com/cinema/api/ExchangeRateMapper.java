@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Mapper(componentModel = "spring")
 @Component
-public interface ExchangeRateMapper {
+ interface ExchangeRateMapper {
 
    ExchangeRateResponseDto entityToDto(ExchangeRate exchangeRate);
 

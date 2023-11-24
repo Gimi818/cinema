@@ -12,7 +12,7 @@ import java.util.ResourceBundle;
 
 @Service
 @AllArgsConstructor
-public class ConfirmationEmail {
+class ConfirmationEmail implements ConfirmationEmailFacade{
     private final JavaMailSender javaMailSender;
 
     public void sendConfirmationEmail(String to, String confirmationLink) throws MessagingException {

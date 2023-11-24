@@ -1,6 +1,6 @@
 package com.cinema.security;
 
-import com.cinema.user.UserRepository;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -8,18 +8,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
 @Configuration
-
-public class SecurityConfig  {
+class SecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -45,15 +40,10 @@ public class SecurityConfig  {
                                         "/users/**",
                                         "/book/**"
                                 ).permitAll()
-//                                .requestMatchers(HttpMethod.POST,
-//                                        "films/add",
-//                                        "screenings/**")
-//                                .hasAnyAuthority("ADMIN")
-//                                .requestMatchers(
-//                                        HttpMethod.DELETE,
-//                                        "/films/**",
-//                                        "/screenings/**"
-//                                ).hasAuthority("ADMIN")
+                                .requestMatchers(
+                                        HttpMethod.DELETE,
+                                        "/films/**",
+                                        "/screenings/**").permitAll()
                                 .anyRequest()
                                 .authenticated()
                 )

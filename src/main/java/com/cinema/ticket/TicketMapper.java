@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Mapper(componentModel = "spring")
 @Component
-public interface TicketMapper {
+interface TicketMapper {
 
     TicketMapper ticketMapper = Mappers.getMapper(TicketMapper.class);
 

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Mapper(componentModel = "spring")
 @Component
-public interface ScreeningMapper {
+interface ScreeningMapper {
     ScreeningMapper screeningMapper = Mappers.getMapper(ScreeningMapper.class);
 
     ScreeningResponseDto entityToDto(Screening screening);

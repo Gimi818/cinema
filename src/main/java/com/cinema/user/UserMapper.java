@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Mapper(componentModel = "spring")
 @Component
-public interface UserMapper {
+ interface UserMapper {
 
     UserMapper userMapper = Mappers.getMapper(UserMapper.class);
 

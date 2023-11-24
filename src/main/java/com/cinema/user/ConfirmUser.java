@@ -1,6 +1,6 @@
 package com.cinema.user;
 
-import com.cinema.emailSender.ConfirmationEmail;
+import com.cinema.emailSender.ConfirmationEmailFacade;
 import com.cinema.user.userEnum.AccountType;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -12,23 +12,21 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 @Log4j2
-public class ConfirmUser {
+class ConfirmUser {
     private final UserRepository repository;
-    private final ConfirmationEmail confirmationEmail;
+    private final ConfirmationEmailFacade confirmationEmail;
     @Value("${confirmation.link}")
-    private String confirmationLink;
+    public String confirmationLink;
 
+    public String generateConfirmationLink(User user,String confirmationLink) {
+        return confirmationLink + user.getConfirmationToken();
+    }
     public String generateConfirmationToken() {
         return UUID.randomUUID().toString();
     }
-
-    public String generateConfirmationLink(User user) {
-        return confirmationLink + user.getConfirmationToken();
-    }
-
     public void sendConfirmationEmail(User user) {
         try {
-            confirmationEmail.sendConfirmationEmail(user.getEmail(), generateConfirmationLink(user));
+            confirmationEmail.sendConfirmationEmail(user.getEmail(), generateConfirmationLink(user,confirmationLink));
         } catch (MessagingException e) {
             log.error("Error sending the confirmation email.", e);
         }

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Mapper(componentModel = "spring")
 @Component
-public interface FilmMapper {
+interface FilmMapper {
 
     FilmMapper filmMapper = Mappers.getMapper(FilmMapper.class);
 

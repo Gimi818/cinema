@@ -1,11 +1,11 @@
 package com.cinema.screening;
 
 import com.cinema.common.exception.exceptions.NotFoundException;
-import com.cinema.film.FilmService;
+import com.cinema.film.FilmFacade;
 import com.cinema.screening.dto.CreatedScreeningDto;
 import com.cinema.screening.dto.ScreeningAvailableSeats;
 import com.cinema.seats.Seat;
-import com.cinema.seats.SeatService;
+import com.cinema.seats.SeatFacade;
 import com.cinema.seats.SeatStatus;
 import com.cinema.film.Film;
 
@@ -28,17 +28,19 @@ import java.util.stream.IntStream;
 @Service
 @AllArgsConstructor
 @Log4j2
-public class ScreeningService {
+class ScreeningService implements ScreeningFacade {
 
     private final ScreeningRepository repository;
     private final ScreeningMapper mapper;
     private final ScreeningValidate validate;
-    private final SeatService seatService;
-    private final FilmService filmService;
+    private final SeatFacade seatFacade;
+
+    private final FilmFacade filmFacade;
+
 
     @Transactional
     public CreatedScreeningDto saveScreening(ScreeningRequestDto screeningRequestDto, Long filmId) {
-        Film film = filmService.findById(filmId);
+        Film film = filmFacade.findById(filmId);
         validate.dataValidation(screeningRequestDto, film);
 
         Screening screening = repository.save(mapper.dtoToEntity(screeningRequestDto));
@@ -54,7 +56,7 @@ public class ScreeningService {
         return IntStream.rangeClosed(1, 10)
                 .boxed()
                 .flatMap(rowNumber -> IntStream.rangeClosed(1, 10)
-                        .mapToObj(seatInRow -> seatService.createSeat(rowNumber, seatInRow, SeatStatus.AVAILABLE)))
+                        .mapToObj(seatInRow -> seatFacade.createSeat(rowNumber, seatInRow, SeatStatus.AVAILABLE)))
                 .collect(Collectors.toList());
 
     }

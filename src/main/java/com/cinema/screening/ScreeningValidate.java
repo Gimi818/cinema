@@ -18,7 +18,7 @@ import java.time.LocalDate;
 
 @Component
 @AllArgsConstructor
-public class ScreeningValidate {
+class ScreeningValidate {
 
     private final ScreeningRepository repository;
 

@@ -25,9 +25,7 @@ import static org.mockito.Mockito.when;
 class ScreeningValidateTest {
     @Mock
     private ScreeningRepository repository;
-    @Mock
-    private ScreeningService service;
-
+    
     @InjectMocks
     private ScreeningValidate screeningValidate;
 
