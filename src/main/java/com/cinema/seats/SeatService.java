@@ -51,7 +51,6 @@ class SeatService implements SeatFacade {
 
     static final class ErrorMessages {
         static final String NOT_FOUND_SEAT = "Seat not found for provided row %d and seat number %d.";
-        static final String NOT_FOUND_BY_ID = "Screening with id %d not found";
         static final String SEAT_ALREADY_TAKEN = "This seat is already taken.";
 
 

@@ -3,10 +3,11 @@ package com.cinema.screening;
 import com.cinema.film.*;
 import com.cinema.film.dto.FilmRequestDto;
 import com.cinema.film.dto.FilmResponseDto;
+import com.cinema.film.filmCategory.FilmCategory;
 import com.cinema.screening.dto.ScreeningRequestDto;
 import com.cinema.screening.dto.ScreeningResponseDto;
 import com.cinema.seats.Seat;
-import com.cinema.seats.SeatService;
+
 import com.cinema.seats.SeatStatus;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,41 +55,41 @@ class ScreeningServiceTest {
     private Screening secoundScreening;
     @Mock
     private Film film;
-
-
-    @Mock
-    private FilmRepository filmRepository;
     @Mock
     private ScreeningValidate screeningValidate;
     @Mock
-    private SeatService seatService;
+    private FilmFacade filmFacade;
 
 
     @BeforeEach
     void setUp() {
-        Film film = new Film( "Harry Potter", FANTASY, 130);
+        MockitoAnnotations.openMocks(this);
+        Film film = new Film("Harry Potter", FANTASY, 130);
         MockitoAnnotations.initMocks(this);
         LocalDate date = LocalDate.of(2023, 12, 31);
         LocalTime time = LocalTime.of(12, 10);
         screeningRequestDto = new ScreeningRequestDto(date, time);
-        screening = new Screening( date, time, film, new ArrayList<>());
-        secoundScreening = new Screening( date, time, film, new ArrayList<>());
+        screening = new Screening(date, time, film, new ArrayList<>());
+        secoundScreening = new Screening(date, time, film, new ArrayList<>());
 
     }
+
 //    @Test
 //    @DisplayName("Should save screening")
-//    void should_save_film() {
-//        Film film = new Film(1L, "Harry Potter", FANTASY, 130);
-//
-//        given(filmRepository.findById(1L)).willReturn(Optional.of(film));
+//    void should_save_screening() {
+//        Film film1 = new Film("TOP GUN", FilmCategory.ACTION, 120);
+//        given(filmFacade.findById(film1.getId())).willReturn(film1);
 //
 //        given(screeningRepository.save(screeningMapper.dtoToEntity(screeningRequestDto)))
 //                .willReturn(screening);
 //
-//        assertThat(service.saveScreening(screeningRequestDto, 1L))
+//        screening.setFilm(film1);
+//        assertThat(service.saveScreening(screeningRequestDto, film1.getId()))
 //                .isEqualTo(screening);
 //    }
-//
+
+
+
 //    @Test
 //    @DisplayName("Should find all Screening by date")
 //    void should_find_all_Screening_By_date() {
@@ -110,9 +111,6 @@ class ScreeningServiceTest {
 //        Mockito.verify(screeningMapper, Mockito.times(1)).entityToDto(screening);
 //        Mockito.verify(screeningMapper, Mockito.times(1)).entityToDto(secoundScreening);
 //    }
-
-
-
 
 
 }

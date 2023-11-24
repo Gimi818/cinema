@@ -4,7 +4,8 @@ package com.cinema.seats;
 import com.cinema.common.exception.exceptions.AlreadyTakenException;
 import com.cinema.common.exception.exceptions.NotFoundException;
 import com.cinema.screening.Screening;
-import com.cinema.screening.ScreeningRepository;
+import com.cinema.screening.ScreeningFacade;
+
 
 
 import org.junit.jupiter.api.DisplayName;
@@ -22,7 +23,7 @@ import static org.mockito.Mockito.when;
 public class SeatServiceTest {
 
     @Mock
-    private ScreeningRepository screeningRepository;
+    private ScreeningFacade screeningRepository;
 
     @Mock
     private SeatRepository seatRepository;
@@ -41,7 +42,7 @@ public class SeatServiceTest {
         Seat seat = new Seat();
         seat.setStatus(SeatStatus.AVAILABLE);
 
-        when(screeningRepository.findById(screeningId)).thenReturn(Optional.of(screening));
+        when(screeningRepository.findById(screeningId)).thenReturn(screening);
         when(seatRepository.findByScreeningAndRowsNumberAndSeatInRow(screening, rowsNumber, seatInRow)).thenReturn(seat);
 
         // When
@@ -62,7 +63,7 @@ public class SeatServiceTest {
         Seat seat = new Seat();
         seat.setStatus(SeatStatus.TAKEN);
 
-        when(screeningRepository.findById(screeningId)).thenReturn(Optional.of(screening));
+        when(screeningRepository.findById(screeningId)).thenReturn(screening);
         when(seatRepository.findByScreeningAndRowsNumberAndSeatInRow(screening, rowsNumber, seatInRow)).thenReturn(seat);
 
         // Then
@@ -79,7 +80,7 @@ public class SeatServiceTest {
         int seatInRow = 3;
         Screening screening = new Screening();
 
-        when(screeningRepository.findById(screeningId)).thenReturn(Optional.of(screening));
+        when(screeningRepository.findById(screeningId)).thenReturn(screening);
         when(seatRepository.findByScreeningAndRowsNumberAndSeatInRow(screening, rowsNumber, seatInRow)).thenReturn(null);
 
         // Then

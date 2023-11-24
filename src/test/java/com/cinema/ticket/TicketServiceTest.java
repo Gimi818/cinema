@@ -5,9 +5,8 @@ import com.cinema.emailSender.EmailWithPDF;
 import com.cinema.film.Film;
 import com.cinema.film.filmCategory.FilmCategory;
 import com.cinema.screening.Screening;
-import com.cinema.screening.ScreeningRepository;
-import com.cinema.screening.ScreeningService;
-import com.cinema.seats.SeatService;
+import com.cinema.screening.ScreeningFacade;
+
 import com.cinema.ticket.dto.TicketBookingDto;
 import com.cinema.ticket.priceCalculator.TicketPriceCalculator;
 import com.cinema.ticket.ticketEnum.Currency;
@@ -15,7 +14,6 @@ import com.cinema.ticket.ticketEnum.TicketStatus;
 import com.cinema.ticket.ticketEnum.TicketType;
 import com.cinema.user.userEnum.AccountType;
 import com.cinema.user.User;
-import com.cinema.user.UserRepository;
 import com.cinema.user.userEnum.UserRole;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,23 +33,23 @@ import static org.mockito.Mockito.*;
 class TicketServiceTest {
     @Mock
     private TicketRepository ticketRepository;
-    @Mock
-    private ScreeningRepository screeningRepository;
+//    @Mock
+//    private ScreeningRepository screeningRepository;
 
     @Mock
     private Film film;
-    @Mock
-    private SeatService seatService;
+//    @Mock
+//    private SeatService seatService;
     @Mock
     private TicketPriceCalculator ticketPriceCalculator;
     @Mock
     private TicketBookingDto ticketBookingDto;
     @Mock
     private EmailWithPDF email;
+
     @Mock
-    private UserRepository userRepository;
-    @Mock
-    private ScreeningService screeningService;
+    private ScreeningFacade screeningFacade;
+
     @InjectMocks
     private TicketService ticketService;
     @Mock
@@ -70,7 +68,7 @@ class TicketServiceTest {
 
         Film film1 = new Film( "TOP GUN", FilmCategory.ACTION, 120);
         Screening screening1 = new Screening( date, time, film1, null);
-        screeningRepository.save(screening1);
+        //screeningRepository.save(screening1);
 
         User user = new User( "Adam", "New", "aa@.cc", "asdawa", UserRole.ADMIN, AccountType.UNCONFIRMED, "token");
         TicketBookingDto ticketBookingDto1 = new TicketBookingDto(TicketType.NORMAL, Currency.USD, 1, 1);

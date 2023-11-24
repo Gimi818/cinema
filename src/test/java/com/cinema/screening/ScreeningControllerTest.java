@@ -1,8 +1,6 @@
 package com.cinema.screening;
 
 import com.cinema.film.Film;
-import com.cinema.film.dto.FilmRequestDto;
-import com.cinema.film.dto.FilmResponseDto;
 import com.cinema.film.filmCategory.FilmCategory;
 import com.cinema.screening.dto.CreatedScreeningDto;
 import com.cinema.screening.dto.ScreeningRequestDto;
@@ -16,21 +14,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.testcontainers.shaded.com.fasterxml.jackson.core.JsonProcessingException;
-import org.testcontainers.shaded.com.fasterxml.jackson.core.type.TypeReference;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.SerializationFeature;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;

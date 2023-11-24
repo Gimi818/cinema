@@ -14,8 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
 @Configuration
-
-class SecurityConfig  {
+class SecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -41,15 +40,10 @@ class SecurityConfig  {
                                         "/users/**",
                                         "/book/**"
                                 ).permitAll()
-//                                .requestMatchers(HttpMethod.POST,
-//                                        "films/add",
-//                                        "screenings/**")
-//                                .hasAnyAuthority("ADMIN")
-//                                .requestMatchers(
-//                                        HttpMethod.DELETE,
-//                                        "/films/**",
-//                                        "/screenings/**"
-//                                ).hasAuthority("ADMIN")
+                                .requestMatchers(
+                                        HttpMethod.DELETE,
+                                        "/films/**",
+                                        "/screenings/**").permitAll()
                                 .anyRequest()
                                 .authenticated()
                 )
