@@ -3,11 +3,12 @@ package com.cinema.seats;
 import com.cinema.common.exception.exceptions.AlreadyTakenException;
 import com.cinema.common.exception.exceptions.NotFoundException;
 import com.cinema.screening.Screening;
-import com.cinema.screening.ScreeningRepository;
+import com.cinema.screening.ScreeningFacade;
 
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+
 import org.springframework.stereotype.Service;
 
 import static com.cinema.seats.SeatService.ErrorMessages.*;
@@ -15,14 +16,14 @@ import static com.cinema.seats.SeatService.ErrorMessages.*;
 @Service
 @AllArgsConstructor
 @Log4j2
+class SeatService implements SeatFacade {
 
-public class SeatService {
-    private final ScreeningRepository screeningRepository;
+    private final ScreeningFacade screeningFacade;
     private final SeatRepository seatRepository;
 
 
     public void checkSeatsAvailability(Long screeningId, int rowsNumber, int seatInRow) {
-        Screening screening = getScreeningById(screeningId);
+        Screening screening = screeningFacade.findById(screeningId);
 
         Seat seat = seatRepository.findByScreeningAndRowsNumberAndSeatInRow(screening, rowsNumber, seatInRow);
 
@@ -38,11 +39,6 @@ public class SeatService {
             throw new NotFoundException(NOT_FOUND_SEAT, rowsNumber, seatInRow);
         }
 
-    }
-
-    private Screening getScreeningById(Long screeningId) {
-        return screeningRepository.findById(screeningId)
-                .orElseThrow(() -> new NotFoundException(NOT_FOUND_BY_ID, screeningId));
     }
 
     public Seat createSeat(int rowNumber, int seatInRow, SeatStatus status) {

@@ -5,8 +5,8 @@ import com.cinema.common.exception.exceptions.TooLateException;
 import com.cinema.emailSender.EmailWithPDF;
 import com.cinema.screening.Screening;
 
-import com.cinema.screening.ScreeningService;
-import com.cinema.seats.SeatService;
+import com.cinema.screening.ScreeningFacade;
+import com.cinema.seats.SeatFacade;
 import com.cinema.ticket.dto.TicketBookedDto;
 import com.cinema.ticket.dto.TicketBookingDto;
 
@@ -17,7 +17,7 @@ import static com.cinema.ticket.TicketService.ErrorMessages.*;
 
 import com.cinema.user.User;
 
-import com.cinema.user.UserService;
+import com.cinema.user.UserFacade;
 import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -30,26 +30,25 @@ import java.time.LocalTime;
 @Service
 @AllArgsConstructor
 @Log4j2
-public class TicketService {
+class TicketService {
 
     private final TicketRepository ticketRepository;
-
     private final TicketPriceCalculator ticketPrice;
-    private final ScreeningService screeningService;
-    private final UserService userService;
+    private final ScreeningFacade screeningFacade;
+    private final UserFacade userFacade;
     private final EmailWithPDF email;
-    private final SeatService seatService;
+    private final SeatFacade seatFacade;
     private final TicketMapper mapper;
 
 
     @Transactional
     public TicketBookedDto bookTicket(Long screeningId, Long userId, TicketBookingDto tickedDto) throws MessagingException {
-        Screening screening = screeningService.findById(screeningId);
-        User user = userService.findById(userId);
+        Screening screening = screeningFacade.findById(screeningId);
+        User user = userFacade.findById(userId);
         checkBookingTime(screening);
 
         Ticket newTicket = createNewTicket(screening, user, tickedDto);
-        seatService.checkSeatsAvailability(screeningId, tickedDto.rowsNumber(), tickedDto.seatInRow());
+        seatFacade.checkSeatsAvailability(screeningId, tickedDto.rowsNumber(), tickedDto.seatInRow());
 
         ticketRepository.save(newTicket);
         email.sendEmailWithPDF(user.getEmail(), newTicket);

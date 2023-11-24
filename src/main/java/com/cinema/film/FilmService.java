@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 @Log4j2
-public class FilmService {
+class FilmService implements FilmFacade {
 
     private final FilmRepository repository;
     private final FilmMapper mapper;

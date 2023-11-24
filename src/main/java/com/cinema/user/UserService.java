@@ -18,7 +18,7 @@ import static com.cinema.user.UserService.ErrorMessages.*;
 @Service
 @AllArgsConstructor
 @Log4j2
-public class UserService {
+class UserService implements UserFacade {
 
     private final UserRepository repository;
     private final UserMapper userMapper;
