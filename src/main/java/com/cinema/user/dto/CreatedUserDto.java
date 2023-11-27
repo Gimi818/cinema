@@ -1,6 +1,10 @@
 package com.cinema.user.dto;
 
-public record CreatedUserDto(String firstName,
-                             String lastName,
-                             String email) {
+import java.util.UUID;
+
+public record CreatedUserDto(
+        UUID uuid,
+        String firstName,
+        String lastName,
+        String email) {
 }
