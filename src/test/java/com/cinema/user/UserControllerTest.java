@@ -19,6 +19,8 @@ import org.testcontainers.shaded.com.fasterxml.jackson.core.JsonProcessingExcept
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.SerializationFeature;
 
+import java.util.UUID;
+
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -45,7 +47,7 @@ class UserControllerTest {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
         userRequestDto = new UserRequestDto("A", "B", "ab@gmail.cpm", "password", "password", UserRole.ADMIN);
-        userResponseDto = new UserResponseDto("A", "B", "ab@gmail.cpm", UserRole.ADMIN);
+        userResponseDto = new UserResponseDto("A", "B", "ab@gmail.cpm", AccountType.UNCONFIRMED);
 
         useRequestDtoJson = objectMapper.writeValueAsString(userRequestDto);
 
@@ -64,11 +66,12 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("Should find user by id")
+    @DisplayName("Should find user by UUID")
     void should_find_user_by_id() throws Exception {
-        given(service.findUserById(1L)).willReturn(userResponseDto);
+        UUID userUuid = UUID.fromString("f63a5a59-05b8-4de4-9e99-d8d0b3c4cd6f");
+        given(service.findUserByUuid(userUuid)).willReturn(userResponseDto);
 
-        mockMvc.perform(get("/users/1")
+        mockMvc.perform(get("/users/f63a5a59-05b8-4de4-9e99-d8d0b3c4cd6f")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName").value("A"))
@@ -76,3 +79,4 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.email").value("ab@gmail.cpm"));
     }
 }
+

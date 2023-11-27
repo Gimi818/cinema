@@ -16,6 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
@@ -36,8 +37,7 @@ class UserServiceTest {
     private UserResponseDto userResponseDto;
     @Mock
     private ConfirmUser confirmUser;
-    @Mock
-    private PasswordEncoderService passwordEncoderService;
+
 
     @Mock
     private User user;
@@ -48,7 +48,7 @@ class UserServiceTest {
     void setUp() {
         userRequestDto = new UserRequestDto("Adam","Buu","ab@o.com","qwerty","qwerty", UserRole.ADMIN);
         user = new User("Adam","Buu","ab@o.com","qwerty",UserRole.ADMIN, AccountType.UNCONFIRMED,"janskdjnjnj");
-        userResponseDto = new UserResponseDto("A","B","ab@o.com",UserRole.ADMIN);
+        userResponseDto = new UserResponseDto("A","B","ab@o.com",AccountType.UNCONFIRMED);
     }
 
     @Test
@@ -61,14 +61,16 @@ class UserServiceTest {
         assertThat(userService.registration(userRequestDto))
                 .isEqualTo(userMapper.createdEntityToDto(user));
     }
+
     @Test
-    @DisplayName("Should find user by id")
-    void should_find_user_by_id() {
-        given(userRepository.findById(1L)).willReturn(Optional.of(user));
+    @DisplayName("Should find user by UUID")
+    void should_find_user_by_uuid() {
+        UUID userUuid = UUID.fromString("f63a5a59-05b8-4de4-9e99-d8d0b3c4cd6f");
+        given(userRepository.findByUuid(userUuid)).willReturn(Optional.of(user));
         given(userMapper.entityToDto(user))
                 .willReturn(userResponseDto);
 
-            assertThat(userService.findUserById(1L)).isEqualTo(userResponseDto);
+        assertThat(userService.findUserByUuid(userUuid)).isEqualTo(userResponseDto);
     }
 
     @Test

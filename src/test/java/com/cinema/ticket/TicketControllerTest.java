@@ -20,6 +20,8 @@ import org.testcontainers.shaded.com.fasterxml.jackson.core.JsonProcessingExcept
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.SerializationFeature;
 
+import java.util.UUID;
+
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -45,14 +47,16 @@ class TicketControllerTest {
         objectMapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
         ticketBookingDto = new TicketBookingDto(TicketType.NORMAL, Currency.PLN, 1, 1);
         ticketRequestDtoJson = objectMapper.writeValueAsString(ticketBookingDto);
+        UUID userUuid = UUID.randomUUID();
     }
 
     @Test
     @DisplayName("Should book a ticket")
     void should_book_ticket() throws Exception {
-        given(service.bookTicket(1L, 1L, ticketBookingDto)).willReturn(ticketBookedDto);
+        UUID userUuid = UUID.fromString("f63a5a59-05b8-4de4-9e99-d8d0b3c4cd6f");
+        given(service.bookTicket(1L, userUuid, ticketBookingDto)).willReturn(ticketBookedDto);
 
-        mockMvc.perform(post("/book/1/1")
+        mockMvc.perform(post("/book/f63a5a59-05b8-4de4-9e99-d8d0b3c4cd6f/1")
                         .content(ticketRequestDtoJson)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
