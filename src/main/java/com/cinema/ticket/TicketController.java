@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 import static com.cinema.ticket.TicketController.Routes.*;
 
 @RestController
@@ -17,16 +19,17 @@ class TicketController {
     private final TicketService service;
 
     @PostMapping(BOOKING)
-    public ResponseEntity<TicketBookedDto> booking(@PathVariable Long userId,
+    public ResponseEntity<TicketBookedDto> booking(@PathVariable UUID userUuid,
                                                    @PathVariable Long screeningId,
                                                    @RequestBody TicketBookingDto tickedRequestDto) throws MessagingException {
-        return new ResponseEntity<>(service.bookTicket(screeningId, userId, tickedRequestDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(service.bookTicket(screeningId, userUuid, tickedRequestDto), HttpStatus.CREATED);
     }
 
     static final class Routes {
         static final String ROOT = "/book";
-        static final String BOOKING = ROOT + "/{userId}/{screeningId}";
+        static final String BOOKING = ROOT + "/{userUuid}/{screeningId}";
 
 
     }
 }
+

@@ -26,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -42,9 +43,9 @@ class TicketService {
 
 
     @Transactional
-    public TicketBookedDto bookTicket(Long screeningId, Long userId, TicketBookingDto tickedDto) throws MessagingException {
+    public TicketBookedDto bookTicket(Long screeningId, UUID userUuid, TicketBookingDto tickedDto) throws MessagingException {
         Screening screening = screeningFacade.findById(screeningId);
-        User user = userFacade.findById(userId);
+        User user = userFacade.findByUuid(userUuid);
         checkBookingTime(screening);
 
         Ticket newTicket = createNewTicket(screening, user, tickedDto);
