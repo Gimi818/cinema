@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 import static com.cinema.user.UserController.Routes.*;
 
 @RestController
@@ -28,9 +30,9 @@ class UserController {
         return ResponseEntity.status(HttpStatus.OK).body("Your account has been confirmed.");
     }
 
-    @GetMapping(FIND_USER_BY_ID)
-    public ResponseEntity<UserResponseDto> findUserById(@PathVariable Long id) {
-        UserResponseDto userResponseDto = userFacade.findUserById(id);
+    @GetMapping(FIND_USER_BY_UUID)
+    public ResponseEntity<UserResponseDto> findUserByUuid(@PathVariable UUID Uuid) {
+        UserResponseDto userResponseDto = userFacade.findUserByUuid(Uuid);
         return ResponseEntity.status(HttpStatus.OK).body(userResponseDto);
     }
 
@@ -38,7 +40,7 @@ class UserController {
         static final String ROOT = "/users";
         static final String REGISTRATION = ROOT + "/registration";
         static final String CONFIRM = ROOT + "/confirm";
-        static final String FIND_USER_BY_ID = ROOT + "/{id}";
+        static final String FIND_USER_BY_UUID = ROOT + "/{Uuid}";
 
     }
 

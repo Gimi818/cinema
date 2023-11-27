@@ -13,6 +13,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 import static com.cinema.user.UserService.ErrorMessages.*;
 
 @Service
@@ -57,17 +59,19 @@ class UserService implements UserFacade {
                 .build();
     }
 
-    public UserResponseDto findUserById(Long userId) {
-        User user = repository.findById(userId).orElseThrow(() -> new NotFoundException(NOT_FOUND_BY_ID, userId));
-        log.info("Found user with id {}", user.getId());
+
+    public User findByUuid(UUID userUuid) {
+        User user = repository.findByUuid(userUuid).orElseThrow(() -> new NotFoundException(NOT_FOUND_BY_ID, userUuid));
+        log.info("Found user with UUID {}", user.getUuid());
+        return user;
+    }
+
+    public UserResponseDto findUserByUuid(UUID userUuid) {
+        User user = repository.findByUuid(userUuid).orElseThrow(() -> new NotFoundException(NOT_FOUND_BY_ID, userUuid));
+        log.info("Found user with UUID {}", user.getUuid());
         return userMapper.entityToDto(user);
     }
 
-    public User findById(Long userId) {
-        User user = repository.findById(userId).orElseThrow(() -> new NotFoundException(NOT_FOUND_BY_ID, userId));
-        log.info("Found user with id {}", user.getId());
-        return user;
-    }
 
     public void passwordValidation(UserRequestDto requestDto) {
         if (!requestDto.password().equals(requestDto.repeatedPassword())) {
