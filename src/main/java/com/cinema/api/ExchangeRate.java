@@ -1,5 +1,6 @@
 package com.cinema.api;
 
+import com.cinema.common.entity.AbstractEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,11 +11,7 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
-public class ExchangeRate {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class ExchangeRate extends AbstractEntity {
     private String code;
     private double mid;
 
