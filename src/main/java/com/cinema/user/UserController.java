@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static com.cinema.user.UserController.Routes.*;
+
 @RestController
 @RequiredArgsConstructor
 class UserController {
@@ -15,18 +17,18 @@ class UserController {
     private final UserFacade userFacade;
     private final ConfirmUser confirmUser;
 
-    @PostMapping(Routes.REGISTRATION)
+    @PostMapping(REGISTRATION)
     public ResponseEntity<CreatedUserDto> registration(@RequestBody UserRequestDto userRequestDto) {
         return new ResponseEntity<>(userFacade.registration(userRequestDto), HttpStatus.CREATED);
     }
 
-    @GetMapping(Routes.CONFIRM)
+    @GetMapping(CONFIRM)
     public ResponseEntity<String> confirmUserAccount(@RequestParam("token") String token) {
         confirmUser.confirmUserAccount(token);
         return ResponseEntity.status(HttpStatus.OK).body("Your account has been confirmed.");
     }
 
-    @GetMapping(Routes.FIND_USER_BY_ID)
+    @GetMapping(FIND_USER_BY_ID)
     public ResponseEntity<UserResponseDto> findUserById(@PathVariable Long id) {
         UserResponseDto userResponseDto = userFacade.findUserById(id);
         return ResponseEntity.status(HttpStatus.OK).body(userResponseDto);

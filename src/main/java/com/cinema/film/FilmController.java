@@ -9,37 +9,39 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static com.cinema.film.FilmController.Routes.*;
+
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 class FilmController {
-    private  final FilmFacade filmFacade;
+    private final FilmFacade filmFacade;
 
-    @PostMapping(Routes.SAVE)
+    @PostMapping(SAVE)
     public ResponseEntity<CreatedFilmDto> saveFilm(@RequestBody FilmRequestDto filmRequestDto) {
         return new ResponseEntity<>(filmFacade.saveFilm(filmRequestDto), HttpStatus.CREATED);
     }
 
-    @GetMapping(Routes.ROOT)
+    @GetMapping(ROOT)
     public ResponseEntity<List<FilmResponseDto>> findAll() {
         List<FilmResponseDto> allFilms = filmFacade.findAllFilms();
         return ResponseEntity.status(HttpStatus.OK).body(allFilms);
     }
 
-    @GetMapping(Routes.FIND_BY_ID)
+    @GetMapping(FIND_BY_ID)
     public ResponseEntity<FilmResponseDto> findFilmById(@PathVariable Long id) {
         FilmResponseDto filmResponseDto = filmFacade.findFilmById(id);
         return ResponseEntity.status(HttpStatus.OK).body(filmResponseDto);
     }
 
-    @GetMapping(Routes.FIND_BY_CATEGORY)
+    @GetMapping(FIND_BY_CATEGORY)
     public ResponseEntity<List<FilmResponseDto>> getFilmsByCategory(@RequestParam("category") FilmCategory filmCategory) {
         List<FilmResponseDto> films = filmFacade.findFilmByCategory(filmCategory);
         return ResponseEntity.status(HttpStatus.OK).body(films);
     }
 
-    @DeleteMapping(Routes.DELETE_BY_ID)
+    @DeleteMapping(DELETE_BY_ID)
     public ResponseEntity<Void> deleteFilm(@PathVariable Long id) {
         filmFacade.deleteFilm(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

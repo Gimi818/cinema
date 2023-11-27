@@ -8,13 +8,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static com.cinema.ticket.TicketController.Routes.*;
+
 @RestController
 @RequiredArgsConstructor
 class TicketController {
 
     private final TicketService service;
 
-    @PostMapping(Routes.BOOKING)
+    @PostMapping(BOOKING)
     public ResponseEntity<TicketBookedDto> booking(@PathVariable Long userId,
                                                    @PathVariable Long screeningId,
                                                    @RequestBody TicketBookingDto tickedRequestDto) throws MessagingException {

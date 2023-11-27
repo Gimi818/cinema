@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-
+import static com.cinema.api.ExchangeRateController.Routes.*;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
 class ExchangeRateController {
     private final ExchangeRateService service;
 
-    @GetMapping(Routes.ROOT)
+    @GetMapping(ROOT)
     public ResponseEntity<List<ExchangeRateResponseDto>> findAllCurrencies() {
         List<ExchangeRateResponseDto> allCurrencies = service.findAllCurrency();
         return ResponseEntity.status(HttpStatus.OK).body(allCurrencies);
