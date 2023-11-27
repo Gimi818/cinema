@@ -12,6 +12,7 @@ import lombok.*;
 @Setter
 @Builder
 public class ExchangeRate extends AbstractEntity {
+    private String currency;
     private String code;
     private double mid;
 

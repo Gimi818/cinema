@@ -45,16 +45,18 @@ class ExchangeRateService {
 
                     if (existingExchangeRate.isPresent()) {
                         ExchangeRate existing = existingExchangeRate.get();
+                        existing.setCurrency(rate.currency());
                         existing.setMid(rate.mid());
                         repository.save(existing);
-                        log.info("Update {} rate ", existing.getCode());
+                        log.info("Update {} rate ", existing.getCurrency());
                     } else {
                         ExchangeRate exchangeRate = ExchangeRate.builder()
+                                .currency(rate.currency())
                                 .code(rate.code())
                                 .mid(rate.mid())
                                 .build();
                         repository.save(exchangeRate);
-                        log.info("Created new {} rate ", exchangeRate.getCode());
+                        log.info("Added {} rate ", exchangeRate.getCurrency());
                     }
                 }
             }
@@ -75,6 +77,7 @@ class ExchangeRateService {
         ExchangeRate plnExchangeRate = repository.findByCode("PLN");
         if (plnExchangeRate == null) {
             ExchangeRate newPlnExchangeRate = ExchangeRate.builder()
+                    .currency("Polski Złoty")
                     .code("PLN")
                     .mid(1.0)
                     .build();
