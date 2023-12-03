@@ -37,7 +37,8 @@ class UserServiceTest {
     private UserResponseDto userResponseDto;
     @Mock
     private ConfirmUser confirmUser;
-
+    @Mock
+    private PasswordEncoderService passwordEncoderService;
 
     @Mock
     private User user;

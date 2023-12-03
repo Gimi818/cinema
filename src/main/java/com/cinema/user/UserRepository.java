@@ -1,6 +1,5 @@
 package com.cinema.user;
 
-import com.cinema.user.dto.UserResponseDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

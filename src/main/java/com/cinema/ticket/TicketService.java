@@ -57,7 +57,7 @@ class TicketService {
     }
 
 
-    public Ticket createNewTicket(Screening screening, User user, TicketBookingDto tickedDto) {
+    public Ticket createNewTicket(Screening screening, User user, TicketBookingDto ticketDto) {
 
         return Ticket.builder()
                 .filmTitle(screening.getFilm().getTitle())
@@ -65,12 +65,12 @@ class TicketService {
                 .screeningTime(screening.getTime())
                 .name(concatenateUserName(user.getFirstName(), user.getLastName()))
                 .status(TicketStatus.ACTIVE)
-                .ticketType(tickedDto.ticketType())
-                .ticketPrice(ticketPrice.finalPrice(tickedDto, screening))
-                .rowsNumber(tickedDto.rowsNumber())
+                .ticketType(ticketDto.ticketType())
+                .ticketPrice(ticketPrice.finalPrice(ticketDto, screening))
+                .rowsNumber(ticketDto.rowsNumber())
                 .roomNumber(1)
-                .currency(tickedDto.currency())
-                .seatInRow(tickedDto.seatInRow())
+                .currency(ticketDto.currency())
+                .seatInRow(ticketDto.seatInRow())
                 .userId(user.getId())
                 .build();
     }

@@ -21,8 +21,8 @@ class TicketController {
     @PostMapping(BOOKING)
     public ResponseEntity<TicketBookedDto> booking(@PathVariable UUID userUuid,
                                                    @PathVariable Long screeningId,
-                                                   @RequestBody TicketBookingDto tickedRequestDto) throws MessagingException {
-        return new ResponseEntity<>(service.bookTicket(screeningId, userUuid, tickedRequestDto), HttpStatus.CREATED);
+                                                   @RequestBody TicketBookingDto ticketRequestDto) throws MessagingException {
+        return new ResponseEntity<>(service.bookTicket(screeningId, userUuid, ticketRequestDto), HttpStatus.CREATED);
     }
 
     static final class Routes {

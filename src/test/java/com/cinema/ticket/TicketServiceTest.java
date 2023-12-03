@@ -7,11 +7,8 @@ import com.cinema.film.filmCategory.FilmCategory;
 import com.cinema.screening.Screening;
 import com.cinema.screening.ScreeningFacade;
 
-import com.cinema.seats.Seat;
 import com.cinema.seats.SeatFacade;
-import com.cinema.ticket.dto.TicketBookedDto;
 import com.cinema.ticket.dto.TicketBookingDto;
-import com.cinema.ticket.dto.TicketResponseDto;
 import com.cinema.ticket.priceCalculator.TicketPriceCalculator;
 import com.cinema.ticket.ticketEnum.Currency;
 import com.cinema.ticket.ticketEnum.TicketStatus;
@@ -20,18 +17,15 @@ import com.cinema.user.UserFacade;
 import com.cinema.user.userEnum.AccountType;
 import com.cinema.user.User;
 import com.cinema.user.userEnum.UserRole;
-import jakarta.mail.MessagingException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.UUID;
 
 
 import static org.junit.jupiter.api.Assertions.*;
