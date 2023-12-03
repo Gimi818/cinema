@@ -58,7 +58,7 @@ The application is deployed on Docker and incorporates Swagger for documentation
     "role":"USER"
     }
   
-  <img src="https://github.com/Gimi818/cinema/blob/master/steps/1.0_registration.PNG" width="500" heigt="700"/>
+  <img src="https://github.com/Gimi818/cinema/blob/master/steps/1.PNG" width="500" heigt="700"/>
 
     Step 2 :
     Click on the account activation link.
@@ -74,13 +74,13 @@ The application is deployed on Docker and incorporates Swagger for documentation
 
     Step 4 :
     GET localhost:8080/screenings/1
-    Enter the film Id into the URL to check the available seats for the screening.
+    Enter the film ID into the URL to check the available seats for the screening.
     
    <img src="https://github.com/Gimi818/cinema/blob/master/steps/3.0_seats.PNG" width="500" heigt="700"/>
 
     Step 5 :
-    POST localhost:8080/book/1/1
-    Enter the user id and then the film id.
+    POST localhost:8080/book/ea6c7acd-4f87-4ee5-829c-0460c315caad/1
+    Enter the user UUID and then the film ID.
     Choose the ticket type NORMAL or REDUCE if you are a student, you are qualified for a discount.
     Select the currency in which you would like to receive the ticket price, you can choose from 34 currencies. 
     Send request localhost:8080/codes and check available currencies.
@@ -88,18 +88,18 @@ The application is deployed on Docker and incorporates Swagger for documentation
     JSON:
     {
      "ticketType":"REDUCE",
-     "currency":"PLN",
-     "rowsNumber":9,
-     "seatInRow": 4
+     "currency":"USD",
+     "rowsNumber":7,
+     "seatInRow": 5
     }
   
-  <img src="https://github.com/Gimi818/cinema/blob/master/steps/4.0_bookingTicket.PNG" width="500" heigt="700"/>
+  <img src="https://github.com/Gimi818/cinema/blob/master/steps/bookingTicket.PNG" width="500" heigt="700"/>
 
     Step 6 :
     You have received an email with a PDF ticket containing the details along with a QR code confirming your purchase.
     Scan the QR code and check purchase details
     
-   <img src="https://github.com/Gimi818/cinema/blob/master/steps/5.0_ticket.PNG" width="500" heigt="700"/>
+   <img src="https://github.com/Gimi818/cinema/blob/master/steps/ticket.PNG"  width="500" heigt="700"/>
 
 
     Add the film to the database:
@@ -107,28 +107,28 @@ The application is deployed on Docker and incorporates Swagger for documentation
     Enter the film data.
     JSON:
     {
-     "title": "Fast And Furious 10",
+     "title": "The Equalizer 3",
      "category": "ACTION",
      "durationFilmInMinutes": 130
     }
   
-  <img src="https://github.com/Gimi818/cinema/blob/master/steps/7.0addfilm.PNG" width="500" heigt="700"/>
+  <img src="https://github.com/Gimi818/cinema/blob/master/steps/addFilm.PNG" width="500" heigt="700"/>
   
     Create a screening:
-    POST localhost:8080/screenings/1
-    Enter the id in URL of the film for which you want to create.
-    Enter date and time of screening.
+    POST localhost:8080/screenings/26
+    Enter the ID in the URL of the film for which you want to create.
+    Enter the date and time of screening.
     JSON:
     {
-     "date": "2023-11-12",
-     "time": "22:45"
+     "date": "2023-12-15",
+     "time": "22:30"
      }
   
-  <img src="https://github.com/Gimi818/cinema/blob/master/steps/8.0addScreenings.PNG" width="500" heigt="700"/>
+  <img src="https://github.com/Gimi818/cinema/blob/master/steps/addScreening.PNG" width="500" heigt="700"/>
 
     Endpoints available in the application :
   
-   <img src="https://github.com/Gimi818/cinema/blob/master/steps/ep.PNG" width="500" heigt="500"/>
+   <img src="https://github.com/Gimi818/cinema/blob/master/steps/swagger.PNG" width="500" heigt="500"/>
 
    
   
